@@ -1,6 +1,6 @@
 <h2> ---- This is our QuadLingo language learning app ---- </h2>
 
-<h3>**Developers:** Maisa, Cindy, Aliisa and Yasmin </h3>
+<h3>Developers: Maisa, Cindy, Aliisa and Yasmin </h3>
 
 
 
