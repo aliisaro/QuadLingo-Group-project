@@ -1,2 +1,5 @@
-package Controller;public class LanguageController {
+package Controller;
+
+public class LanguageController {
+    // TODO: Controllers for language
 }
