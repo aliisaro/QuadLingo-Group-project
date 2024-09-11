@@ -3,6 +3,14 @@ package Controller;
 import Model.Progress;
 import Model.User;
 
+//Responsible for handling user requests and coordinating the flow of data between user model
+//and the user interface (View). Uses the UserDaoImpl to perform the necessary database operations
+//Not the same as UserDaoImpl
+
+//Example provided by Copilot: User tries to log in, the UserController would take the username
+//and password, pass them to the UserDaoImpl to check against the database and then based on
+//the result, it would either return the User object or an error message.
+
 public class UserController {
 
     //Example code
