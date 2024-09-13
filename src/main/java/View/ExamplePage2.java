@@ -14,9 +14,13 @@ public class ExamplePage2 extends VBox {
 
     public ExamplePage2(Stage stage) {
 
-        Button button2 = new Button("Go back to Page 1");
-        button2.setOnAction(e -> stage.setScene(new ExamplePage1(stage).createScene()));
-        this.getChildren().add(button2);
+        Button button1 = new Button("Go back to Page 1");
+        button1.setOnAction(e -> stage.setScene(new ExamplePage1(stage).createScene()));
+        this.getChildren().add(button1);
+
+        Button button0 = new Button("Go to Concrete Page");
+        button1.setOnAction(e -> stage.setScene(new ConcretePage(stage).createScene()));
+        this.getChildren().add(button0);
     }
 
     public Scene createScene() {
