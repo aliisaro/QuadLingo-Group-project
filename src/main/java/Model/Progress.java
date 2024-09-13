@@ -7,15 +7,12 @@ public class Progress {
 
     private Language language;
 
-    private int currentLesson;
+    private int completedQuizzes;
 
-    private int score;
-
-    public Progress(User user, Language language, int currentLesson, int score) {
+    public Progress(User user, Language language) {
         this.user = user;
         this.language = language;
-        this.currentLesson = currentLesson;
-        this.score = score;
+        this.completedQuizzes = 0;
     }
 
     public User getUser() {
@@ -26,11 +23,11 @@ public class Progress {
         return language;
     }
 
-    public int getCurrentLesson() {
-        return currentLesson;
+    public int getCompletedQuizzes() {
+        return completedQuizzes;
     }
 
-    public int getScore() {
-        return score;
+    public int completeQuiz() {
+        return ++completedQuizzes;
     }
 }
