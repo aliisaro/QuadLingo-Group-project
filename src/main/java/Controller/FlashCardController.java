@@ -1,2 +1,4 @@
-package Controller;public class FlashCardController {
+package Controller;
+
+public class FlashCardController {
 }

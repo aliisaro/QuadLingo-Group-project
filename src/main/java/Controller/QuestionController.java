@@ -1,2 +1,4 @@
-package Controller;public class QuestionController {
+package Controller;
+
+public class QuestionController {
 }

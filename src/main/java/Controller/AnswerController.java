@@ -1,2 +1,4 @@
-package Controller;public class AnswerController {
+package Controller;
+
+public class AnswerController {
 }

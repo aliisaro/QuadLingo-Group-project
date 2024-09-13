@@ -1,2 +1,4 @@
-package Controller;public class ProgressController {
+package Controller;
+
+public class ProgressController {
 }

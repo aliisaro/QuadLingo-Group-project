@@ -1,2 +1,4 @@
-package Controller;public class QuizController {
+package Controller;
+
+public class QuizController {
 }
