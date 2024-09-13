@@ -1,7 +1,6 @@
 // ExamplePage2.java
 package View;
 
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -15,7 +14,7 @@ public class ExamplePage2 extends VBox {
     public ExamplePage2(Stage stage) {
 
         Button button1 = new Button("Go back to Page 1");
-        button1.setOnAction(e -> stage.setScene(new ExamplePage1(stage).createScene()));
+        button1.setOnAction(e -> stage.setScene(new HomePage(stage).createScene()));
         this.getChildren().add(button1);
 
         Button button0 = new Button("Go to Concrete Page");

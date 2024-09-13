@@ -1,6 +1,5 @@
 package View;
 
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -10,7 +9,7 @@ public class ConcretePage extends Page {
         super(stage);
 
         Button button1 = new Button("Go to Page 1");
-        button1.setOnAction(e -> stage.setScene(new ExamplePage1(stage).createScene()));
+        button1.setOnAction(e -> stage.setScene(new HomePage(stage).createScene()));
         this.getChildren().add(button1);
 
         Button button2 = new Button("Go to Page 2");

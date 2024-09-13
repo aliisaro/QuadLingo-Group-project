@@ -16,9 +16,8 @@ public class QuadLingoGUI extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("QuadLingo");
-        primaryStage.setScene(new ExamplePage1(primaryStage).createScene());
+        primaryStage.setScene(new HomePage(primaryStage).createScene());
 
-        // Example page 1 is the first page that is shown, can be changed later
 
         // Setting the size of the window
         primaryStage.setWidth(WIDTH);
