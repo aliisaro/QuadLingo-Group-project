@@ -6,9 +6,12 @@ public class Quiz {
 
     public Boolean isCompleted;
 
+    public int score;
+
     public Quiz(String title, Boolean isCompleted) {
         this.title = title;
         this.isCompleted = isCompleted;
+        this.score = 0;
     }
 
     public String getTitle() {
@@ -25,5 +28,13 @@ public class Quiz {
 
     public void setIsCompleted(Boolean isCompleted) {
         this.isCompleted = isCompleted;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
