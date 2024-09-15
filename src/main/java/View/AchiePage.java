@@ -7,10 +7,15 @@ import javafx.stage.Stage;
 
 public class AchiePage extends BasePage {
 
-    Image image = new Image("file:src/main/resources/BadgePaceHolder.png");
-    ImageView imageView = new ImageView(image);
 
     public AchiePage(Stage stage) {
+        Image image = new Image("file:src/main/resources/BadgePaceHolder.png");
+        ImageView imageView = new ImageView(image);
+
+        //Adjust the size of the image
+        imageView.setFitHeight(200);
+        imageView.setFitWidth(200);
+
         Button button1 = new Button("Go to Page 2");
         button1.setOnAction(e -> stage.setScene(new ExamplePage2(stage).createScene()));
 

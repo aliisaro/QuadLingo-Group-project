@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 //This is an example page that shows the basic functionality
 //of switching between pages
-public class ExamplePage1 extends VBox {
+public class ExamplePage1 extends BasePage {
 
     public ExamplePage1(Stage stage) {
 
@@ -24,14 +24,5 @@ public class ExamplePage1 extends VBox {
         Button profileButton = new Button("Go to Profile");
         profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
         this.getChildren().add(profileButton);
-    }
-
-    public Scene createScene() {
-        Scene scene = new Scene(this, 400, 640);
-
-        //Adding the css file, it can't be in the main qui class
-        //This is because the ccs is applied to the scene, not the stage
-        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
-        return scene;
     }
 }
