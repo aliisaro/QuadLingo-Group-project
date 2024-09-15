@@ -13,8 +13,8 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, b
 
 
     public AchiePage(Stage stage) {
-        Image image1 = new Image("file:src/main/resources/BadgePaceHolder.png");
-        Image image2 = new Image("file:src/main/resources/BadgePaceHolder.png");
+        Image image1 = new Image("file:src/main/resources/FirstFlashBadge.png");
+        Image image2 = new Image("file:src/main/resources/FirstFlashBadge.png");
         ImageView imageView1 = new ImageView(image1);
         ImageView imageView2 = new ImageView(image2);
 
