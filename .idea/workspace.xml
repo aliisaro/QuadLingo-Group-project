@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/View/ImageSize.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/View/badgeLock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/View/setMarginButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/AchiePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/AchiePage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/ExamplePage1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/ExamplePage1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/ExamplePage2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/ExamplePage2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +22,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -91,7 +95,7 @@
       <workItem from="1726051174980" duration="1433000" />
       <workItem from="1726122772219" duration="15000" />
       <workItem from="1726210037939" duration="833000" />
-      <workItem from="1726215998453" duration="12177000" />
+      <workItem from="1726215998453" duration="17431000" />
     </task>
     <servers />
   </component>

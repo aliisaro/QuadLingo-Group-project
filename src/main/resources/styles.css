@@ -8,3 +8,21 @@
 .root {
     -fx-background-color: D6E3F8;
 }
+
+.label {
+    -fx-padding: 10 10 10 5;
+}
+
+.button {
+    -fx-background-color: FFAF87;
+    -fx-text-fill: white;
+    -fx-font-size: 1.1em;
+    -fx-font-weight: bold;
+    -fx-padding: 10 10 10 5;
+    -fx-border-color: #584B53;
+    -fx-border-radius: 5;
+}
+
+.button:hover {
+    -fx-background-color: FF8E72;
+}
