@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/View/BasePage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/BadgePaceHolder.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/AchiePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/AchiePage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/ExamplePage1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/ExamplePage1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/ExamplePage2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/ExamplePage2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Profile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,13 +34,16 @@
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="2ldrDNfiM8m3jlfvzodxyvc4LUp" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.Main.executor": "Run",
     "Application.Profile.executor": "Run",
     "Application.QuadLingoQui.executor": "Run",
@@ -57,10 +59,15 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Global Libraries",
     "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb"
+    ]
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -85,7 +92,7 @@
       <workItem from="1726051174980" duration="1433000" />
       <workItem from="1726122772219" duration="15000" />
       <workItem from="1726210037939" duration="833000" />
-      <workItem from="1726215998453" duration="4332000" />
+      <workItem from="1726215998453" duration="11796000" />
     </task>
     <servers />
   </component>
@@ -104,6 +111,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="en tiedä" />
     <option name="LAST_COMMIT_MESSAGE" value="en tiedä" />
   </component>
