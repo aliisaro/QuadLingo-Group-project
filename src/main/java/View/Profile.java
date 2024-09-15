@@ -34,11 +34,14 @@ public class Profile extends VBox {
         Button backButton = new Button("Back to Main");
         backButton.setOnAction(e -> stage.setScene(new ExamplePage1(stage).createScene()));
 
+        Button buttonProgress = new Button("Go to Progress");
+        buttonProgress.setOnAction(e -> stage.setScene(new ProgressPage(stage).createScene()));
+
         // Layout setup
         this.setAlignment(Pos.CENTER);
         this.setPadding(new Insets(20));
         this.setSpacing(10);
-        this.getChildren().addAll(nameBox, emailBox, saveButton, backButton);
+        this.getChildren().addAll(nameBox, emailBox, saveButton, backButton, buttonProgress);
     }
 
     private void handleSaveAction(String name, String email) {

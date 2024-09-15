@@ -11,6 +11,8 @@
 
 .label {
     -fx-padding: 10 10 10 5;
+    -fx-font-size: 1.1em;
+    -fx-font-weight: bold;
 }
 
 .button {
