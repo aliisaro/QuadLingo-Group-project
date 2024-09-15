@@ -1,6 +1,7 @@
 package View;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -33,6 +34,13 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         progressBar.setPrefWidth(200);
         progressBar.setPrefHeight(20);
 
+        VBox progressBarBox = new VBox();
+        progressBarBox.setAlignment(Pos.CENTER);
+        progressBarBox.setPadding(new Insets(0));
+        progressBarBox.setSpacing(0);
+        progressBarBox.getChildren().add(progressBar);
+
+
         updateProgress(6, progressBar);
 
 
@@ -41,7 +49,7 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         this.getChildren().add(profileButton);
         this.getChildren().add(buttonHome);
         this.getChildren().add(ProgressLabel2);
-        this.getChildren().add(progressBar);
+        this.getChildren().add(progressBarBox);
 
     }
 
