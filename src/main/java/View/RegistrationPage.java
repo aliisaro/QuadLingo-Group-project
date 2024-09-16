@@ -15,14 +15,11 @@ public class RegistrationPage extends BasePage {
         UserDaoImpl userDao = new UserDaoImpl();
         userController = new UserController(userDao);
 
+        // Set layout to the stage
         setLayout(stage);
     }
 
     private void setLayout(Stage stage) {
-        // Padding & spacing
-        this.setPadding(new Insets(20));
-        this.setSpacing(10);
-
         // Elements
         Label titleLabel = new Label("Create an account");
 
@@ -36,8 +33,9 @@ public class RegistrationPage extends BasePage {
         PasswordField passwordField = new PasswordField();
 
         Button registerButton = new Button("Register");
-        Label successLabel = new Label();
-        successLabel.setStyle("-fx-text-fill: green;");
+
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red;");
 
         // Register button action logic
         registerButton.setOnAction(event -> {
@@ -47,7 +45,7 @@ public class RegistrationPage extends BasePage {
 
             // Basic validation
             if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                successLabel.setText("All fields are required.");
+                errorLabel.setText("All fields are required.");
                 return;
             }
 
@@ -55,11 +53,12 @@ public class RegistrationPage extends BasePage {
             User newUser = userController.createUser(username, password, email);
 
             if (newUser != null) {
-                successLabel.setText("Registration successful!");
+                System.out.println("Registration successful: " + newUser.getUsername());
+
                 // Navigate to the homepage
                 stage.setScene(new Homepage(stage).createScene());
             } else {
-                successLabel.setText("Registration failed. Please try again.");
+                errorLabel.setText("Registration failed. Please try again.");
             }
         });
 
@@ -77,7 +76,7 @@ public class RegistrationPage extends BasePage {
                 passwordLabel,
                 passwordField,
                 registerButton,
-                successLabel,
+                errorLabel,
                 indexPageButton
         );
     }

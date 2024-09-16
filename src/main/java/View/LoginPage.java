@@ -14,6 +14,11 @@ public class LoginPage extends BasePage {
         UserDaoImpl userDao = new UserDaoImpl();
         userController = new UserController(userDao);
 
+        // Set layout to the stage
+        setLayout(stage);
+    }
+
+    private void setLayout(Stage stage) {
         // Create and configure the login page UI components
         Label titleLabel = new Label("Login");
 
@@ -34,6 +39,7 @@ public class LoginPage extends BasePage {
             String password = passwordField.getText();
 
             User loggedInUser = userController.loginUser(username, password);
+
             if (loggedInUser != null) {
                 // Handle successful login
                 System.out.println("Login successful: " + loggedInUser.getUsername());
@@ -48,7 +54,15 @@ public class LoginPage extends BasePage {
         indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
 
         // Add elements to layout
-        getChildren().addAll(titleLabel, usernameLabel, usernameField, passwordLabel,passwordField, loginButton, errorLabel, indexPageButton);
+        getChildren().addAll(
+                titleLabel,
+                usernameLabel,
+                usernameField,
+                passwordLabel,
+                passwordField,
+                loginButton,
+                errorLabel,
+                indexPageButton);
     }
 }
 

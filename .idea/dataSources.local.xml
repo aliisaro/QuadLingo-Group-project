@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal" created-in="IU-233.15325.26">
-    <data-source name="quadlingo@localhost" uuid="d1900a40-e01d-4342-90b9-f5bab9c9210f">
+    <data-source name="quadlingo@localhost" uuid="1622bb05-be56-4625-b433-eecd000ea486">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MARIADB" />
       <secret-storage>master_key</secret-storage>
       <user-name>Lingo</user-name>

@@ -20,18 +20,19 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void createUser(User user) {
         try (Connection connection = getConnection()) {
-            String query = "INSERT INTO lingouser (Username, UserPassword, Email, QuizzesCompleted) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO lingouser (Email, Username, UserPassword, QuizzesCompleted) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getEmail());
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getUsername());
+            statement.setString(3, user.getPassword());
             statement.setInt(4, user.getQuizzesCompleted());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace(); // Log or handle exceptions
+            e.printStackTrace(); // Handle exceptions
         }
     }
+
 
     // Fetches a user by their username from the lingouser table
     @Override

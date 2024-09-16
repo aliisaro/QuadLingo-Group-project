@@ -5,28 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/View/RegistrationPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/009a4e28-9a4c-4e3d-80a5-979a034ed9d7.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/009a4e28-9a4c-4e3d-80a5-979a034ed9d7/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/009a4e28-9a4c-4e3d-80a5-979a034ed9d7/storage_v2/_src_/schema/quadlingo.UuIiqA.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Database/MariaDbConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Database/MariaDbConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/AchiePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/AchiePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/ExamplePage1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Homepage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/ExamplePage2.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Profile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/ProgressPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/ProgressPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/QuadLingoQui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/QuadLingoQui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/RegistrationPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/RegistrationPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +28,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -70,7 +60,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "aliisa",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo",
     "list.type.of.created.stylesheet": "CSS",
@@ -121,8 +111,17 @@
       <workItem from="1726122772219" duration="15000" />
       <workItem from="1726210037939" duration="833000" />
       <workItem from="1726215998453" duration="25846000" />
-      <workItem from="1726512475667" duration="658000" />
+      <workItem from="1726512475667" duration="7239000" />
     </task>
+    <task id="LOCAL-00001" summary="koitin saada login ja register toimii. Poistin example page1 ja 2 ja lisäsin index page missö on napit login ja register pageille">
+      <option name="closed" value="true" />
+      <created>1726513458620</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1726513458620</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -142,6 +141,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="en tiedä" />
-    <option name="LAST_COMMIT_MESSAGE" value="en tiedä" />
+    <MESSAGE value="koitin saada login ja register toimii. Poistin example page1 ja 2 ja lisäsin index page missö on napit login ja register pageille" />
+    <option name="LAST_COMMIT_MESSAGE" value="koitin saada login ja register toimii. Poistin example page1 ja 2 ja lisäsin index page missö on napit login ja register pageille" />
   </component>
 </project>
