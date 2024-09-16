@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="IU-233.14808.21">
-    <data-source name="quadlingo@localhost" uuid="009a4e28-9a4c-4e3d-80a5-979a034ed9d7">
-      <database-info product="MariaDB" version="10.6.11-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.3.3" dbms="MARIADB" exact-version="10.6.11" exact-driver-version="3.3">
-        <extra-name-characters>#@</extra-name-characters>
-        <identifier-quote-string>`</identifier-quote-string>
-      </database-info>
-      <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
+  <component name="dataSourceStorageLocal" created-in="IU-233.15325.26">
+    <data-source name="quadlingo@localhost" uuid="d1900a40-e01d-4342-90b9-f5bab9c9210f">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MARIADB" />
       <secret-storage>master_key</secret-storage>
       <user-name>Lingo</user-name>
-      <schema-mapping>
-        <introspection-scope>
-          <node kind="schema" qname="@" />
-        </introspection-scope>
-      </schema-mapping>
+      <schema-mapping />
     </data-source>
   </component>
 </project>

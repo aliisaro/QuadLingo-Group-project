@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 // Page for user profile
-public class Profile extends VBox {
+public class Profile extends BasePage {
 
     public Profile(Stage stage) {
         // Name Field
@@ -32,7 +32,7 @@ public class Profile extends VBox {
 
         // Back Button to return to ExamplePage1
         Button backButton = new Button("Back to Main");
-        backButton.setOnAction(e -> stage.setScene(new ExamplePage1(stage).createScene()));
+        backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         Button buttonProgress = new Button("Go to Progress");
         buttonProgress.setOnAction(e -> stage.setScene(new ProgressPage(stage).createScene()));
@@ -51,11 +51,4 @@ public class Profile extends VBox {
         System.out.println("Email: " + email);
     }
 
-    public Scene createScene() {
-        Scene scene = new Scene(this, 400, 640);
-
-        // Adding the CSS file
-        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
-        return scene;
-    }
 }

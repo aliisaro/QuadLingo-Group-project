@@ -27,24 +27,19 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, b
         setImageSize(imageView2, 100, 100);
         lockBadge(true, imageView2);
 
-        Button button1 = new Button("Go to Page 2");
-        setMargin(button1, 10, 10, 10, 5);
-        button1.setOnAction(e -> stage.setScene(new ExamplePage2(stage).createScene()));
-
         Button profileButton = new Button("Go to Profile");
         setMargin(profileButton, 10, 10, 10, 5);
         profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
 
         Button buttonHome = new Button("Go Home");
         setMargin(buttonHome, 10, 10, 10, 5);
-        buttonHome.setOnAction(e -> stage.setScene(new ExamplePage1(stage).createScene()));
+        buttonHome.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         Label AchieLabel1 = new Label("Achievements Page");
         Label AchieLabel2 = new Label("Earned badges");
         Label AchieLabel3 = new Label("Locked badges");
 
         this.getChildren().add(AchieLabel1);
-        this.getChildren().add(button1);
         this.getChildren().add(profileButton);
         this.getChildren().add(buttonHome);
         this.getChildren().add(AchieLabel2);

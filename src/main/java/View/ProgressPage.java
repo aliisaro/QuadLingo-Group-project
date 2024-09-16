@@ -15,17 +15,13 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
     private int completedItems;
 
     public ProgressPage (Stage stage) {
-        Button button1 = new Button("Go to Page 2");
-        setMargin(button1, 10, 10, 10, 5);
-        button1.setOnAction(e -> stage.setScene(new ExamplePage2(stage).createScene()));
-
         Button profileButton = new Button("Go to Profile");
         setMargin(profileButton, 10, 10, 10, 5);
         profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
 
         Button buttonHome = new Button("Go Home");
         setMargin(buttonHome, 10, 10, 10, 5);
-        buttonHome.setOnAction(e -> stage.setScene(new ExamplePage1(stage).createScene()));
+        buttonHome.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         Label ProgressLabel1 = new Label("Progress Page");
         Label ProgressLabel2 = new Label("Progress bar");
@@ -45,7 +41,6 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
 
 
         this.getChildren().add(ProgressLabel1);
-        this.getChildren().add(button1);
         this.getChildren().add(profileButton);
         this.getChildren().add(buttonHome);
         this.getChildren().add(ProgressLabel2);
