@@ -1,0 +1,58 @@
+
+Ohje miten lisätä sivulle toiminto joka tarkistaa onko käyttäjä kirjautunut sisään.
+
+// STEP 1 LISÄÄ TÄMÄ SIVUN ALKUUN (importit)
+import Main.SessionManager;
+
+// STEP 2 LISÄÄ SESSION TARKISTUS (eli tarkistaa onko käyttäjä kirjautunut sisään)
+User currentUser = SessionManager.getInstance().getCurrentUser();
+
+// STEP 3 JOS KÄYTTÄJÄ EI OLE KIRJAUTUNUT SISÄÄN, OHJAA INDEX SIVULLE
+if (!SessionManager.getInstance().isLoggedIn()) {
+    stage.setScene(new IndexPage(stage).createScene());
+    return;
+}
+
+// STEP 4 LISÄÄ LOGOUT NAPPI, JOKA KIRJAA KÄYTTÄJÄN ULOS JA OHJAA INDEX SIVULLE
+Button logoutButton = new Button("Logout");
+logoutButton.setOnAction(e -> {
+    SessionManager.getInstance().logout();
+    stage.setScene(new IndexPage(stage).createScene());
+});
+
+// MUISTA LISÄTÄ 'logoutButton' ELEMENTTI SIVUN LAYOUT:IIN
+this.getChildren().add(logoutButton);
+TAI
+this.getChildren().addAll(logoutButton, <muita elementtejä>); // Lisää kaikki elementit sivun layouttiin yhdellä kertaa
+
+
+// ESIMERKKI KÄYTTÖ:
+
+package View;
+
+import Main.SessionManager;
+import Model.User;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+
+public class Profile extends BasePage {
+
+    public Profile(Stage stage) {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+
+        if (!SessionManager.getInstance().isLoggedIn()) {
+            stage.setScene(new IndexPage(stage).createScene());
+            return;
+        }
+
+        Button logoutButton = new Button("Logout");
+
+        logoutButton.setOnAction(e -> {
+            SessionManager.getInstance().logout();
+            stage.setScene(new IndexPage(stage).createScene());
+        });
+
+        this.getChildren().add(logoutButton);
+    }
+}
+

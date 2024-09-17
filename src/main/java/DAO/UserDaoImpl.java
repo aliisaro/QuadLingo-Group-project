@@ -63,5 +63,5 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    // Implement other methods related to User database operations
+    // Implement other methods related to User database operations like updateUser, deleteUser, etc.
 }

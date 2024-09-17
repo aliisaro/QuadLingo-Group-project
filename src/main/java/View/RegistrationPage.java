@@ -2,6 +2,7 @@ package View;
 
 import Controller.UserController;
 import DAO.UserDaoImpl; // Import UserDaoImpl
+import Main.SessionManager;
 import Model.User;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -12,8 +13,7 @@ public class RegistrationPage extends BasePage {
 
     public RegistrationPage(Stage stage) {
         // Initialize UserDaoImpl and UserController
-        UserDaoImpl userDao = new UserDaoImpl();
-        userController = new UserController(userDao);
+        userController = new UserController(new UserDaoImpl());
 
         // Set layout to the stage
         setLayout(stage);
@@ -50,10 +50,13 @@ public class RegistrationPage extends BasePage {
             }
 
             // Call the UserController to register the user
-            User newUser = userController.createUser(username, password, email);
+            User user= userController.createUser(username, password, email);
 
-            if (newUser != null) {
-                System.out.println("Registration successful: " + newUser.getUsername());
+            if (user != null) {
+                // Set the current user in session (login user)
+                SessionManager.getInstance().setCurrentUser(user);
+
+                System.out.println("Registration successful: " + user.getUsername());
 
                 // Navigate to the homepage
                 stage.setScene(new Homepage(stage).createScene());

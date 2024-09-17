@@ -2,6 +2,7 @@ package View;
 
 import Controller.UserController;
 import DAO.UserDaoImpl; // Import UserDaoImpl
+import Main.SessionManager;
 import Model.User;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -11,8 +12,7 @@ public class LoginPage extends BasePage {
 
     public LoginPage(Stage stage) {
         // Initialize UserDaoImpl and UserController
-        UserDaoImpl userDao = new UserDaoImpl();
-        userController = new UserController(userDao);
+        userController = new UserController(new UserDaoImpl());
 
         // Set layout to the stage
         setLayout(stage);
@@ -24,7 +24,6 @@ public class LoginPage extends BasePage {
 
         Label usernameLabel = new Label("Username");
         TextField usernameField = new TextField();
-
 
         Label passwordLabel = new Label("Password");
         PasswordField passwordField = new PasswordField();
@@ -38,11 +37,15 @@ public class LoginPage extends BasePage {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
-            User loggedInUser = userController.loginUser(username, password);
+            User user = userController.loginUser(username, password);
 
-            if (loggedInUser != null) {
-                // Handle successful login
-                System.out.println("Login successful: " + loggedInUser.getUsername());
+            if (user != null) {
+                // Set the current user in session (login user)
+                SessionManager.getInstance().setCurrentUser(user);
+
+                System.out.println("Login successful: " + user.getUsername());
+
+                // Navigate to the homepage
                 stage.setScene(new Homepage(stage).createScene());
             } else {
                 errorLabel.setText("Login failed. Please check your credentials.");

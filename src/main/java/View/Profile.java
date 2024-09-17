@@ -1,19 +1,36 @@
 package View;
 
+import Main.SessionManager;
+import Model.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 // Page for user profile
 public class Profile extends BasePage {
 
     public Profile(Stage stage) {
+        // Get the current logged-in user from the session
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+
+        // If user is not logged in, redirect to index page
+        if (!SessionManager.getInstance().isLoggedIn()) {
+            stage.setScene(new IndexPage(stage).createScene());
+            return;
+        }
+
+        // Logout button: clears session and redirects to IndexPage
+        Button logoutButton = new Button("Logout");
+        logoutButton.setOnAction(e -> {
+            SessionManager.getInstance().logout();
+            stage.setScene(new IndexPage(stage).createScene());
+        });
+
+
         // Name Field
         Label nameLabel = new Label("Name:");
         TextField nameTextField = new TextField();
@@ -41,7 +58,7 @@ public class Profile extends BasePage {
         this.setAlignment(Pos.CENTER);
         this.setPadding(new Insets(20));
         this.setSpacing(10);
-        this.getChildren().addAll(nameBox, emailBox, saveButton, backButton, buttonProgress);
+        this.getChildren().addAll(nameBox, emailBox, saveButton, backButton, buttonProgress, logoutButton );
     }
 
     private void handleSaveAction(String name, String email) {
