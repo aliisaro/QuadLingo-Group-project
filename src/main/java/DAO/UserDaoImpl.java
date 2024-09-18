@@ -62,5 +62,25 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
+    @Override
+    public int getQuizzesCompleted(String email) {
+        int quizzesCompleted = 0;
+        try (Connection connection = getConnection()) {
+            String query = "SELECT QuizzesCompleted FROM lingouser WHERE Email = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                quizzesCompleted = resultSet.getInt("QuizzesCompleted");
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return quizzesCompleted;
+    }
     // Implement other methods related to User database operations
 }
