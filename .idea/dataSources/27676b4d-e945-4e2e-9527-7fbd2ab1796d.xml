@@ -1,54 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="quadlingo@localhost">
   <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.51">
-    <root id="1">
-      <DefaultCasing>lower/lower</DefaultCasing>
-      <DefaultEngine>InnoDB</DefaultEngine>
-      <Grants>answer|schema||Lingo|localhost|DELETE|G
-answer|schema||Lingo|localhost|INSERT|G
-answer|schema||Lingo|localhost|SELECT|G
-answer|schema||Lingo|localhost|UPDATE|G
-badge|schema||Lingo|localhost|DELETE|G
-badge|schema||Lingo|localhost|INSERT|G
-badge|schema||Lingo|localhost|SELECT|G
-badge|schema||Lingo|localhost|UPDATE|G
-flashcard|schema||Lingo|localhost|DELETE|G
-flashcard|schema||Lingo|localhost|INSERT|G
-flashcard|schema||Lingo|localhost|SELECT|G
-flashcard|schema||Lingo|localhost|UPDATE|G
-lingouser|schema||Lingo|localhost|DELETE|G
-lingouser|schema||Lingo|localhost|INSERT|G
-lingouser|schema||Lingo|localhost|SELECT|G
-lingouser|schema||Lingo|localhost|UPDATE|G
-quadlingo|schema||Lingo|localhost|ALTER|G
-quadlingo|schema||Lingo|localhost|ALTER ROUTINE|G
-quadlingo|schema||Lingo|localhost|CREATE|G
-quadlingo|schema||Lingo|localhost|CREATE ROUTINE|G
-quadlingo|schema||Lingo|localhost|CREATE TEMPORARY TABLES|G
-quadlingo|schema||Lingo|localhost|CREATE VIEW|G
-quadlingo|schema||Lingo|localhost|DELETE|G
-quadlingo|schema||Lingo|localhost|DELETE HISTORY|G
-quadlingo|schema||Lingo|localhost|DROP|G
-quadlingo|schema||Lingo|localhost|EVENT|G
-quadlingo|schema||Lingo|localhost|EXECUTE|G
-quadlingo|schema||Lingo|localhost|INDEX|G
-quadlingo|schema||Lingo|localhost|INSERT|G
-quadlingo|schema||Lingo|localhost|LOCK TABLES|G
-quadlingo|schema||Lingo|localhost|REFERENCES|G
-quadlingo|schema||Lingo|localhost|SELECT|G
-quadlingo|schema||Lingo|localhost|SHOW VIEW|G
-quadlingo|schema||Lingo|localhost|TRIGGER|G
-quadlingo|schema||Lingo|localhost|UPDATE|G
-question|schema||Lingo|localhost|DELETE|G
-question|schema||Lingo|localhost|INSERT|G
-question|schema||Lingo|localhost|SELECT|G
-question|schema||Lingo|localhost|UPDATE|G
-quiz|schema||Lingo|localhost|DELETE|G
-quiz|schema||Lingo|localhost|INSERT|G
-quiz|schema||Lingo|localhost|SELECT|G
-quiz|schema||Lingo|localhost|UPDATE|G</Grants>
-      <ServerVersion>10.6.11</ServerVersion>
-    </root>
+    <root id="1"/>
     <collation id="2" parent="1" name="armscii8_bin">
       <Charset>armscii8</Charset>
     </collation>
