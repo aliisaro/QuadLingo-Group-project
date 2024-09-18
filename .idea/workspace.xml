@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Model/Badge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/27676b4d-e945-4e2e-9527-7fbd2ab1796d.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/27676b4d-e945-4e2e-9527-7fbd2ab1796d.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/AchiePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/AchiePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/Homepage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Homepage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/JottaVoinPushaa" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +47,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "aliisa",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo",
     "list.type.of.created.stylesheet": "CSS",

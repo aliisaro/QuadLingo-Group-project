@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="IU-233.14808.21">
+  <component name="dataSourceStorageLocal" created-in="IU-233.15325.26">
     <data-source name="quadlingo@localhost" uuid="27676b4d-e945-4e2e-9527-7fbd2ab1796d">
       <database-info product="MariaDB" version="10.6.11-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.3.3" dbms="MARIADB" exact-version="10.6.11" exact-driver-version="3.3">
         <extra-name-characters>#@</extra-name-characters>
