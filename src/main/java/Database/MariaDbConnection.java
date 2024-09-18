@@ -7,8 +7,8 @@ import java.sql.SQLException;
 public class MariaDbConnection {
 
     private static final String URL = "jdbc:mariadb://localhost:3306/quadlingo";
-    private static final String USER = "root";
-    private static final String PASSWORD = "1234";
+    private static final String USER = "Lingo";
+    private static final String PASSWORD = "5206xx";
 
     public static Connection getConnection() {
         Connection conn = null;
