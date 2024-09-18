@@ -30,6 +30,7 @@ public class SessionManager {
 
     // Clear the current session when the user logs out
     public void logout() {
+        System.out.println("User logged out: " + currentUser.getUsername());
         currentUser = null;
     }
 

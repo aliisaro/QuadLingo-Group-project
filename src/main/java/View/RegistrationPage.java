@@ -62,6 +62,7 @@ public class RegistrationPage extends BasePage {
                 stage.setScene(new Homepage(stage).createScene());
             } else {
                 errorLabel.setText("Registration failed. Please try again.");
+                System.out.println("Registration failed.");
             }
         });
 
