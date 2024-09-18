@@ -29,7 +29,8 @@ public class UserDaoImpl implements UserDao {
 
     // Inserts a new user into the lingouser table
     @Override
-    public void createUser(User user) {
+    public boolean createUser(User user) {
+        boolean isRegistered = false;
         try (Connection connection = getConnection()) {
             String query = "INSERT INTO lingouser (Username, UserPassword, Email, QuizzesCompleted) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -37,18 +38,25 @@ public class UserDaoImpl implements UserDao {
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getEmail());
             statement.setInt(4, user.getQuizzesCompleted());
-            statement.executeUpdate();
+
+            int rowsAffected = statement.executeUpdate(); // Returns number of affected rows
+            if (rowsAffected > 0) {
+                isRegistered = true;
+            }
+
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace(); // Log or handle exceptions
+            e.printStackTrace(); // Log the error
         }
+        return isRegistered;
     }
+
 
     // Fetches a user by their username from the lingouser table
     @Override
     public User getUser(String username) {
         User user = null;
-        try (Connection connection = getConnection()) {
+        try (Connection connection = MariaDbConnection.getConnection()) {
             String query = "SELECT * FROM lingouser WHERE Username = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
@@ -58,7 +66,6 @@ public class UserDaoImpl implements UserDao {
                 String dbUsername = resultSet.getString("Username");
                 String dbPassword = resultSet.getString("UserPassword");
                 String dbEmail = resultSet.getString("Email");
-                email = dbEmail;
                 int dbQuizzesCompleted = resultSet.getInt("QuizzesCompleted");
 
                 // Create User object with quizzesCompleted
@@ -73,6 +80,7 @@ public class UserDaoImpl implements UserDao {
         }
         return user;
     }
+
 
     @Override
     public int getQuizzesCompleted(String email) {

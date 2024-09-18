@@ -25,8 +25,12 @@ public class UserController {
 
     public User createUser(String username, String password, String email) {
         User newUser = new User(username, password, email);
-        userDao.createUser(newUser); // Call DAO to save the user in the DB
-        return newUser;
+        boolean success = userDao.createUser(newUser); // Check if the user was successfully created
+        if (success) {
+            return newUser; // Return the user object if successful
+        } else {
+            return null; // Return null if registration failed
+        }
     }
 
     public User loginUser(String username, String password) {
