@@ -18,6 +18,7 @@ public class Homepage extends BasePage implements setMarginButton{
         // Get the current logged-in user from the session
         User currentUser = SessionManager.getInstance().getCurrentUser();
 
+
         // If user is not logged in, redirect to index page
         if (!SessionManager.getInstance().isLoggedIn()) {
             stage.setScene(new IndexPage(stage).createScene());

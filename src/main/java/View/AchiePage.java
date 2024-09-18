@@ -1,32 +1,34 @@
 package View;
 
+import DAO.UserDaoImpl;
+import Model.Badge;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import Controller.UserController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AchiePage extends BasePage implements ImageSize, setMarginButton, badgeLock {
-
+    private UserController userController;
+    private List<Badge> badges;
+    private VBox unlockedBadgesContainer;
+    private VBox lockedBadgesContainer;
 
     public AchiePage(Stage stage) {
-        Image image1 = new Image("file:src/main/resources/FirstFlashBadge.png");
-        Image image2 = new Image("file:src/main/resources/FirstFlashBadge.png");
-        ImageView imageView1 = new ImageView(image1);
-        ImageView imageView2 = new ImageView(image2);
+        this.userController = UserController.getInstance(UserDaoImpl.getInstance());
+        this.badges = new ArrayList<>();
+        badges.add(new Badge("file:src/main/resources/FirstFlashBadge.png", 1));
+        badges.add(new Badge("file:src/main/resources/SecondFlashBadge.png", 5));
 
-        //Adjust the size of the image
-        imageView1.setPreserveRatio(true);
-        setImageSize(imageView1, 100, 100);
-        VBox.setMargin(imageView1, new Insets(10, 10, 10, 5));
-        imageView2.setPreserveRatio(true);
-        VBox.setMargin(imageView2, new Insets(10, 10, 10, 5));
-        setImageSize(imageView2, 100, 100);
-        lockBadge(true, imageView2);
+        String userEmail = userController.getEmailDao();
 
+        Label AchieLabel1 = new Label("Achievements Page");
         Button profileButton = new Button("Go to Profile");
         setMargin(profileButton, 10, 10, 10, 5);
         profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
@@ -35,17 +37,31 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, b
         setMargin(buttonHome, 10, 10, 10, 5);
         buttonHome.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
-        Label AchieLabel1 = new Label("Achievements Page");
+        this.getChildren().addAll(AchieLabel1, profileButton, buttonHome);
+
+        unlockedBadgesContainer = new VBox();
+        lockedBadgesContainer = new VBox();
+
+        for (Badge badge : badges) {
+            ImageView imageView = new ImageView(badge.getImage());
+            imageView.setPreserveRatio(true);
+            setImageSize(imageView, 100, 100);
+            VBox.setMargin(imageView, new Insets(10, 10, 10, 5));
+
+            int quizzesCompleted = userController.getQuizzesCompleted(userEmail);
+            if (quizzesCompleted >= badge.getThreshold()) {
+                unlockBadge(true, imageView);
+                unlockedBadgesContainer.getChildren().add(imageView);
+            } else {
+                lockBadge(true, imageView);
+                lockedBadgesContainer.getChildren().add(imageView);
+            }
+        }
+
         Label AchieLabel2 = new Label("Earned badges");
         Label AchieLabel3 = new Label("Locked badges");
 
-        this.getChildren().add(AchieLabel1);
-        this.getChildren().add(profileButton);
-        this.getChildren().add(buttonHome);
-        this.getChildren().add(AchieLabel2);
-        this.getChildren().add(imageView1);
-        this.getChildren().add(AchieLabel3);
-        this.getChildren().add(imageView2);
+        this.getChildren().addAll(AchieLabel2, unlockedBadgesContainer, AchieLabel3, lockedBadgesContainer);
     }
 
     @Override

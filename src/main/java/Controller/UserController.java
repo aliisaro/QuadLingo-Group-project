@@ -7,8 +7,20 @@ import Model.User;
 public class UserController {
     private UserDaoImpl userDao;
 
+    private UserDaoImpl quizzesDao;
+
+    private static UserController instance;
+
     public UserController(UserDaoImpl userDao) {
         this.userDao = userDao;
+        quizzesDao = new UserDaoImpl();
+    }
+
+    public static UserController getInstance(UserDaoImpl userDao) {
+        if (instance == null) {
+            instance = new UserController(userDao);
+        }
+        return instance;
     }
 
     public User createUser(String username, String password, String email) {
@@ -30,6 +42,14 @@ public class UserController {
             System.out.println("User not found.");
         }
         return null;
+    }
+
+    public int getQuizzesCompleted(String email) {
+        return quizzesDao.getQuizzesCompleted(email);
+    }
+
+    public String getEmailDao() {
+        return userDao.getEmail();
     }
 
     public Progress getUserProgress(User user) {

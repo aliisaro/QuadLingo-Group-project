@@ -11,6 +11,17 @@ import java.sql.SQLException;
 // Not the same as UserController
 public class UserDaoImpl implements UserDao {
 
+    public static UserDaoImpl instance;
+
+    public String email;
+
+    public static UserDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new UserDaoImpl();
+        }
+        return instance;
+    }
+
     // Retrieves a database connection
     private Connection getConnection() throws SQLException {
         return MariaDbConnection.getConnection(); // Make sure your MariaDbConnection class is correct
@@ -47,6 +58,7 @@ public class UserDaoImpl implements UserDao {
                 String dbUsername = resultSet.getString("Username");
                 String dbPassword = resultSet.getString("UserPassword");
                 String dbEmail = resultSet.getString("Email");
+                email = dbEmail;
                 int dbQuizzesCompleted = resultSet.getInt("QuizzesCompleted");
 
                 // Create User object with quizzesCompleted
@@ -82,5 +94,11 @@ public class UserDaoImpl implements UserDao {
         }
         return quizzesCompleted;
     }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
     // Implement other methods related to User database operations
 }

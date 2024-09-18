@@ -8,4 +8,8 @@ public interface UserDao {
     // Other methods related to User database operations
 
     int getQuizzesCompleted(String email);
+
+    String getEmail();
+
+
 }
