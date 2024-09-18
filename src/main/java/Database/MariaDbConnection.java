@@ -6,28 +6,31 @@ import java.sql.SQLException;
 
 public class MariaDbConnection {
 
-    private static final String URL = "jdbc:mariadb://localhost:3306/quadlingo";
-    private static final String USER = "Lingo";
-    private static final String PASSWORD = "5206xx";
+    private static Connection conn = null;
 
     public static Connection getConnection() {
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException e) {
-            System.out.println("Connection failed.");
-            e.printStackTrace();
-        }
-        return conn;
-    }
-
-    public static void terminate(Connection conn) {
-        if (conn != null) {
+        if (conn==null) {
+            // connect if necessary
             try {
-                conn.close();
+                conn = DriverManager.getConnection(
+                        "jdbc:mariadb://localhost:3306/Quadlingo?user=Lingo&password=5206xx");
             } catch (SQLException e) {
+                System.out.println("Connection failed.");
                 e.printStackTrace();
             }
+            return conn;
+        }
+        else {
+            return conn;
+        }
+    }
+
+    public static void terminate() {
+        try {
+            getConnection().close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }
