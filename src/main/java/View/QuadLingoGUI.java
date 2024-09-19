@@ -1,6 +1,7 @@
 // QuadLingoGUI.java
 package View;
 
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
 

@@ -6,12 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/ConcretePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/ConcretePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/ExamplePage1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/HomePage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/ExamplePage2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/ExamplePage2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/HomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/HomePage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/QuadLingoGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/QuadLingoGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/RegistrationPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/RegistrationPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +47,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "maisa",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/maisa/Documents/aa-maisa/a-amk/suunnittelu/design-patterns (vesa)/design-patterns/decorator",
+    "last_opened_file_path": "C:/Users/maisa/Documents/aa-maisa/a-amk/suunnittelu/projekti (amir)/QuadLingo-Group-project",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -66,6 +63,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
+        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
         <option value="jdk-17.0.9-jbr-17.0.9-4caba194b151-51f1b679" />
       </set>
     </attachedChunks>
@@ -85,6 +83,7 @@
       <workItem from="1726051174980" duration="1433000" />
       <workItem from="1726122772219" duration="15000" />
       <workItem from="1726210037939" duration="833000" />
+      <workItem from="1726235138020" duration="356000" />
     </task>
     <servers />
   </component>

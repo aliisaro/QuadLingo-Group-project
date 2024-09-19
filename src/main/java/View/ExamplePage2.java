@@ -25,7 +25,7 @@ public class ExamplePage2 extends VBox {
     public Scene createScene() {
         Scene scene = new Scene(this, 400, 640);
 
-        //Adding the css file, it can't be in the main qui class
+        //Adding the css file, it can't be in the main gui class
         //This is because the ccs is applied to the scene, not the stage
         scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         return scene;

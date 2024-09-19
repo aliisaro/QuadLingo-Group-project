@@ -20,7 +20,7 @@ public class HomePage {
     public Scene createScene() {
         VBox layout = new VBox();
         // Add UI components to the layout here
-        layout.getChildren().add(/* some UI elements */);
+        // layout.getChildren().add(/* some UI elements */);
 
         Scene scene = new Scene(layout, 400, 640);
         return scene;
