@@ -15,5 +15,19 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
+    <data-source name="quadlingo@localhost [2]" uuid="3cc37b58-0ff6-4e03-9cdd-011ce74ffba5">
+      <database-info product="MariaDB" version="10.6.11-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.3.3" dbms="MARIADB" exact-version="10.6.11" exact-driver-version="3.3">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>Lingo</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema" qname="@" />
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
   </component>
 </project>
