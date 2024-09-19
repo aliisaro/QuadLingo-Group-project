@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class MariaDbConnection {
 
-    private static final String URL = "jdbc:mariadb://localhost:3306/Quadlingo";
-    private static final String USER = "Lingo";
-    private static final String PASSWORD = "5206xx";
+    private static final String URL = "jdbc:mariadb://10.120.32.98/QuadLingo";
+    private static final String USER = "lingo";
+    private static final String PASSWORD = "5206";
 
     public static Connection getConnection() {
         Connection conn = null;
