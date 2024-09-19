@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="quadlingo@localhost" uuid="27676b4d-e945-4e2e-9527-7fbd2ab1796d">
+    <data-source source="LOCAL" name="quadlingo@localhost" uuid="05cf846b-9310-4efc-a15e-832d78d8a42e">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>

@@ -49,6 +49,7 @@ public class LoginPage extends BasePage {
                 stage.setScene(new Homepage(stage).createScene());
             } else {
                 errorLabel.setText("Login failed. Please check your credentials.");
+                System.out.println("Login failed.");
             }
         });
 

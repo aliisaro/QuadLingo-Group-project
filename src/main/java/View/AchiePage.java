@@ -82,7 +82,7 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, b
             desaturate.setSaturation(0);
             imageView.setEffect(desaturate);
         }
-}
+    }
     @Override
     public void lockBadge(boolean value, ImageView imageView) {
         if (value) {
