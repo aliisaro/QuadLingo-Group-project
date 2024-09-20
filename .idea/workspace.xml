@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="login pitäsi toimia nyt">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="korjasin UserDaoImpl jotta login ja register toimis">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3cc37b58-0ff6-4e03-9cdd-011ce74ffba5.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +105,10 @@
       <workItem from="1726726620255" duration="22000" />
       <workItem from="1726750020136" duration="375000" />
       <workItem from="1726775226552" duration="750000" />
-      <workItem from="1726810528699" duration="386000" />
+      <workItem from="1726810528699" duration="1513000" />
+      <workItem from="1726812065152" duration="2074000" />
+      <workItem from="1726819733551" duration="22000" />
+      <workItem from="1726825128432" duration="619000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
@@ -132,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726726796491</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="korjasin UserDaoImpl jotta login ja register toimis">
+      <option name="closed" value="true" />
+      <created>1726811078042</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1726811078042</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,6 +165,7 @@
     <MESSAGE value="pushaan cindyn version" />
     <MESSAGE value="Nyt pitäis toimii login kunnolla" />
     <MESSAGE value="login pitäsi toimia nyt" />
-    <option name="LAST_COMMIT_MESSAGE" value="login pitäsi toimia nyt" />
+    <MESSAGE value="korjasin UserDaoImpl jotta login ja register toimis" />
+    <option name="LAST_COMMIT_MESSAGE" value="korjasin UserDaoImpl jotta login ja register toimis" />
   </component>
 </project>
