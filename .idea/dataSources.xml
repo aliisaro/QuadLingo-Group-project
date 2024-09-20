@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="quadlingo@localhost" uuid="05cf846b-9310-4efc-a15e-832d78d8a42e">
+    <data-source source="LOCAL" name="QuadLingo@10.120.32.98" uuid="954e1759-575f-4b21-8ae5-e1b515dbbc9b">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://localhost:3306/quadlingo</jdbc-url>
+      <jdbc-url>jdbc:mariadb://10.120.32.98/QuadLingo</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

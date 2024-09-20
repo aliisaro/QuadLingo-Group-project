@@ -32,7 +32,7 @@ public class UserDaoImpl implements UserDao {
     public boolean createUser(User user) {
         boolean isRegistered = false;
         try (Connection connection = getConnection()) {
-            String query = "INSERT INTO lingouser (Username, UserPassword, Email, QuizzesCompleted) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO LINGOUSER (Username, UserPassword, Email, QuizzesCompleted) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
@@ -57,7 +57,7 @@ public class UserDaoImpl implements UserDao {
     public User getUser(String username) {
         User user = null;
         try (Connection connection = MariaDbConnection.getConnection()) {
-            String query = "SELECT * FROM lingouser WHERE Username = ?";
+            String query = "SELECT * FROM LINGOUSER WHERE Username = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
@@ -86,7 +86,7 @@ public class UserDaoImpl implements UserDao {
     public int getQuizzesCompleted(String email) {
         int quizzesCompleted = 0;
         try (Connection connection = getConnection()) {
-            String query = "SELECT QuizzesCompleted FROM lingouser WHERE Email = ?";
+            String query = "SELECT QuizzesCompleted FROM LINGOUSER WHERE Email = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
