@@ -5,7 +5,9 @@ import Model.User;
 public interface UserDao {
     boolean createUser(User user);
     User getUser(String username);
-    // Other methods related to User database operations
+    User loginUser(String username, String password);
+    boolean doesEmailExist(String email);
+    boolean doesUsernameExist(String username);
 
     int getQuizzesCompleted(String email);
 

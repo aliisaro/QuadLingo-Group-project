@@ -33,25 +33,36 @@ public class LoginPage extends BasePage {
         Label errorLabel = new Label();
         errorLabel.setStyle("-fx-text-fill: red;");
 
+        // Handle login button click
         loginButton.setOnAction(e -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
-            User user = userController.loginUser(username, password);
+            StringBuilder errorMessages = new StringBuilder(); // Object to store error messages
 
-            if (user != null) {
-                // Set the current user in session (login user)
-                SessionManager.getInstance().setCurrentUser(user);
-
-                System.out.println("Login successful: " + user.getUsername());
-
-                // Navigate to the homepage
-                stage.setScene(new Homepage(stage).createScene());
+            // Basic validation: Check if fields are empty
+            if (username.isEmpty() || password.isEmpty()) {
+                errorMessages.append("All fields are required.\n");
+            } else if (!userController.doesUsernameExist(username)) { // Check if the user exists
+                errorMessages.append("User not found. Please check your username.\n");
             } else {
-                errorLabel.setText("Login failed. Please check your credentials.");
-                System.out.println("Login failed.");
+                // Attempt to log in
+                User user = userController.loginUser(username, password);
+                if (user == null) {
+                    errorMessages.append("Invalid password. Please try again.\n");
+                } else {
+                    // Successful login
+                    SessionManager.getInstance().setCurrentUser(user); // Start a new session
+                    stage.setScene(new Homepage(stage).createScene()); // Redirect to the homepage
+                    System.out.println("Login successful: " + user.getUsername());
+                    return; // Exit early on success
+                }
             }
+
+            errorLabel.setText(errorMessages.toString()); // Display error messages
         });
+
+
 
         // Go back to the index page
         Button indexPageButton = new Button("Go back to Index page");

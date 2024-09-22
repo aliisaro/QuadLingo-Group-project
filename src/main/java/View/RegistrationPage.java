@@ -34,37 +34,57 @@ public class RegistrationPage extends BasePage {
 
         Button registerButton = new Button("Register");
 
+        Label minimumRequirements = new Label("Minimum password requirements: \n1 uppercase, 1 number, 8 characters.");
+        minimumRequirements.setStyle("-fx-text-fill: green;");
+
         Label errorLabel = new Label();
         errorLabel.setStyle("-fx-text-fill: red;");
 
-        // Register button action logic
+
+        // Handle registerButton click
         registerButton.setOnAction(event -> {
             String username = usernameField.getText();
             String email = emailField.getText();
             String password = passwordField.getText();
 
-            // Basic validation
+            StringBuilder errorMessages = new StringBuilder(); // Object to store error messages
+
+            // Basic validation: Check if fields are empty
             if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                errorLabel.setText("All fields are required.");
-                return;
+                errorMessages.append("All fields are required.\n");
+            }
+            // Check if the email is already registered
+            else if (userController.doesEmailExist(email)) {
+                errorMessages.append("An account with this email already exists.\n");
             }
 
-            // Call the UserController to register the user
-            User user= userController.createUser(username, password, email);
+            // Password validation
+            if (!password.matches(".*[A-Z].*")) {
+                errorMessages.append("Password must include at least 1 uppercase letter.\n");
+            }
+            if (!password.matches(".*\\d.*")) {
+                errorMessages.append("Password must include at least 1 number.\n");
+            }
+            if (password.length() < 8) {
+                errorMessages.append("Password must be at least 8 characters.\n");
+            }
 
-            if (user != null) {
-                // Set the current user in session (login user)
-                SessionManager.getInstance().setCurrentUser(user);
-
-                System.out.println("Registration successful: " + user.getUsername());
-
-                // Navigate to the homepage
-                stage.setScene(new Homepage(stage).createScene());
+            // If there are errors, display them
+            if (errorMessages.length() > 0) {
+                errorLabel.setText(errorMessages.toString());
             } else {
-                errorLabel.setText("Registration failed. Please try again.");
-                System.out.println("Registration failed.");
+                // If validation passes, call the UserController to register the user
+                User user = userController.createUser(username, password, email);
+                if (user != null) {
+                    SessionManager.getInstance().setCurrentUser(user); // Start a new session
+                    stage.setScene(new Homepage(stage).createScene()); // Redirect to the homepage
+                    System.out.println("Registration successful: " + user.getUsername());
+                } else {
+                    errorLabel.setText("Registration failed. Please try again.");
+                }
             }
         });
+
 
         // Back to Index Page button
         Button indexPageButton = new Button("Go to back to Index page");
@@ -80,6 +100,7 @@ public class RegistrationPage extends BasePage {
                 passwordLabel,
                 passwordField,
                 registerButton,
+                minimumRequirements,
                 errorLabel,
                 indexPageButton
         );

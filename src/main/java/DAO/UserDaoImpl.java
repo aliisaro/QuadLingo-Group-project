@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao {
         return MariaDbConnection.getConnection(); // Make sure your MariaDbConnection class is correct
     }
 
-    // Inserts a new user into the lingouser table
+    // Inserts a new user into the LINGOUSER table
     @Override
     public boolean createUser(User user) {
         boolean isRegistered = false;
@@ -52,7 +52,7 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-    // Fetches a user by their username from the lingouser table
+    // Fetches a user by their username from the LINGOUSER table
     @Override
     public User getUser(String username) {
         User user = null;
@@ -79,6 +79,61 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
         return user;
+    }
+
+
+    @Override
+    public User loginUser(String username, String password) {
+        User user = getUser(username); // Reuse getUser method
+        if (user != null && password.equals(user.getPassword())) {
+            return user; // Successful login
+        }
+        return null; // Login failed
+    }
+
+
+    // Checks if a username exists in the LINGOUSER table
+    @Override
+    public boolean doesUsernameExist(String username) {
+        boolean exists = false;
+        try (Connection connection = getConnection()) {
+            String query = "SELECT 1 FROM LINGOUSER WHERE Username = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                exists = true; // Username exists
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
+    }
+
+    // Checks if an email exists in the LINGOUSER table
+    @Override
+    public boolean doesEmailExist(String email) {
+        boolean exists = false;
+        try (Connection connection = getConnection()) {
+            String query = "SELECT 1 FROM LINGOUSER WHERE Email = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                exists = true; // Email exists
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
     }
 
 

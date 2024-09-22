@@ -26,26 +26,23 @@ public class UserController {
     public User createUser(String username, String password, String email) {
         User newUser = new User(username, password, email);
         boolean success = userDao.createUser(newUser); // Check if the user was successfully created
-        if (success) {
-            return newUser; // Return the user object if successful
-        } else {
-            return null; // Return null if registration failed
-        }
+        return success ? newUser : null; // Return the user object if successful, else null
     }
 
     public User loginUser(String username, String password) {
         User user = userDao.getUser(username);
-        if (user != null) {
-            System.out.println("User found: " + user.getUsername());
-            if (password.equals(user.getPassword())) {
-                return user;
-            } else {
-                System.out.println("Invalid password.");
-            }
-        } else {
-            System.out.println("User not found.");
+        if (user != null && password.equals(user.getPassword())) {
+            return user; // Successful login
         }
-        return null;
+        return null; // Login failed
+    }
+
+    public boolean doesEmailExist(String email) {
+        return userDao.doesEmailExist(email);
+    }
+
+    public boolean doesUsernameExist(String username) {
+        return userDao.doesUsernameExist(username);
     }
 
     public int getQuizzesCompleted(String email) {
