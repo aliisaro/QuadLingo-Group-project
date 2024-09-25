@@ -1,7 +1,6 @@
 package DAO;
 
 import Database.MariaDbConnection;
-import Model.Progress;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -65,7 +64,8 @@ public class ProgressDaoImpl implements ProgressDao {
         // Implement database operation to update progress
     }
 
-    @Override
+    // Uncomment if this method is needed
+    /* @Override
     public void updateProgressFlashcard(int user, int flashcard) {
         try (Connection connection = MariaDbConnection.getConnection()) {
             String query = "UPDATE ISMASTERED SET FlashcardID = ? WHERE UserID = ?";
@@ -77,7 +77,8 @@ public class ProgressDaoImpl implements ProgressDao {
         } catch (SQLException e) {
             e.printStackTrace(); // Log the error
         }
-    }
+    } */
+
 
     // Implement other methods related to Progress database operations
 }

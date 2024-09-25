@@ -8,5 +8,5 @@ public interface ProgressDao {
     void updateProgressQuiz(int user, int score);
     // Other methods related to Progress database operations
 
-    void updateProgressFlashcard(int user, int score);
+    /* void updateProgressFlashcard(int user, int score); */
 }

@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="login pitäsi toimia nyt" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="login pitäsi toimia nyt">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/ProgressDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/ProgressDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/ProgressDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/ProgressDaoImpl.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -99,7 +103,7 @@
       <workItem from="1726688117305" duration="1634000" />
       <workItem from="1726726620255" duration="22000" />
       <workItem from="1726750020136" duration="375000" />
-      <workItem from="1727245927846" duration="1473000" />
+      <workItem from="1727245927846" duration="4750000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
