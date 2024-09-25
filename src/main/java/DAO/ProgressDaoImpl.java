@@ -16,21 +16,21 @@ public class ProgressDaoImpl implements ProgressDao {
     }
 
     @Override
-    public void createOverallProgress(String username, int score) {
+    public void createOverallProgress(int user, int score) {
 
         // Implement database operation to create a new progress
     }
 
     @Override
-    public int getProgress(String username, String quizName) {
+    public int getProgressQuiz(int user, int quiz) {
         // Implement database operation to get progress by username and quizName
         int progress = 0;
 
         try (Connection connection = MariaDbConnection.getConnection()) {
             String query = "SELECT * FROM ISCOMPLETED WHERE UserID = ? AND QuizID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, username);
-            statement.setString(2, quizName);
+            statement.setInt(1, user);
+            statement.setInt(2, quiz);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -46,23 +46,37 @@ public class ProgressDaoImpl implements ProgressDao {
     }
 
     @Override
-    public void updateOverallProgress(String username, String quizName, int score) {
+    public void updateOverallQuizProgress(String username, int score) {
         // Implement database operation to update overall progress
     }
 
     @Override
-    public void updateProgress(String username, int score) {
+    public void updateProgressQuiz(int user, int score) {
         try (Connection connection = MariaDbConnection.getConnection()) {
             String query = "UPDATE ISCOMPLETED SET Score = ? WHERE UserID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, score);
-            statement.setString(2, username);
+            statement.setInt(2, user);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace(); // Log the error
         }
         // Implement database operation to update progress
+    }
+
+    @Override
+    public void updateProgressFlashcard(int user, int flashcard) {
+        try (Connection connection = MariaDbConnection.getConnection()) {
+            String query = "UPDATE ISMASTERED SET FlashcardID = ? WHERE UserID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, flashcard);
+            statement.setInt(2, user);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the error
+        }
     }
 
     // Implement other methods related to Progress database operations
