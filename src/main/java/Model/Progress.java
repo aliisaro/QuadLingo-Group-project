@@ -5,13 +5,11 @@ public class Progress {
 
     private User user;
 
-    private Language language;
 
     private int completedQuizzes;
 
-    public Progress(User user, Language language) {
+    public Progress(User user) {
         this.user = user;
-        this.language = language;
         this.completedQuizzes = 0;
     }
 
@@ -19,9 +17,6 @@ public class Progress {
         return user;
     }
 
-    public Language getLanguage() {
-        return language;
-    }
 
     public int getCompletedQuizzes() {
         return completedQuizzes;
