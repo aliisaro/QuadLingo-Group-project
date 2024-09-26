@@ -82,6 +82,29 @@ public class UserDaoImpl implements UserDao {
     }
 
 
+    // Updates a user's info in the LINGOUSER table
+    @Override
+    public boolean updateUser(User user) {
+        boolean isUpdated = false;
+        try (Connection connection = getConnection()) {
+            // Update the user information based on their email
+            String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = ? WHERE Email = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getEmail()); // Use email to identify user
+
+            int rowsAffected = statement.executeUpdate();
+            isUpdated = (rowsAffected > 0); // Check if any row was updated
+
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isUpdated;
+    }
+
+    // Logs in a user by their username and password
     @Override
     public User loginUser(String username, String password) {
         User user = getUser(username); // Reuse getUser method

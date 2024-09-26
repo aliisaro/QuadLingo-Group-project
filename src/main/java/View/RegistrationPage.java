@@ -53,6 +53,10 @@ public class RegistrationPage extends BasePage {
             if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 errorMessages.append("All fields are required.\n");
             }
+            // Email format validation
+            else if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+                errorMessages.append("Invalid email format.\n");
+            }
             // Check if the email is already registered
             else if (userController.doesEmailExist(email)) {
                 errorMessages.append("An account with this email already exists.\n");

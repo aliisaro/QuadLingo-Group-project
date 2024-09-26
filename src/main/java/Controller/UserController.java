@@ -37,6 +37,10 @@ public class UserController {
         return null; // Login failed
     }
 
+    public boolean updateUser(User user) {
+        return userDao.updateUser(user);
+    }
+
     public boolean doesEmailExist(String email) {
         return userDao.doesEmailExist(email);
     }
