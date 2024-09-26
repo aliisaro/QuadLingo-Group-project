@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="Update">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3cc37b58-0ff6-4e03-9cdd-011ce74ffba5/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3cc37b58-0ff6-4e03-9cdd-011ce74ffba5/storage_v2/_src_/schema/quadlingo.UuIiqA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/954e1759-575f-4b21-8ae5-e1b515dbbc9b.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/954e1759-575f-4b21-8ae5-e1b515dbbc9b.xml" afterDir="false" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="Lisäsin password validation ja error messages kun käyttäjä yrittää kirjautua tai rekisteröityä">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/RegistrationPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/RegistrationPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +109,9 @@
       <workItem from="1726825128432" duration="619000" />
       <workItem from="1726833664265" duration="23000" />
       <workItem from="1726833711988" duration="14000" />
-      <workItem from="1727006577866" duration="7685000" />
+      <workItem from="1727006577866" duration="8091000" />
+      <workItem from="1727075553446" duration="178000" />
+      <workItem from="1727334909772" duration="337000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
@@ -151,7 +145,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726811078042</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Lisäsin password validation ja error messages kun käyttäjä yrittää kirjautua tai rekisteröityä">
+      <option name="closed" value="true" />
+      <created>1727014336821</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1727014336821</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,6 +177,7 @@
     <MESSAGE value="Nyt pitäis toimii login kunnolla" />
     <MESSAGE value="login pitäsi toimia nyt" />
     <MESSAGE value="korjasin UserDaoImpl jotta login ja register toimis" />
-    <option name="LAST_COMMIT_MESSAGE" value="korjasin UserDaoImpl jotta login ja register toimis" />
+    <MESSAGE value="Lisäsin password validation ja error messages kun käyttäjä yrittää kirjautua tai rekisteröityä" />
+    <option name="LAST_COMMIT_MESSAGE" value="Lisäsin password validation ja error messages kun käyttäjä yrittää kirjautua tai rekisteröityä" />
   </component>
 </project>
