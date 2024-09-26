@@ -1,7 +1,302 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="QuadLingo@10.120.32.98">
   <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.51">
-    <root id="1"/>
+    <root id="1">
+      <DefaultCasing>exact</DefaultCasing>
+      <DefaultEngine>InnoDB</DefaultEngine>
+      <Grants>|root||lingo|10.%|ALTER|G
+|root||lingo|10.120.%|ALTER|G
+|root||mysql|localhost|ALTER|G
+|root||root|localhost|ALTER|G
+|root||test|10.%|ALTER|G
+|root||lingo|10.%|ALTER ROUTINE|G
+|root||lingo|10.120.%|ALTER ROUTINE|G
+|root||mysql|localhost|ALTER ROUTINE|G
+|root||root|localhost|ALTER ROUTINE|G
+|root||test|10.%|ALTER ROUTINE|G
+|root||lingo|10.%|BINLOG ADMIN|G
+|root||lingo|10.120.%|BINLOG ADMIN|G
+|root||mysql|localhost|BINLOG ADMIN|G
+|root||root|localhost|BINLOG ADMIN|G
+|root||test|10.%|BINLOG ADMIN|G
+|root||lingo|10.%|BINLOG MONITOR|G
+|root||lingo|10.120.%|BINLOG MONITOR|G
+|root||mysql|localhost|BINLOG MONITOR|G
+|root||root|localhost|BINLOG MONITOR|G
+|root||test|10.%|BINLOG MONITOR|G
+|root||lingo|10.%|BINLOG REPLAY|G
+|root||lingo|10.120.%|BINLOG REPLAY|G
+|root||mysql|localhost|BINLOG REPLAY|G
+|root||root|localhost|BINLOG REPLAY|G
+|root||test|10.%|BINLOG REPLAY|G
+|root||lingo|10.%|CONNECTION ADMIN|G
+|root||lingo|10.120.%|CONNECTION ADMIN|G
+|root||mysql|localhost|CONNECTION ADMIN|G
+|root||root|localhost|CONNECTION ADMIN|G
+|root||test|10.%|CONNECTION ADMIN|G
+|root||lingo|10.%|CREATE|G
+|root||lingo|10.120.%|CREATE|G
+|root||mysql|localhost|CREATE|G
+|root||root|localhost|CREATE|G
+|root||test|10.%|CREATE|G
+|root||lingo|10.%|CREATE ROUTINE|G
+|root||lingo|10.120.%|CREATE ROUTINE|G
+|root||mysql|localhost|CREATE ROUTINE|G
+|root||root|localhost|CREATE ROUTINE|G
+|root||test|10.%|CREATE ROUTINE|G
+|root||lingo|10.%|CREATE TABLESPACE|G
+|root||lingo|10.120.%|CREATE TABLESPACE|G
+|root||mysql|localhost|CREATE TABLESPACE|G
+|root||root|localhost|CREATE TABLESPACE|G
+|root||test|10.%|CREATE TABLESPACE|G
+|root||lingo|10.%|CREATE TEMPORARY TABLES|G
+|root||lingo|10.120.%|CREATE TEMPORARY TABLES|G
+|root||mysql|localhost|CREATE TEMPORARY TABLES|G
+|root||root|localhost|CREATE TEMPORARY TABLES|G
+|root||test|10.%|CREATE TEMPORARY TABLES|G
+|root||lingo|10.%|CREATE USER|G
+|root||lingo|10.120.%|CREATE USER|G
+|root||mysql|localhost|CREATE USER|G
+|root||root|localhost|CREATE USER|G
+|root||test|10.%|CREATE USER|G
+|root||lingo|10.%|CREATE VIEW|G
+|root||lingo|10.120.%|CREATE VIEW|G
+|root||mysql|localhost|CREATE VIEW|G
+|root||root|localhost|CREATE VIEW|G
+|root||test|10.%|CREATE VIEW|G
+|root||lingo|10.%|DELETE|G
+|root||lingo|10.120.%|DELETE|G
+|root||mysql|localhost|DELETE|G
+|root||root|localhost|DELETE|G
+|root||test|10.%|DELETE|G
+|root||lingo|10.%|DELETE HISTORY|G
+|root||lingo|10.120.%|DELETE HISTORY|G
+|root||mysql|localhost|DELETE HISTORY|G
+|root||root|localhost|DELETE HISTORY|G
+|root||test|10.%|DELETE HISTORY|G
+|root||lingo|10.%|DROP|G
+|root||lingo|10.120.%|DROP|G
+|root||mysql|localhost|DROP|G
+|root||root|localhost|DROP|G
+|root||test|10.%|DROP|G
+|root||lingo|10.%|EVENT|G
+|root||lingo|10.120.%|EVENT|G
+|root||mysql|localhost|EVENT|G
+|root||root|localhost|EVENT|G
+|root||test|10.%|EVENT|G
+|root||lingo|10.%|EXECUTE|G
+|root||lingo|10.120.%|EXECUTE|G
+|root||mysql|localhost|EXECUTE|G
+|root||root|localhost|EXECUTE|G
+|root||test|10.%|EXECUTE|G
+|root||lingo|10.%|FEDERATED ADMIN|G
+|root||lingo|10.120.%|FEDERATED ADMIN|G
+|root||mysql|localhost|FEDERATED ADMIN|G
+|root||root|localhost|FEDERATED ADMIN|G
+|root||test|10.%|FEDERATED ADMIN|G
+|root||lingo|10.%|FILE|G
+|root||lingo|10.120.%|FILE|G
+|root||mysql|localhost|FILE|G
+|root||root|localhost|FILE|G
+|root||test|10.%|FILE|G
+|root||lingo|10.%|INDEX|G
+|root||lingo|10.120.%|INDEX|G
+|root||mysql|localhost|INDEX|G
+|root||root|localhost|INDEX|G
+|root||test|10.%|INDEX|G
+|root||lingo|10.%|INSERT|G
+|root||lingo|10.120.%|INSERT|G
+|root||mysql|localhost|INSERT|G
+|root||root|localhost|INSERT|G
+|root||test|10.%|INSERT|G
+|root||lingo|10.%|LOCK TABLES|G
+|root||lingo|10.120.%|LOCK TABLES|G
+|root||mysql|localhost|LOCK TABLES|G
+|root||root|localhost|LOCK TABLES|G
+|root||test|10.%|LOCK TABLES|G
+|root||lingo|10.%|PROCESS|G
+|root||lingo|10.120.%|PROCESS|G
+|root||mysql|localhost|PROCESS|G
+|root||root|localhost|PROCESS|G
+|root||test|10.%|PROCESS|G
+|root||lingo|10.%|READ_ONLY ADMIN|G
+|root||lingo|10.120.%|READ_ONLY ADMIN|G
+|root||mysql|localhost|READ_ONLY ADMIN|G
+|root||root|localhost|READ_ONLY ADMIN|G
+|root||test|10.%|READ_ONLY ADMIN|G
+|root||lingo|10.%|REFERENCES|G
+|root||lingo|10.120.%|REFERENCES|G
+|root||mysql|localhost|REFERENCES|G
+|root||root|localhost|REFERENCES|G
+|root||test|10.%|REFERENCES|G
+|root||lingo|10.%|RELOAD|G
+|root||lingo|10.120.%|RELOAD|G
+|root||mysql|localhost|RELOAD|G
+|root||root|localhost|RELOAD|G
+|root||test|10.%|RELOAD|G
+|root||lingo|10.%|REPLICATION MASTER ADMIN|G
+|root||lingo|10.120.%|REPLICATION MASTER ADMIN|G
+|root||mysql|localhost|REPLICATION MASTER ADMIN|G
+|root||root|localhost|REPLICATION MASTER ADMIN|G
+|root||test|10.%|REPLICATION MASTER ADMIN|G
+|root||lingo|10.%|REPLICATION SLAVE|G
+|root||lingo|10.120.%|REPLICATION SLAVE|G
+|root||mysql|localhost|REPLICATION SLAVE|G
+|root||root|localhost|REPLICATION SLAVE|G
+|root||test|10.%|REPLICATION SLAVE|G
+|root||lingo|10.%|REPLICATION SLAVE ADMIN|G
+|root||lingo|10.120.%|REPLICATION SLAVE ADMIN|G
+|root||mysql|localhost|REPLICATION SLAVE ADMIN|G
+|root||root|localhost|REPLICATION SLAVE ADMIN|G
+|root||test|10.%|REPLICATION SLAVE ADMIN|G
+|root||lingo|10.%|SELECT|G
+|root||lingo|10.120.%|SELECT|G
+|root||mysql|localhost|SELECT|G
+|root||root|localhost|SELECT|G
+|root||test|10.%|SELECT|G
+|root||lingo|10.%|SET USER|G
+|root||lingo|10.120.%|SET USER|G
+|root||mysql|localhost|SET USER|G
+|root||root|localhost|SET USER|G
+|root||test|10.%|SET USER|G
+|root||lingo|10.%|SHOW DATABASES|G
+|root||lingo|10.120.%|SHOW DATABASES|G
+|root||mysql|localhost|SHOW DATABASES|G
+|root||root|localhost|SHOW DATABASES|G
+|root||test|10.%|SHOW DATABASES|G
+|root||lingo|10.%|SHOW VIEW|G
+|root||lingo|10.120.%|SHOW VIEW|G
+|root||mysql|localhost|SHOW VIEW|G
+|root||root|localhost|SHOW VIEW|G
+|root||test|10.%|SHOW VIEW|G
+|root||lingo|10.%|SHUTDOWN|G
+|root||lingo|10.120.%|SHUTDOWN|G
+|root||mysql|localhost|SHUTDOWN|G
+|root||root|localhost|SHUTDOWN|G
+|root||test|10.%|SHUTDOWN|G
+|root||lingo|10.%|SLAVE MONITOR|G
+|root||lingo|10.120.%|SLAVE MONITOR|G
+|root||mysql|localhost|SLAVE MONITOR|G
+|root||root|localhost|SLAVE MONITOR|G
+|root||test|10.%|SLAVE MONITOR|G
+|root||lingo|10.%|SUPER|G
+|root||lingo|10.120.%|SUPER|G
+|root||mysql|localhost|SUPER|G
+|root||root|localhost|SUPER|G
+|root||test|10.%|SUPER|G
+|root||lingo|10.%|TRIGGER|G
+|root||lingo|10.120.%|TRIGGER|G
+|root||mysql|localhost|TRIGGER|G
+|root||root|localhost|TRIGGER|G
+|root||test|10.%|TRIGGER|G
+|root||lingo|10.%|UPDATE|G
+|root||lingo|10.120.%|UPDATE|G
+|root||mysql|localhost|UPDATE|G
+|root||root|localhost|UPDATE|G
+|root||test|10.%|UPDATE|G
+|root||lingo|10.%|grant option|G
+|root||lingo|10.120.%|grant option|G
+|root||mysql|localhost|grant option|G
+|root||root|localhost|grant option|G
+|root||test|10.%|grant option|G
+lingo|schema||lingo|10.120.%|ALTER|G
+lingo|schema||lingo|10.120.%|ALTER ROUTINE|G
+lingo|schema||lingo|10.120.%|CREATE|G
+lingo|schema||lingo|10.120.%|CREATE ROUTINE|G
+lingo|schema||lingo|10.120.%|CREATE TEMPORARY TABLES|G
+lingo|schema||lingo|10.120.%|CREATE VIEW|G
+lingo|schema||lingo|10.120.%|DELETE|G
+lingo|schema||lingo|10.120.%|DELETE HISTORY|G
+lingo|schema||lingo|10.120.%|DROP|G
+lingo|schema||lingo|10.120.%|EVENT|G
+lingo|schema||lingo|10.120.%|EXECUTE|G
+lingo|schema||lingo|10.120.%|INDEX|G
+lingo|schema||lingo|10.120.%|INSERT|G
+lingo|schema||lingo|10.120.%|LOCK TABLES|G
+lingo|schema||lingo|10.120.%|REFERENCES|G
+lingo|schema||lingo|10.120.%|SELECT|G
+lingo|schema||lingo|10.120.%|SHOW VIEW|G
+lingo|schema||lingo|10.120.%|TRIGGER|G
+lingo|schema||lingo|10.120.%|UPDATE|G
+lingo\\_%|schema||lingo|10.120.%|ALTER|G
+lingo\\_%|schema||lingo|10.120.%|ALTER ROUTINE|G
+lingo\\_%|schema||lingo|10.120.%|CREATE|G
+lingo\\_%|schema||lingo|10.120.%|CREATE ROUTINE|G
+lingo\\_%|schema||lingo|10.120.%|CREATE TEMPORARY TABLES|G
+lingo\\_%|schema||lingo|10.120.%|CREATE VIEW|G
+lingo\\_%|schema||lingo|10.120.%|DELETE|G
+lingo\\_%|schema||lingo|10.120.%|DELETE HISTORY|G
+lingo\\_%|schema||lingo|10.120.%|DROP|G
+lingo\\_%|schema||lingo|10.120.%|EVENT|G
+lingo\\_%|schema||lingo|10.120.%|EXECUTE|G
+lingo\\_%|schema||lingo|10.120.%|INDEX|G
+lingo\\_%|schema||lingo|10.120.%|INSERT|G
+lingo\\_%|schema||lingo|10.120.%|LOCK TABLES|G
+lingo\\_%|schema||lingo|10.120.%|REFERENCES|G
+lingo\\_%|schema||lingo|10.120.%|SELECT|G
+lingo\\_%|schema||lingo|10.120.%|SHOW VIEW|G
+lingo\\_%|schema||lingo|10.120.%|TRIGGER|G
+lingo\\_%|schema||lingo|10.120.%|UPDATE|G
+mysql|schema||lingo|10.%|ALTER|G
+mysql|schema||lingo|10.%|ALTER ROUTINE|G
+mysql|schema||lingo|10.%|CREATE|G
+mysql|schema||lingo|10.%|CREATE ROUTINE|G
+mysql|schema||lingo|10.%|CREATE TEMPORARY TABLES|G
+mysql|schema||lingo|10.%|CREATE VIEW|G
+mysql|schema||lingo|10.%|DELETE|G
+mysql|schema||lingo|10.%|DELETE HISTORY|G
+mysql|schema||lingo|10.%|DROP|G
+mysql|schema||lingo|10.%|EVENT|G
+mysql|schema||lingo|10.%|EXECUTE|G
+mysql|schema||lingo|10.%|INDEX|G
+mysql|schema||lingo|10.%|INSERT|G
+mysql|schema||lingo|10.%|LOCK TABLES|G
+mysql|schema||lingo|10.%|REFERENCES|G
+mysql|schema||lingo|10.%|SELECT|G
+mysql|schema||lingo|10.%|SHOW VIEW|G
+mysql|schema||lingo|10.%|TRIGGER|G
+mysql|schema||lingo|10.%|UPDATE|G
+mysql|schema||lingo|10.%|grant option|G
+test|schema||test|10.%|ALTER|G
+test|schema||test|10.%|ALTER ROUTINE|G
+test|schema||test|10.%|CREATE|G
+test|schema||test|10.%|CREATE ROUTINE|G
+test|schema||test|10.%|CREATE TEMPORARY TABLES|G
+test|schema||test|10.%|CREATE VIEW|G
+test|schema||test|10.%|DELETE|G
+test|schema||test|10.%|DELETE HISTORY|G
+test|schema||test|10.%|DROP|G
+test|schema||test|10.%|EVENT|G
+test|schema||test|10.%|EXECUTE|G
+test|schema||test|10.%|INDEX|G
+test|schema||test|10.%|INSERT|G
+test|schema||test|10.%|LOCK TABLES|G
+test|schema||test|10.%|REFERENCES|G
+test|schema||test|10.%|SELECT|G
+test|schema||test|10.%|SHOW VIEW|G
+test|schema||test|10.%|TRIGGER|G
+test|schema||test|10.%|UPDATE|G
+test\\_%|schema||test|10.%|ALTER|G
+test\\_%|schema||test|10.%|ALTER ROUTINE|G
+test\\_%|schema||test|10.%|CREATE|G
+test\\_%|schema||test|10.%|CREATE ROUTINE|G
+test\\_%|schema||test|10.%|CREATE TEMPORARY TABLES|G
+test\\_%|schema||test|10.%|CREATE VIEW|G
+test\\_%|schema||test|10.%|DELETE|G
+test\\_%|schema||test|10.%|DELETE HISTORY|G
+test\\_%|schema||test|10.%|DROP|G
+test\\_%|schema||test|10.%|EVENT|G
+test\\_%|schema||test|10.%|EXECUTE|G
+test\\_%|schema||test|10.%|INDEX|G
+test\\_%|schema||test|10.%|INSERT|G
+test\\_%|schema||test|10.%|LOCK TABLES|G
+test\\_%|schema||test|10.%|REFERENCES|G
+test\\_%|schema||test|10.%|SELECT|G
+test\\_%|schema||test|10.%|SHOW VIEW|G
+test\\_%|schema||test|10.%|TRIGGER|G
+test\\_%|schema||test|10.%|UPDATE|G</Grants>
+      <ServerVersion>10.5.22</ServerVersion>
+    </root>
     <collation id="2" parent="1" name="big5_chinese_ci">
       <Charset>big5</Charset>
       <DefaultForCharset>1</DefaultForCharset>
