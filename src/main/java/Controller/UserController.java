@@ -25,16 +25,20 @@ public class UserController {
 
     public User createUser(String username, String password, String email) {
         User newUser = new User(username, password, email);
-        boolean success = userDao.createUser(newUser); // Check if the user was successfully created
-        return success ? newUser : null; // Return the user object if successful, else null
+
+        int userId = userDao.createUser(newUser); // This should return the generated user ID
+
+        if (userId > 0) { // Check if user was created successfully
+            newUser.setUserId(userId); // Set the generated ID to the user object
+            return newUser; // Return the newly created user object
+        }
+
+        return null; // Return null if creation failed
     }
 
     public User loginUser(String username, String password) {
-        User user = userDao.getUser(username);
-        if (user != null && password.equals(user.getPassword())) {
-            return user; // Successful login
-        }
-        return null; // Login failed
+        // Use the UserDaoImpl to login with username and password
+        return userDao.loginUser(username, password);
     }
 
     public boolean updateUser(User user) {
@@ -48,6 +52,7 @@ public class UserController {
     public boolean doesUsernameExist(String username) {
         return userDao.doesUsernameExist(username);
     }
+
 
     public int getQuizzesCompleted(String email) {
         return quizzesDao.getQuizzesCompleted(email);

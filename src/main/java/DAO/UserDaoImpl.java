@@ -2,10 +2,8 @@ package DAO;
 
 import Database.MariaDbConnection;
 import Model.User;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 // Responsible for direct interactions with the database, executes SQL queries and handles results
 // Not the same as UserController
@@ -29,37 +27,43 @@ public class UserDaoImpl implements UserDao {
 
     // Inserts a new user into the LINGOUSER table
     @Override
-    public boolean createUser(User user) {
-        boolean isRegistered = false;
-        try (Connection connection = getConnection()) {
-            String query = "INSERT INTO LINGOUSER (Username, UserPassword, Email, QuizzesCompleted) VALUES (?, ?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getEmail());
-            statement.setInt(4, user.getQuizzesCompleted());
+    public int createUser(User user) {
+        String query = "INSERT INTO LINGOUSER (Username, UserPassword, Email) VALUES (?, ?, ?)";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            int rowsAffected = statement.executeUpdate(); // Returns number of affected rows
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword()); // Save hashed password
+            statement.setString(3, user.getEmail());
+
+            int rowsAffected = statement.executeUpdate();
+
+            // Get the generated user ID
             if (rowsAffected > 0) {
-                isRegistered = true;
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getInt(1); // Return the generated ID
+                    } else {
+                        throw new SQLException("Creating user failed, no ID obtained.");
+                    }
+                }
             }
 
-            statement.close();
         } catch (SQLException e) {
-            e.printStackTrace(); // Log the error
+            e.printStackTrace();
         }
-        return isRegistered;
+        return -1; // Indicate failure
     }
 
 
-    // Fetches a user by their username from the LINGOUSER table
+    // Fetches a user by their ID from the LINGOUSER table
     @Override
-    public User getUser(String username) {
+    public User getUserById(int id) {
         User user = null;
-        try (Connection connection = MariaDbConnection.getConnection()) {
-            String query = "SELECT * FROM LINGOUSER WHERE Username = ?";
+        try (Connection connection = getConnection()) {
+            String query = "SELECT * FROM LINGOUSER WHERE UserID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, username);
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -68,8 +72,7 @@ public class UserDaoImpl implements UserDao {
                 String dbEmail = resultSet.getString("Email");
                 int dbQuizzesCompleted = resultSet.getInt("QuizzesCompleted");
 
-                // Create User object with quizzesCompleted
-                user = new User(dbUsername, dbPassword, dbEmail);
+                user = new User(id, dbUsername, dbPassword, dbEmail);
                 user.setQuizzesCompleted(dbQuizzesCompleted);
             }
 
@@ -87,12 +90,13 @@ public class UserDaoImpl implements UserDao {
     public boolean updateUser(User user) {
         boolean isUpdated = false;
         try (Connection connection = getConnection()) {
-            // Update the user information based on their email
-            String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = ? WHERE Email = ?";
+            // Update the user information based on their ID
+            String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = ?, Email = ? WHERE UserID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
-            statement.setString(3, user.getEmail()); // Use email to identify user
+            statement.setString(3, user.getEmail()); // Set new email
+            statement.setInt(4, user.getUserId()); // Use ID to identify user
 
             int rowsAffected = statement.executeUpdate();
             isUpdated = (rowsAffected > 0); // Check if any row was updated
@@ -104,14 +108,31 @@ public class UserDaoImpl implements UserDao {
         return isUpdated;
     }
 
+
+
     // Logs in a user by their username and password
     @Override
     public User loginUser(String username, String password) {
-        User user = getUser(username); // Reuse getUser method
-        if (user != null && password.equals(user.getPassword())) {
-            return user; // Successful login
+        User user = null;
+        try (Connection connection = getConnection()) {
+            String query = "SELECT * FROM LINGOUSER WHERE Username = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user = new User(resultSet.getInt("UserID"), username, resultSet.getString("UserPassword"),
+                        resultSet.getString("Email"));
+                user.setQuizzesCompleted(resultSet.getInt("QuizzesCompleted"));
+
+                if (!password.equals(user.getPassword())) {
+                    return null; // Password mismatch
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return null; // Login failed
+        return user; // Return user or null if not found or password mismatched
     }
 
 
