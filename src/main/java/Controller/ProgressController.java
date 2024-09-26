@@ -18,9 +18,9 @@ public class ProgressController {
         return instance;
     }
 
-    public void createOverallProgress(String username, int score) {
-        progressDao.createOverallProgress(username, score);
-    }
+    //public void createOverallProgress(String username, int score) {
+        //progressDao.createOverallProgress(username, score);
+    //}
 
     // Other methods related to Progress database operations
 }
