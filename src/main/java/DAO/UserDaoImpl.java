@@ -2,8 +2,8 @@ package DAO;
 
 import Database.MariaDbConnection;
 import Model.User;
-
 import java.sql.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 // Responsible for direct interactions with the database, executes SQL queries and handles results
 // Not the same as UserController
@@ -33,7 +33,10 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword()); // Save hashed password
+
+            // Hash the password before storing
+            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+            statement.setString(2, hashedPassword);
             statement.setString(3, user.getEmail());
 
             int rowsAffected = statement.executeUpdate();
@@ -42,7 +45,7 @@ public class UserDaoImpl implements UserDao {
             if (rowsAffected > 0) {
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        return generatedKeys.getInt(1); // Return the generated ID
+                        return generatedKeys.getInt(1);
                     } else {
                         throw new SQLException("Creating user failed, no ID obtained.");
                     }
@@ -55,6 +58,36 @@ public class UserDaoImpl implements UserDao {
         return -1; // Indicate failure
     }
 
+    // Logs in a user by their username and password
+    @Override
+    public User loginUser(String username, String password) {
+        User user = null;
+        String query = "SELECT * FROM LINGOUSER WHERE Username = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, username);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String dbPassword = resultSet.getString("UserPassword");
+
+                    // Check if the password matches the hashed password in the database
+                    if (BCrypt.checkpw(password, dbPassword)) {
+                        int userId = resultSet.getInt("UserID");
+                        String dbEmail = resultSet.getString("Email");
+                        int dbQuizzesCompleted = resultSet.getInt("QuizzesCompleted");
+
+                        user = new User(userId, username, dbPassword, dbEmail);
+                        user.setQuizzesCompleted(dbQuizzesCompleted);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user; // Return user or null if not found or password mismatched
+    }
 
     // Fetches a user by their ID from the LINGOUSER table
     @Override
@@ -84,57 +117,36 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-
-    // Updates a user's info in the LINGOUSER table
+    // Updates a user's info in the LINGOUSER table (if password is changed, it will be hashed)
     @Override
     public boolean updateUser(User user) {
         boolean isUpdated = false;
-        try (Connection connection = getConnection()) {
-            // Update the user information based on their ID
-            String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = ?, Email = ? WHERE UserID = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
+        String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = COALESCE(?, UserPassword), Email = ? WHERE UserID = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
             statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getEmail()); // Set new email
-            statement.setInt(4, user.getUserId()); // Use ID to identify user
+
+            // Check if the user has changed their password
+            if (user.isPasswordChanged()) {
+                String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+                statement.setString(2, hashedPassword); // Set the new password
+            } else {
+                statement.setString(2, null); // Set to null, so the existing password remains unchanged
+            }
+
+            statement.setString(3, user.getEmail());
+            statement.setInt(4, user.getUserId());
 
             int rowsAffected = statement.executeUpdate();
             isUpdated = (rowsAffected > 0); // Check if any row was updated
 
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return isUpdated;
     }
-
-
-
-    // Logs in a user by their username and password
-    @Override
-    public User loginUser(String username, String password) {
-        User user = null;
-        try (Connection connection = getConnection()) {
-            String query = "SELECT * FROM LINGOUSER WHERE Username = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, username);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                user = new User(resultSet.getInt("UserID"), username, resultSet.getString("UserPassword"),
-                        resultSet.getString("Email"));
-                user.setQuizzesCompleted(resultSet.getInt("QuizzesCompleted"));
-
-                if (!password.equals(user.getPassword())) {
-                    return null; // Password mismatch
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return user; // Return user or null if not found or password mismatched
-    }
-
 
     // Checks if a username exists in the LINGOUSER table
     @Override
@@ -179,6 +191,8 @@ public class UserDaoImpl implements UserDao {
         }
         return exists;
     }
+
+
 
 
     @Override

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="QuadLingo@10.120.32.98">
-  <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.51">
+  <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.53">
     <root id="1">
       <DefaultCasing>exact</DefaultCasing>
       <DefaultEngine>InnoDB</DefaultEngine>
@@ -1380,14 +1380,14 @@ test\\_%|schema||test|10.%|UPDATE|G</Grants>
     </table>
     <column id="345" parent="335" name="AnswerID">
       <AutoIncrement>1</AutoIncrement>
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="346" parent="335" name="Answer">
-      <DasType>varchar(50)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>varchar(50)|0s</StoredType>
     </column>
     <index id="347" parent="335" name="PRIMARY">
       <ColNames>AnswerID</ColNames>
@@ -1401,18 +1401,18 @@ test\\_%|schema||test|10.%|UPDATE|G</Grants>
     </key>
     <column id="349" parent="336" name="BadgeID">
       <AutoIncrement>1</AutoIncrement>
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="350" parent="336" name="BadgeTitle">
-      <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>varchar(200)|0s</StoredType>
     </column>
     <column id="351" parent="336" name="QuizzesRequired">
-      <DasType>int(11)|0s</DasType>
       <Position>3</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <index id="352" parent="336" name="PRIMARY">
       <ColNames>BadgeID</ColNames>
@@ -1425,14 +1425,14 @@ test\\_%|schema||test|10.%|UPDATE|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="354" parent="337" name="QuestionID">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="355" parent="337" name="AnswerID">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <foreign-key id="356" parent="337" name="CORRECTANSWER_ibfk_1">
       <ColNames>QuestionID</ColNames>
@@ -1453,14 +1453,14 @@ test\\_%|schema||test|10.%|UPDATE|G</Grants>
       <Type>btree</Type>
     </index>
     <column id="360" parent="338" name="BadgeID">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="361" parent="338" name="UserID">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <foreign-key id="362" parent="338" name="EARNED_ibfk_1">
       <ColNames>BadgeID</ColNames>
@@ -1482,24 +1482,24 @@ test\\_%|schema||test|10.%|UPDATE|G</Grants>
     </index>
     <column id="366" parent="339" name="FlashcardID">
       <AutoIncrement>1</AutoIncrement>
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="367" parent="339" name="Term">
-      <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>varchar(200)|0s</StoredType>
     </column>
     <column id="368" parent="339" name="Translation">
-      <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
+      <StoredType>varchar(200)|0s</StoredType>
     </column>
     <column id="369" parent="339" name="Topic">
-      <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>varchar(200)|0s</StoredType>
     </column>
     <index id="370" parent="339" name="PRIMARY">
       <ColNames>FlashcardID</ColNames>
@@ -1512,18 +1512,18 @@ test\\_%|schema||test|10.%|UPDATE|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="372" parent="340" name="UserID">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="373" parent="340" name="QuizID">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="374" parent="340" name="Score">
-      <DasType>int(11)|0s</DasType>
       <Position>3</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <foreign-key id="375" parent="340" name="ISCOMPLETED_ibfk_1">
       <ColNames>UserID</ColNames>
@@ -1544,14 +1544,14 @@ test\\_%|schema||test|10.%|UPDATE|G</Grants>
       <Type>btree</Type>
     </index>
     <column id="379" parent="341" name="UserID">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="380" parent="341" name="FlashcardID">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <foreign-key id="381" parent="341" name="ISMASTERED_ibfk_1">
       <ColNames>UserID</ColNames>
@@ -1573,28 +1573,28 @@ test\\_%|schema||test|10.%|UPDATE|G</Grants>
     </index>
     <column id="385" parent="342" name="UserID">
       <AutoIncrement>1</AutoIncrement>
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="386" parent="342" name="Email">
-      <DasType>varchar(50)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>varchar(50)|0s</StoredType>
     </column>
     <column id="387" parent="342" name="Username">
-      <DasType>varchar(20)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
+      <StoredType>varchar(20)|0s</StoredType>
     </column>
     <column id="388" parent="342" name="UserPassword">
-      <DasType>varchar(20)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>varchar(20)|0s</StoredType>
     </column>
     <column id="389" parent="342" name="QuizzesCompleted">
-      <DasType>int(11)|0s</DasType>
       <Position>5</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <index id="390" parent="342" name="PRIMARY">
       <ColNames>UserID</ColNames>
@@ -1608,19 +1608,19 @@ test\\_%|schema||test|10.%|UPDATE|G</Grants>
     </key>
     <column id="392" parent="343" name="QuestionID">
       <AutoIncrement>1</AutoIncrement>
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="393" parent="343" name="Question">
-      <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>varchar(200)|0s</StoredType>
     </column>
     <column id="394" parent="343" name="QuizID">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <foreign-key id="395" parent="343" name="QUESTION_ibfk_1">
       <ColNames>QuizID</ColNames>
@@ -1643,14 +1643,14 @@ test\\_%|schema||test|10.%|UPDATE|G</Grants>
     </key>
     <column id="399" parent="344" name="QuizID">
       <AutoIncrement>1</AutoIncrement>
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="400" parent="344" name="QuizTitle">
-      <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>varchar(200)|0s</StoredType>
     </column>
     <index id="401" parent="344" name="PRIMARY">
       <ColNames>QuizID</ColNames>
