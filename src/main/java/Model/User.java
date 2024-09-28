@@ -1,13 +1,14 @@
 package Model;
 
 public class User {
-    private int userId;
+    private Integer userId;
     private String username;
     private String password;
     private String email;
     private int quizzesCompleted;
+    private boolean passwordChanged;
 
-    // Constructor with ID
+    // Constructor with ID (for existing users)
     public User(int userId, String username, String password, String email) {
         this.userId = userId;
         this.username = username;
@@ -15,12 +16,16 @@ public class User {
         this.email = email;
     }
 
-    // Constructor without ID
+    // Constructor without ID (for new users)
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.userId = -1; // Placeholder ID
+        this.userId = null;  // ID will be assigned by the database
+    }
+
+    public boolean isPasswordChanged() {
+        return passwordChanged;
     }
 
     // Getters
@@ -49,8 +54,9 @@ public class User {
         this.username = username;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password, boolean passwordChanged) {
         this.password = password;
+        this.passwordChanged = passwordChanged;
     }
 
     public void setEmail(String email) {

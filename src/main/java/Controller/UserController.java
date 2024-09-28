@@ -3,6 +3,7 @@ package Controller;
 import DAO.UserDaoImpl;
 import Model.Progress;
 import Model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserController {
     private UserDaoImpl userDao;
@@ -23,35 +24,45 @@ public class UserController {
         return instance;
     }
 
+    // Create a new user
     public User createUser(String username, String password, String email) {
         User newUser = new User(username, password, email);
 
-        int userId = userDao.createUser(newUser); // This should return the generated user ID
+        int userId = userDao.createUser(newUser);
 
-        if (userId > 0) { // Check if user was created successfully
-            newUser.setUserId(userId); // Set the generated ID to the user object
-            return newUser; // Return the newly created user object
+        if (userId > 0) {
+            newUser.setUserId(userId);
+            return newUser;
         }
-
-        return null; // Return null if creation failed
+        return null;
     }
 
+    // Login a user
     public User loginUser(String username, String password) {
-        // Use the UserDaoImpl to login with username and password
         return userDao.loginUser(username, password);
     }
 
+    // Get a user by their ID
+    public User getUserById(int userId) {
+        return userDao.getUserById(userId);
+    }
+
+    // Update a user's information
     public boolean updateUser(User user) {
         return userDao.updateUser(user);
     }
 
+    // Check if an email exists
     public boolean doesEmailExist(String email) {
         return userDao.doesEmailExist(email);
     }
 
+    // Check if a username exists
     public boolean doesUsernameExist(String username) {
         return userDao.doesUsernameExist(username);
     }
+
+
 
 
     public int getQuizzesCompleted(String email) {
