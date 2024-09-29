@@ -24,7 +24,7 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, b
         this.userController = UserController.getInstance(UserDaoImpl.getInstance());
         this.badges = new ArrayList<>();
         badges.add(new Badge("file:src/main/resources/FirstFlashBadge.png", 1));
-        badges.add(new Badge("file:src/main/resources/SecondFlashBadge.png", 5));
+        badges.add(new Badge("file:src/main/resources/SecondBadge.png", 5));
 
         String userEmail = userController.getEmailDao();
 
