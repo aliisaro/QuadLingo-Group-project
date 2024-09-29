@@ -11,4 +11,6 @@ public interface UserDao {
     boolean doesUsernameExist(String username);
     int getQuizzesCompleted(String email);
     String getEmail();
+
+    int getCurrentUserId();
 }

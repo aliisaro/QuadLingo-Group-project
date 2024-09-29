@@ -76,4 +76,8 @@ public class UserController {
     public Progress getUserProgress(User user) {
         return null; // Placeholder
     }
+
+    public int getCurrentUserId() {
+        return userDao.getCurrentUserId();
+    }
 }

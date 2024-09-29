@@ -1,5 +1,6 @@
 package View;
 
+import DAO.ProgressDaoImpl;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -8,13 +9,22 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.ProgressBar;
 
+import Controller.UserController;
+
 public class ProgressPage extends BasePage implements setMarginButton, UpdateProgress {
 
     //These are placeholders, will be updated later according to the number of quizzes and flashcards
     private int totalItems = 30;
     private int completedItems;
 
+    private UserController userController;
+    private ProgressDaoImpl progressDao;
+
     public ProgressPage (Stage stage) {
+
+        //TODO: This line only checks individual quiz progress, not overall progress, that needs to be changed
+        completedItems = progressDao.getProgressQuiz(userController.getCurrentUserId(), /* quizId */ 1);
+
         Button profileButton = new Button("Go to Profile");
         setMargin(profileButton, 10, 10, 10, 5);
         profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));

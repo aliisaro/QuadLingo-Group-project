@@ -11,6 +11,7 @@ public class UserDaoImpl implements UserDao {
 
     public static UserDaoImpl instance;
 
+    private static int currentUserId;
     public String email;
 
     public static UserDaoImpl getInstance() {
@@ -75,6 +76,7 @@ public class UserDaoImpl implements UserDao {
                     // Check if the password matches the hashed password in the database
                     if (BCrypt.checkpw(password, dbPassword)) {
                         int userId = resultSet.getInt("UserID");
+                        currentUserId = userId;
                         String dbEmail = resultSet.getString("Email");
                         int dbQuizzesCompleted = resultSet.getInt("QuizzesCompleted");
 
@@ -222,4 +224,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     // Implement other methods related to User database operations
+
+    @Override
+    public int getCurrentUserId() {
+        return currentUserId;
+    }
 }
