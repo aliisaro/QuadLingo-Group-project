@@ -9,8 +9,8 @@ public interface UserDao {
     User loginUser(String username, String password);
     boolean doesEmailExist(String email);
     boolean doesUsernameExist(String username);
+    boolean deleteUserByEmail(String email);
     int getQuizzesCompleted(String email);
     String getEmail();
-
     int getCurrentUserId();
 }

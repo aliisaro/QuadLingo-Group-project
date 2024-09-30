@@ -62,8 +62,8 @@ public class UserController {
         return userDao.doesUsernameExist(username);
     }
 
-
-
+    // Delete a user by email
+    public boolean deleteUserByEmail(String email) {return userDao.deleteUserByEmail(email); }
 
     public int getQuizzesCompleted(String email) {
         return quizzesDao.getQuizzesCompleted(email);

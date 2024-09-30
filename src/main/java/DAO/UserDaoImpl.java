@@ -123,7 +123,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean updateUser(User user) {
         boolean isUpdated = false;
-        String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = COALESCE(?, UserPassword), Email = ? WHERE UserID = ?";
+        String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = COALESCE(?, UserPassword), Email = ?, QuizzesCompleted = ? WHERE UserID = ?";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -139,7 +139,8 @@ public class UserDaoImpl implements UserDao {
             }
 
             statement.setString(3, user.getEmail());
-            statement.setInt(4, user.getUserId());
+            statement.setInt(4, user.getQuizzesCompleted());
+            statement.setInt(5, user.getUserId());
 
             int rowsAffected = statement.executeUpdate();
             isUpdated = (rowsAffected > 0); // Check if any row was updated
@@ -149,6 +150,7 @@ public class UserDaoImpl implements UserDao {
         }
         return isUpdated;
     }
+
 
     // Checks if a username exists in the LINGOUSER table
     @Override
@@ -192,6 +194,23 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
         return exists;
+    }
+
+
+    // Deletes a user by their email from the LINGOUSER table
+    @Override
+    public boolean deleteUserByEmail(String email) {
+        String query = "DELETE FROM LINGOUSER WHERE Email = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            // Consider using a logging framework instead of printStackTrace
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
