@@ -5,8 +5,10 @@
 /* Dark brown: 584B53 */
 /* Light blue: D6E3F8 */
 
+
 .root {
     -fx-background-color: D6E3F8;
+    -fx-font-family: Lexend;
 }
 
 .label {
