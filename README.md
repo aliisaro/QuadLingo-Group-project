@@ -13,6 +13,7 @@ We are a team of four people: Maisa, Cindy, Aliisa and Yasmin. We are all ICT en
 
 
 <h3>Links:</h3>
+
 ****
 
 - [Trello](https://trello.com/b/0ghzAMVd/sep1r3quadlingo)
