@@ -15,7 +15,7 @@ import Controller.UserController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AchiePage extends BasePage implements ImageSize, setMarginButton, badgeLock {
+public class AchiePage extends BasePage implements ImageSize, setMarginButton, BadgeLock {
     private UserController userController;
     private List<Badge> badges;
     private VBox unlockedBadgesContainer;
@@ -25,9 +25,9 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, b
     public AchiePage(Stage stage) {
         this.userController = UserController.getInstance(UserDaoImpl.getInstance());
         this.badges = new ArrayList<>();
-        badges.add(new Badge("file:src/main/resources/FirstFlashBadge.png", 1));
-        badges.add(new Badge("file:src/main/resources/SecondBadge.png", 5));
-        badges.add(new Badge("file:src/main/resources/ThirdBadge.png", 10));
+        badges.add(new Badge("file:src/main/resources/FirstFlashBadge.png", 1, "Complete one quiz"));
+        badges.add(new Badge("file:src/main/resources/SecondBadge.png", 5, "Complete five quizzes"));
+        badges.add(new Badge("file:src/main/resources/ThirdBadge.png", 10, "Complete ten quizzes"));
 
         String userEmail = userController.getEmailDao();
 
@@ -72,15 +72,19 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, b
             imageView.setPreserveRatio(true);
             setImageSize(imageView, 130, 130);
 
+            Label description = new Label(badge.getDescription());
+
+            VBox badgeContainer = new VBox(5, imageView, description);
+
             int quizzesCompleted = userController.getQuizzesCompleted(userEmail);
 
             //If the badge is unlocked and the user has completed the required number of quizzes, the badge is unlocked
             if (unlocked && quizzesCompleted >= badge.getThreshold()) {
                 unlockBadge(true, imageView);
-                currentRow.getChildren().add(imageView);
+                currentRow.getChildren().add(badgeContainer);
             } else if (!unlocked && quizzesCompleted < badge.getThreshold()) {
                 lockBadge(true, imageView);
-                currentRow.getChildren().add(imageView);
+                currentRow.getChildren().add(badgeContainer);
             }
 
             badgeCount++;
