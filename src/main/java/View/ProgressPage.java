@@ -1,6 +1,7 @@
 package View;
 
 import DAO.ProgressDaoImpl;
+import DAO.UserDaoImpl;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -21,9 +22,12 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
     private ProgressDaoImpl progressDao;
 
     public ProgressPage (Stage stage) {
+        UserDaoImpl userDao = new UserDaoImpl();
+        userController = UserController.getInstance(userDao);
+        progressDao = new ProgressDaoImpl();
 
-        //TODO: This line only checks individual quiz progress, not overall progress, that needs to be changed
-        completedItems = progressDao.getProgressQuiz(userController.getCurrentUserId(), /* quizId */ 1);
+        int userID = userController.getCurrentUserId();
+        completedItems = progressDao.getOverallProgress(userID);
 
         Button profileButton = new Button("Go to Profile");
         setMargin(profileButton, 10, 10, 10, 5);
@@ -47,7 +51,7 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         progressBarBox.getChildren().add(progressBar);
 
 
-        updateProgress(6, progressBar);
+        updateProgress(completedItems, progressBar);
 
 
         this.getChildren().add(ProgressLabel1);

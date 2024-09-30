@@ -47,6 +47,29 @@ public class ProgressDaoImpl implements ProgressDao {
     }
 
     @Override
+    public int getOverallProgress(int user) {
+        // Implement database operation to get overall progress
+        int progress = 0;
+
+        try (Connection connection = MariaDbConnection.getConnection()) {
+            String query = "SELECT * FROM ISCOMPLETED WHERE UserID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, user);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                progress = resultSet.getInt("Score");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the error
+        }
+
+        return progress;
+    }
+
+    @Override
     public void updateOverallQuizProgress(String username, int score) {
         // Implement database operation to update overall progress
     }
