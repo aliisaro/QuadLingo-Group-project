@@ -25,8 +25,8 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         UserDaoImpl userDao = new UserDaoImpl();
         UserController userController = UserController.getInstance(userDao);
         ProgressDaoImpl progressDao = new ProgressDaoImpl();
-
         int userID = userController.getCurrentUserId();
+
         userScore = progressDao.getUserScore(userID);
         maxScore = progressDao.getMaxScore(userID);
         completedQuizzes = progressDao.getAllCompletedQuizzes(userID);
@@ -43,38 +43,41 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         Label ProgressLabel1 = new Label("Progress Page");
         Label ProgressLabel2 = new Label("Your score progress:");
         Label ProgressLabel3 = new Label("Your quiz progress:");
+        Label ProgressLabel4 = new Label("You have done " + completedQuizzes + " out of " + allQuizzes + " quizzes.");
+
         ProgressBar progressBar1 = new ProgressBar();
-        ProgressBar progressBar2 = new ProgressBar();
         progressBar1.setStyle("-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;");
         progressBar1.setPrefWidth(200);
         progressBar1.setPrefHeight(20);
+
+        ProgressBar progressBar2 = new ProgressBar();
         progressBar2.setStyle("-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;");
         progressBar2.setPrefWidth(200);
         progressBar2.setPrefHeight(20);
 
         VBox progressBarBox1 = new VBox();
-        progressBarBox1.setAlignment(Pos.CENTER);
         progressBarBox1.setPadding(new Insets(0));
         progressBarBox1.setSpacing(0);
         progressBarBox1.getChildren().add(progressBar1);
 
         VBox progressBarBox2 = new VBox();
-        progressBarBox2.setAlignment(Pos.CENTER);
         progressBarBox2.setPadding(new Insets(0));
         progressBarBox2.setSpacing(0);
         progressBarBox2.getChildren().add(progressBar2);
 
-
         updateQuizProgress(progressBar1);
         updateScoreProgress(progressBar2);
 
-        this.getChildren().add(ProgressLabel1);
-        this.getChildren().add(profileButton);
-        this.getChildren().add(buttonHome);
-        this.getChildren().add(ProgressLabel2);
-        this.getChildren().add(progressBarBox1);
-        this.getChildren().add(ProgressLabel3);
-        this.getChildren().add(progressBarBox2);
+        this.getChildren().addAll(
+                ProgressLabel1,
+                profileButton,
+                buttonHome,
+                ProgressLabel2,
+                progressBarBox1,
+                ProgressLabel4,
+                ProgressLabel3,
+                progressBarBox2
+        );
 
     }
 
@@ -86,7 +89,7 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         @Override
         public void updateQuizProgress(ProgressBar progressBar){
 
-            // Calculate the progress percentage
+            // Calculate the quiz progress percentage
             double progressPercentage = (double) completedQuizzes / allQuizzes;
 
             // Update the progress bar
@@ -95,9 +98,8 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
 
         @Override
         public void updateScoreProgress(ProgressBar progressBar) {
-            // Update the number of completed items
 
-            // Calculate the progress percentage
+            // Calculate the score progress percentage
             double progressPercentage = (double) userScore / maxScore;
 
             // Update the progress bar
