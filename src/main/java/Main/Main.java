@@ -9,7 +9,7 @@ import View.QuadLingoQui;
 public class  Main {
     public static void main(String[] args) throws Exception {
         UserDaoImpl userDao = new UserDaoImpl();
-        UserController userController = UserController.getInstance(userDao);
+        UserController.getInstance(userDao);
         QuadLingoQui.launch(QuadLingoQui.class, args);
     }
 }

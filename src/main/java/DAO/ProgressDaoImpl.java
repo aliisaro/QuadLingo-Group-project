@@ -46,19 +46,21 @@ public class ProgressDaoImpl implements ProgressDao {
         return progress;
     }
 
+
+
     @Override
-    public int getOverallProgress(int user) {
+    public int getUserScore(int user) {
         // Implement database operation to get overall progress
-        int progress = 0;
+        int totalScore = 0;
 
         try (Connection connection = MariaDbConnection.getConnection()) {
-            String query = "SELECT * FROM ISCOMPLETED WHERE UserID = ?";
+            String query = "SELECT SUM(Score) AS TotalScore FROM ISCOMPLETED WHERE UserID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, user);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                progress = resultSet.getInt("Score");
+                totalScore = resultSet.getInt("TotalScore");
             }
             resultSet.close();
             statement.close();
@@ -66,7 +68,73 @@ public class ProgressDaoImpl implements ProgressDao {
             e.printStackTrace(); // Log the error
         }
 
-        return progress;
+        return totalScore;
+    }
+
+    @Override
+    public int getMaxScore(int user) {
+        int maxScore = 0;
+
+        try (Connection connection = MariaDbConnection.getConnection()) {
+            String query = "SELECT SUM(QuizScore) AS TotalMaxScore FROM QUIZ";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                maxScore = resultSet.getInt("TotalMaxScore");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the error
+        }
+
+        return maxScore;
+    }
+
+    @Override
+    public int getAllCompletedQuizzes(int user) {
+        // Implement database operation to get overall progress
+        int totalScore = 0;
+
+        try (Connection connection = MariaDbConnection.getConnection()) {
+            String query = "SELECT COUNT(*) AS TotalScore FROM ISCOMPLETED WHERE UserID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, user);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                totalScore = resultSet.getInt("TotalScore");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the error
+        }
+
+        return totalScore;
+    }
+
+    @Override
+    public int getQuizAmount() {
+        // Implement database operation to get overall progress
+        int totalScore = 0;
+
+        try (Connection connection = MariaDbConnection.getConnection()) {
+            String query = "SELECT COUNT(*) AS TotalScore FROM QUIZ";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                totalScore = resultSet.getInt("TotalScore");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the error
+        }
+
+        return totalScore;
     }
 
     @Override

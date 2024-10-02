@@ -4,6 +4,8 @@ import javafx.scene.control.ProgressBar;
 
 public interface UpdateProgress {
 
-    void updateProgress(int progress, ProgressBar progressBar);
+    void updateQuizProgress(ProgressBar progressBar);
+
+    void updateScoreProgress(ProgressBar progressBar);
 
 }
