@@ -25,7 +25,7 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
     public AchiePage(Stage stage) {
         this.userController = UserController.getInstance(UserDaoImpl.getInstance());
         this.badges = new ArrayList<>();
-        badges.add(new Badge("file:src/main/resources/FirstFlashBadge.png", 1, "Complete one quiz"));
+        badges.add(new Badge("file:src/main/resources/FirstBadge.png", 1, "Complete one quiz"));
         badges.add(new Badge("file:src/main/resources/SecondBadge.png", 5, "Complete five quizzes"));
         badges.add(new Badge("file:src/main/resources/ThirdBadge.png", 10, "Complete ten quizzes"));
 
