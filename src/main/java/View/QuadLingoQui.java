@@ -20,7 +20,7 @@ public class QuadLingoQui extends Application{
 
         //Setting the size of the window
         primaryStage.setWidth(400);
-        primaryStage.setHeight(640);
+        primaryStage.setHeight(660);
 
         //Centering the window
         primaryStage.centerOnScreen();

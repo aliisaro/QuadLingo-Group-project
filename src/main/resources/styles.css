@@ -8,7 +8,33 @@
 
 .root {
     -fx-background-color: D6E3F8;
-    -fx-font-family: Lexend;
+}
+
+.progressBarBox {
+    -fx-background-color: #c1d3f6;
+    -fx-padding: 15; /* Increase padding to make the box larger */
+    -fx-border-width: 2; /* Optional: Set border width */
+    -fx-border-radius: 5; /* Optional: Set border radius */
+}
+
+.progressBarBox:hover {
+    -fx-border-color: #584B53;
+    -fx-background-color: #cad5ea;
+}
+
+.progressBarBox .label {
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+    -fx-text-fill: #584B53;
+}
+
+.progress-bar {
+    -fx-pref-width: 200px; /* Set preferred width */
+    -fx-pref-height: 20px; /* Set preferred height */
+    -fx-min-width: 200px; /* Set minimum width */
+    -fx-min-height: 20px; /* Set minimum height */
+    -fx-max-width: 200px; /* Set maximum width */
+    -fx-max-height: 20px; /* Set maximum height */
 }
 
 .label {
