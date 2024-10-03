@@ -48,7 +48,7 @@ public class QuizLibrary extends BasePage {
         pageTitle.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
 
         // Return to the homepage
-        Button backButton = new Button("Back to Main");
+        Button backButton = new Button("Back to Homepage");
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         // Logout button: clears session and redirects to IndexPage
@@ -68,7 +68,7 @@ public class QuizLibrary extends BasePage {
 
         for (Quiz quiz : quizzes) {
             Button quizButton = new Button(quiz.getQuizTitle());
-            quizButton.setMaxWidth(Double.MAX_VALUE); // Make buttons stretch horizontally
+            quizButton.setMaxWidth(350); // Make buttons stretch horizontally
             quizButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
 
             // Set action to navigate to the QuizPage

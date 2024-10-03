@@ -25,8 +25,10 @@ public abstract class BasePage extends VBox {
         scrollPane.setVvalue(0.7); // Set initial vertical scroll position (0.0 to 1.0)
         scrollPane.setHvalue(0.7); // Set initial horizontal scroll position (0.0 to 1.0)
 
-        Scene scene = new Scene(scrollPane, 400, 640);
+
+        Scene scene = new Scene(scrollPane,640, 640);
         scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+
         return scene;
     }
 }

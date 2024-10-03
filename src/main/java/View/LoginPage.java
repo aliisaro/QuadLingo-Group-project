@@ -21,6 +21,7 @@ public class LoginPage extends BasePage {
     private void setLayout(Stage stage) {
         // Create and configure the login page UI components
         Label titleLabel = new Label("Login");
+        titleLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
 
         Label usernameLabel = new Label("Username");
         TextField usernameField = new TextField();
@@ -30,11 +31,19 @@ public class LoginPage extends BasePage {
 
         Button loginButton = new Button("Login");
 
+        Label noAccountLabel = new Label("Don't have an account?");
+        Label registerLabel = new Label("Sign up instead:");
+
+        Button registerButton = new Button("Sign up");
+
         Label errorLabel = new Label();
         errorLabel.setStyle("-fx-text-fill: red;");
 
         // Handle login button click
         loginButton.setOnAction(e -> handleLoginAction(usernameField, passwordField, errorLabel, stage));
+
+        // Go to the registration page
+        registerButton.setOnAction(e -> stage.setScene(new RegistrationPage(stage).createScene()));
 
         // Go back to the index page
         Button indexPageButton = new Button("Go back to Index page");
@@ -48,6 +57,9 @@ public class LoginPage extends BasePage {
                 passwordLabel,
                 passwordField,
                 loginButton,
+                noAccountLabel,
+                registerLabel,
+                registerButton,
                 errorLabel,
                 indexPageButton);
     }

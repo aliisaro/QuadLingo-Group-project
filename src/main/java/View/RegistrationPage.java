@@ -21,7 +21,8 @@ public class RegistrationPage extends BasePage {
 
     private void setLayout(Stage stage) {
         // Elements
-        Label titleLabel = new Label("Create an account");
+        Label titleLabel = new Label("Sign Up");
+        titleLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
 
         Label usernameLabel = new Label("Username");
         TextField usernameField = new TextField();
@@ -32,7 +33,12 @@ public class RegistrationPage extends BasePage {
         Label passwordLabel = new Label("Password");
         PasswordField passwordField = new PasswordField();
 
-        Button registerButton = new Button("Register");
+        Button registerButton = new Button("Sign up");
+
+        Label hasAccountLabel = new Label("Already have an account?");
+        Label loginLabel = new Label("Login instead:");
+
+        Button loginButton = new Button("Login");
 
         Label minimumRequirements = new Label("Password requirements: 1 uppercase, 1 number, 8 characters.");
         minimumRequirements.setStyle("-fx-text-fill: green;");
@@ -42,6 +48,9 @@ public class RegistrationPage extends BasePage {
 
         // Handle registerButton click
         registerButton.setOnAction(event -> handleRegisterAction(usernameField, emailField, passwordField, errorLabel, stage));
+
+        // Go to the login page
+        loginButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
 
         // Back to Index Page button
         Button indexPageButton = new Button("Go back to Index page");
@@ -58,6 +67,9 @@ public class RegistrationPage extends BasePage {
                 passwordField,
                 registerButton,
                 minimumRequirements,
+                hasAccountLabel,
+                loginLabel,
+                loginButton,
                 errorLabel,
                 indexPageButton
         );

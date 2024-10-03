@@ -15,7 +15,7 @@ public class IndexPage extends BasePage{
         loginPageButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
 
         // go to the register page
-        Button registerPageButton = new Button("Go to Register page");
+        Button registerPageButton = new Button("Go to Sign up page");
         registerPageButton.setOnAction(e -> stage.setScene(new RegistrationPage(stage).createScene()));
 
         //Add elements to layout

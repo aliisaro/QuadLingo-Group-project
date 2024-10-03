@@ -38,6 +38,7 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         buttonHome.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         Label progressLabel1 = new Label("Progress Page");
+        progressLabel1.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
         Label progressLabel2 = new Label("Your score progress:");
         Label progressLabel3 = new Label("Your quiz progress:");
         Label progressLabel4 = new Label("You have done " + completedQuizzes + " out of " + allQuizzes + " quizzes.");
