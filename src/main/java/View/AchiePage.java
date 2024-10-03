@@ -29,7 +29,7 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
         badges.add(new Badge("file:src/main/resources/SecondBadge.png", 5, "Complete five quizzes"));
         badges.add(new Badge("file:src/main/resources/ThirdBadge.png", 10, "Complete ten quizzes"));
 
-        String userEmail = userController.getEmailDao();
+        int userId = userController.getCurrentUserId();
 
         Label AchieLabel1 = new Label("Achievements Page");
         Button profileButton = new Button("Go to Profile");
@@ -45,8 +45,7 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
         unlockedBadgesContainer = new VBox();
         lockedBadgesContainer = new VBox();
 
-        addBadgesToContainer(unlockedBadgesContainer, userEmail, true);
-        addBadgesToContainer(lockedBadgesContainer, userEmail, false);
+        addBadgesToContainer(unlockedBadgesContainer, lockedBadgesContainer, userId);
 
         Label AchieLabel2 = new Label("Earned badges");
         Label AchieLabel3 = new Label("Locked badges");
@@ -55,39 +54,47 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
     }
 
     //Adds badges to the container
-    private void addBadgesToContainer(VBox container, String userEmail, boolean unlocked) {
-        HBox currentRow = null;
-        int badgeCount = 0;
+    private void addBadgesToContainer(VBox unlockedContainer, VBox lockedContainer, int userID) {
+        HBox currentUnlockedRow = null;
+        HBox currentLockedRow = null;
+        int unlockedBadgeCount = 0;
+        int lockedBadgeCount = 0;
 
-        //Iterates through the badges and adds them to the container
         for (Badge badge : badges) {
-            //If the badge count is even, a new row is created
-            if (badgeCount % 2 == 0) {
-                currentRow = new HBox(10);
-                VBox.setMargin(currentRow, new Insets(10, 10, 10, 5));
-                container.getChildren().add(currentRow);
-            }
-
             ImageView imageView = new ImageView(badge.getImage());
             imageView.setPreserveRatio(true);
             setImageSize(imageView, 130, 130);
 
             Label description = new Label(badge.getDescription());
-
             VBox badgeContainer = new VBox(5, imageView, description);
 
-            int quizzesCompleted = userController.getQuizzesCompleted(userEmail);
+            int quizzesCompleted = userController.getQuizzesCompleted(userID);
+            int badgeThreshold = badge.getThreshold();
 
-            //If the badge is unlocked and the user has completed the required number of quizzes, the badge is unlocked
-            if (unlocked && quizzesCompleted >= badge.getThreshold()) {
-                unlockBadge(true, imageView);
-                currentRow.getChildren().add(badgeContainer);
-            } else if (!unlocked && quizzesCompleted < badge.getThreshold()) {
+            // Debug statements
+            System.out.println("Badge: " + badge.getDescription());
+            System.out.println("Quizzes Completed: " + quizzesCompleted);
+            System.out.println("Badge Threshold: " + badgeThreshold);
+
+            if (quizzesCompleted >= badgeThreshold) {
+                if (unlockedBadgeCount % 2 == 0) {
+                    currentUnlockedRow = new HBox(10);
+                    VBox.setMargin(currentUnlockedRow, new Insets(10, 10, 10, 5));
+                    unlockedContainer.getChildren().add(currentUnlockedRow);
+                }
+                unlockBadge(imageView);
+                currentUnlockedRow.getChildren().add(badgeContainer);
+                unlockedBadgeCount++;
+            } else {
+                if (lockedBadgeCount % 2 == 0) {
+                    currentLockedRow = new HBox(10);
+                    VBox.setMargin(currentLockedRow, new Insets(10, 10, 10, 5));
+                    lockedContainer.getChildren().add(currentLockedRow);
+                }
                 lockBadge(true, imageView);
-                currentRow.getChildren().add(badgeContainer);
+                currentLockedRow.getChildren().add(badgeContainer);
+                lockedBadgeCount++;
             }
-
-            badgeCount++;
         }
     }
 
@@ -103,12 +110,10 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
     }
 
     @Override
-    public void unlockBadge(boolean value, ImageView imageView) {
-        if (value) {
+    public void unlockBadge(ImageView imageView) {
             ColorAdjust desaturate = new ColorAdjust();
             desaturate.setSaturation(0);
             imageView.setEffect(desaturate);
-        }
     }
 
     @Override

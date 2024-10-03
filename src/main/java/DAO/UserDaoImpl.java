@@ -214,19 +214,20 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-
-
     @Override
-    public int getQuizzesCompleted(String email) {
+    public int getQuizzesCompleted(int userId) {
         int quizzesCompleted = 0;
         try (Connection connection = getConnection()) {
-            String query = "SELECT QuizzesCompleted FROM LINGOUSER WHERE Email = ?";
+            String query = "SELECT QuizzesCompleted FROM LINGOUSER WHERE UserID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, email);
+            statement.setInt(1, userId);
+            System.out.println("Executing query: " + statement);
             ResultSet resultSet = statement.executeQuery();
-
             if (resultSet.next()) {
                 quizzesCompleted = resultSet.getInt("QuizzesCompleted");
+                System.out.println("QuizzesCompleted retrieved: " + quizzesCompleted);
+            } else {
+                System.out.println("No record found for user ID: " + userId);
             }
 
             resultSet.close();
@@ -239,6 +240,21 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public String getEmail() {
+        try (Connection connection = getConnection()) {
+            String query = "SELECT Email FROM LINGOUSER WHERE UserID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, currentUserId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                email = resultSet.getString("Email");
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return email;
     }
 
