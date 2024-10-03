@@ -7,7 +7,9 @@ import Model.User;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Profile extends BasePage {
@@ -77,8 +79,9 @@ public class Profile extends BasePage {
             stage.setScene(new IndexPage(stage).createScene());
         });
 
-        // Layout setup
-        this.getChildren().addAll(
+        // Create a VBox for vertical layout
+        VBox vBox = new VBox(10); // 10px spacing between elements
+        vBox.getChildren().addAll(
                 pageTitle,
                 usernameLabel,
                 emailLabel,
@@ -96,6 +99,13 @@ public class Profile extends BasePage {
                 errorLabel,
                 successLabel
         );
+
+        // Wrap the VBox in a ScrollPane
+        ScrollPane scrollPane = new ScrollPane(vBox);
+        scrollPane.setFitToWidth(true); // Make the scroll pane fit the width of the page
+
+        // Set the scroll pane as the root node
+        this.getChildren().add(scrollPane);
     }
 
     // Logic to handle saving the profile information
@@ -154,7 +164,7 @@ public class Profile extends BasePage {
                 System.out.println("Profile updated successfully:");
                 System.out.println("Username: " + currentUser.getUsername());
                 System.out.println("Email: " + currentUser.getEmail());
-                System.out.println("Password: " + currentUser.getPassword() + "\n");
+                System.out.println("Password: ********* \n");
 
                 // Clear the input fields
                 usernameTextField.clear();

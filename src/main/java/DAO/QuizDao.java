@@ -1,9 +1,12 @@
 package DAO;
 
+import Model.Question;
 import Model.Quiz;
+import java.util.List;
 
 public interface QuizDao {
-    void createQuiz(Quiz quiz);
-    Quiz getQuiz(String quizName);
-    // Other methods related to Quiz database operations
+    List<Quiz> getAllQuizzes();
+    List<Question> getQuestionsForQuiz(int quizId);
+    boolean checkAnswer(int questionId, String selectedAnswer);
+    void recordQuizCompletion(int userId, int quizId, int score);
 }

@@ -1,25 +1,25 @@
 package Model;
 
 public class Answer {
+    private int questionId;
+    private String userAnswer;
+    private boolean isCorrect;
 
-    public Boolean isCorrect;
-
-    public String answer;
-
-    public Answer(Boolean isCorrect, String answer) {
+    public Answer(int questionId, String userAnswer, boolean isCorrect) {
+        this.questionId = questionId;
+        this.userAnswer = userAnswer;
         this.isCorrect = isCorrect;
-        this.answer = answer;
     }
 
-    public Boolean getIsCorrect() {
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public String getUserAnswer() {
+        return userAnswer;
+    }
+
+    public boolean isCorrect() {
         return isCorrect;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setIsCorrect(Boolean isCorrect) {
-        this.isCorrect = isCorrect;
     }
 }

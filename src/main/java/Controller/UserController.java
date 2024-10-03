@@ -80,4 +80,5 @@ public class UserController {
     public int getCurrentUserId() {
         return userDao.getCurrentUserId();
     }
+
 }

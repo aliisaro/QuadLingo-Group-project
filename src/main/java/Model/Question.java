@@ -1,21 +1,37 @@
 package Model;
 
+import java.util.List;
+
 public class Question {
+    private int id; // Question ID
+    private String questionText; // The text of the question
+    private List<String> answerOptions; // List of answer options
+    private String correctAnswer; // The correct answer
 
-    public String type;
-
-    public String question;
-
-    public Question(String type, String question) {
-        this.type = type;
-        this.question = question;
+    // Constructor for all fields
+    public Question(int id, String questionText, List<String> answerOptions, String correctAnswer) {
+        this.id = id;
+        this.questionText = questionText;
+        this.answerOptions = answerOptions;
+        this.correctAnswer = correctAnswer;
     }
 
-    public String getType() {
-        return type;
+    // Getters
+    public int getQuestionId() {
+        return id;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getQuestionText() {
+        return questionText;
     }
+
+    public List<String> getAnswerOptions() {
+        return answerOptions;
+    }
+
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    // Optionally, you can add setters if you want to modify the properties later
 }

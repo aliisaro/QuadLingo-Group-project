@@ -1,40 +1,40 @@
 package Model;
 
 public class Quiz {
+    private int quizId;
+    private String quizTitle;
+    private int quizScore;
 
-    public String title;
-
-    public Boolean isCompleted;
-
-    public int score;
-
-    public Quiz(String title, Boolean isCompleted) {
-        this.title = title;
-        this.isCompleted = isCompleted;
-        this.score = 0;
+    // Constructor
+    public Quiz(int quizId, String quizTitle, int quizScore) {
+        this.quizId = quizId;
+        this.quizTitle = quizTitle;
+        this.quizScore = quizScore;
     }
 
-    public String getTitle() {
-        return title;
+    // Getters
+    public int getQuizId() {
+        return quizId;
     }
 
-    public Boolean getIsCompleted() {
-        return isCompleted;
+    public String getQuizTitle() {
+        return quizTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public int getQuizScore() {
+        return quizScore;
     }
 
-    public void setIsCompleted(Boolean isCompleted) {
-        this.isCompleted = isCompleted;
+    // Optionally, setters if needed
+    public void setQuizId(int quizId) {
+        this.quizId = quizId;
     }
 
-    public int getScore() {
-        return score;
+    public void setQuizTitle(String quizTitle) {
+        this.quizTitle = quizTitle;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setQuizScore(int quizScore) {
+        this.quizScore = quizScore;
     }
 }
