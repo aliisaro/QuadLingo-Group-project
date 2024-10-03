@@ -37,7 +37,7 @@ pipeline {
             post {
                 always {
                     // Publish the JaCoCo coverage report
-                    jacoco execPattern: 'target/jacoco.exec'
+                    jacoco execPattern: 'target/jacoco.exec', classPattern: 'target/classes', sourcePattern: 'src/main/java', exclusionPattern: '**/SomeExcludedClass*'
                 }
             }
         }
