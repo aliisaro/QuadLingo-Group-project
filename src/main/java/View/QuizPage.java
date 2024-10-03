@@ -136,9 +136,23 @@ public class QuizPage extends BasePage {
         Label resultLabel = new Label("Your score: " + score + " out of " + questions.size());
         resultLabel.setStyle("-fx-font-size: 18px;");
 
-        // Save score to the database
+        // Get current user and quiz ID
         User currentUser = SessionManager.getInstance().getCurrentUser(); // Get the current user
-        saveScore(currentUser.getUserId(), quizId, score); // Pass quizId here
+        int userId = currentUser.getUserId(); // Get User ID
+
+        // Check if the user has already completed the quiz
+        boolean hasCompletedQuiz = quizDao.hasUserCompletedQuiz(userId, quizId);
+
+        // Always update the score for the quiz
+        quizDao.recordQuizCompletion(userId, quizId, score); // Save score to the database
+
+        // Increment completed quizzes count if the user has not taken the quiz before
+        if (!hasCompletedQuiz) {
+            quizDao.incrementCompletedQuizzes(userId); // Increment quiz count only if the user has not taken the quiz
+        }
+
+        // Add score labels to the layout
+        this.getChildren().addAll(scoreLabel, resultLabel);
 
         // Button to return to Quiz Library
         Button backButton = new Button("Back to Quiz Library");
@@ -148,16 +162,8 @@ public class QuizPage extends BasePage {
             stage.setScene(new QuizLibrary(stage).createScene());
         });
 
-        // Button to return to Homepage
-        Button homeButton = new Button("Return to Homepage");
-        homeButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
-        homeButton.setOnAction(e -> {
-            Stage stage = (Stage) this.getScene().getWindow();
-            stage.setScene(new Homepage(stage).createScene());
-        });
-
-        // Add components to the layout
-        this.getChildren().addAll(scoreLabel, resultLabel, backButton, homeButton);
+        // Add the back button to the layout
+        this.getChildren().add(backButton);
     }
 
     private void saveScore(int userId, int quizId, int score) {

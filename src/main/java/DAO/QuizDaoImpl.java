@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static Database.MariaDbConnection.getConnection;
+
 public class QuizDaoImpl implements QuizDao {
     private Connection connection;
 
@@ -174,4 +176,37 @@ public class QuizDaoImpl implements QuizDao {
         }
     }
 
+
+    @Override
+    public void incrementCompletedQuizzes(int userId) {
+        String sql = "UPDATE LINGOUSER SET QuizzesCompleted = QuizzesCompleted + 1 WHERE UserID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions as needed
+        }
+    }
+
+    @Override
+    public boolean hasUserCompletedQuiz(int userId, int quizId) {
+        // Implement the logic to check if the user has completed the quiz
+        String sql = "SELECT COUNT(*) FROM ISCOMPLETED WHERE UserID = ? AND QuizID = ?";
+        try (Connection connection = getConnection(); // Get a connection
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // Set the parameters for the prepared statement
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, quizId);
+
+            // Execute the query
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Return true if the user has completed the quiz
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Default to false if an error occurs or no records are found
+    }
 }
