@@ -4,6 +4,7 @@ import Controller.UserController;
 import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.User;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -79,9 +80,7 @@ public class Profile extends BasePage {
             stage.setScene(new IndexPage(stage).createScene());
         });
 
-        // Create a VBox for vertical layout
-        VBox vBox = new VBox(10); // 10px spacing between elements
-        vBox.getChildren().addAll(
+        this.getChildren().addAll(
                 pageTitle,
                 usernameLabel,
                 emailLabel,
@@ -99,35 +98,36 @@ public class Profile extends BasePage {
                 errorLabel,
                 successLabel
         );
-
-        // Wrap the VBox in a ScrollPane
-        ScrollPane scrollPane = new ScrollPane(vBox);
-        scrollPane.setFitToWidth(true); // Make the scroll pane fit the width of the page
-
-        // Set the scroll pane as the root node
-        this.getChildren().add(scrollPane);
     }
 
     // Logic to handle saving the profile information
-    private void handleSaveAction(TextField usernameTextField, TextField emailTextField, TextField passwordTextField, User currentUser, Label errorLabel, Label successLabel) {
+    private void handleSaveAction(TextField usernameTextField, TextField emailTextField, PasswordField passwordTextField, User currentUser, Label errorLabel, Label successLabel) {
         UserController userController = UserController.getInstance(UserDaoImpl.getInstance()); // Initialize UserController
+
+        // Trim whitespace from inputs
+        String username = usernameTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String password = passwordTextField.getText().trim();
+
+        // Check if all fields are empty
+        if (username.isEmpty() && email.isEmpty() && password.isEmpty()) {
+            errorLabel.setText("At least one field must be filled out to update the profile.");
+            successLabel.setText(""); // Clear success message
+            return; // Exit the method early
+        }
 
         StringBuilder errorMessages = new StringBuilder(); // Object to store error messages
 
         // Validate username if provided
-        String username = usernameTextField.getText();
         if (!username.isEmpty() && !username.equals(currentUser.getUsername())) {
             currentUser.setUsername(username);
         }
 
         // Validate email if provided
-        String email = emailTextField.getText();
         if (!email.isEmpty() && !email.equals(currentUser.getEmail())) {
             if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
                 errorMessages.append("Invalid email format.\n");
-            }
-            // Check if the email is already registered
-            else if (userController.doesEmailExist(email)) {
+            } else if (userController.doesEmailExist(email)) {
                 errorMessages.append("An account with this email already exists.\n");
             } else {
                 currentUser.setEmail(email);
@@ -135,7 +135,6 @@ public class Profile extends BasePage {
         }
 
         // Validate password if provided
-        String password = passwordTextField.getText();
         if (!password.isEmpty()) {
             if (!password.matches(".*[A-Z].*")) {
                 errorMessages.append("Password must include at least 1 uppercase letter.\n");

@@ -34,7 +34,7 @@ public class RegistrationPage extends BasePage {
 
         Button registerButton = new Button("Register");
 
-        Label minimumRequirements = new Label("Minimum password requirements: \n1 uppercase, 1 number, 8 characters.");
+        Label minimumRequirements = new Label("Password requirements: 1 uppercase, 1 number, 8 characters.");
         minimumRequirements.setStyle("-fx-text-fill: green;");
 
         Label errorLabel = new Label();
