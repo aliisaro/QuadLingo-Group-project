@@ -22,3 +22,5 @@ We are a team of four people: Maisa, Cindy, Aliisa and Yasmin. We are all ICT en
 - [Work hours](https://docs.google.com/spreadsheets/d/10PlqGo4965hiHXeSnTN6XlKYykul5-xdi_aEbyekmFA/edit?gid=0#gid=0)
 
 ****
+<h3>Database</h3>
+![Relational Schema](https://github.com/aliisaro/QuadLingo-Group-project/blob/main/Schema.png?raw=true)
