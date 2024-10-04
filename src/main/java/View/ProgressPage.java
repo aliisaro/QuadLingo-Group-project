@@ -17,6 +17,8 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
     private final int userScore;
     private final int completedQuizzes;
     private final int allQuizzes;
+    private static final ProgressBar progressBar1 = new ProgressBar();
+    private static final ProgressBar progressBar2 = new ProgressBar();
 
     public ProgressPage(Stage stage) {
         UserDaoImpl userDao = new UserDaoImpl();
@@ -43,12 +45,10 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         Label progressLabel3 = new Label("Your quiz progress:");
         Label progressLabel4 = new Label("You have done " + completedQuizzes + " out of " + allQuizzes + " quizzes.");
 
-        ProgressBar progressBar1 = new ProgressBar();
         progressBar1.setStyle("-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;");
         progressBar1.setPrefWidth(200);
         progressBar1.setPrefHeight(20);
 
-        ProgressBar progressBar2 = new ProgressBar();
         progressBar2.setStyle("-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;");
         progressBar2.setPrefWidth(200);
         progressBar2.setPrefHeight(20);
@@ -92,6 +92,14 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         this.getChildren().add(mainBox);
     }
 
+    public static ProgressBar getProgressBar1() {
+        return progressBar1;
+    }
+
+    public static ProgressBar getProgressBar2() {
+        return progressBar2;
+    }
+
     @Override
     public void setMargin(Button button, int top, int right, int bottom, int left) {
         VBox.setMargin(button, new Insets(top, right, bottom, left));
@@ -113,4 +121,6 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
     public void setMarginVbox(VBox vBox, int top, int right, int bottom, int left) {
         VBox.setMargin(vBox, new Insets(top, right, bottom, left));
     }
+
+
 }

@@ -2,6 +2,7 @@ package View;
 
 import Controller.UserController;
 import Controller.QuizController; // Ensure you have a QuizController
+import DAO.ProgressDaoImpl;
 import DAO.UserDaoImpl;
 import DAO.QuizDaoImpl;
 import Database.MariaDbConnection;
@@ -13,17 +14,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.ProgressBar;
 
 import java.sql.Connection;
 import java.util.List;
 
-public class QuizLibrary extends BasePage {
-    private UserController userController; // UserController object
+public class QuizLibrary extends BasePage implements UpdateProgress {
+    private final UserController userController = new UserController(new UserDaoImpl()); // UserController object
     private QuizController quizController; // QuizController object
+    private final ProgressBar progressBar1 = ProgressPage.getProgressBar1();
+    private final ProgressBar progressBar2 = ProgressPage.getProgressBar2();
+    private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
+    private final int userID = userController.getCurrentUserId();
 
     public QuizLibrary(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
-        userController = new UserController(new UserDaoImpl());
 
         // Get the current logged-in user from the session
         User currentUser = SessionManager.getInstance().getCurrentUser();
@@ -80,6 +85,9 @@ public class QuizLibrary extends BasePage {
             quizzesBox.getChildren().add(quizButton);
         }
 
+        updateQuizProgress(progressBar1);
+        updateScoreProgress(progressBar2);
+
         // Add all components to the layout
         this.getChildren().addAll(
                 pageTitle,
@@ -88,5 +96,21 @@ public class QuizLibrary extends BasePage {
                 logoutButton
         );
 
+    }
+
+    @Override
+    public void updateQuizProgress(ProgressBar progressBar) {
+        int completedQuizzes = userController.getQuizzesCompleted(userID);
+        int allQuizzes = quizController.getAllQuizzes().size();
+        double progress = (double) completedQuizzes / allQuizzes;
+        progressBar.setProgress(progress);
+    }
+
+    @Override
+    public void updateScoreProgress(ProgressBar progressBar) {
+        int userScore = progressDao.getUserScore(userID);
+        int maxScore = progressDao.getMaxScore(userID);
+        double progress = (double) userScore / maxScore;
+        progressBar.setProgress(progress);
     }
 }
