@@ -8,7 +8,8 @@ public class IndexPage extends BasePage{
 
     public IndexPage(Stage stage) {
 
-        Label welcomeLabel = new Label("Welcome to the Index Page");
+        Label welcomeLabel = new Label("Welcome to QuadLingo!");
+        welcomeLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
 
         // go to the login page
         Button loginPageButton = new Button("Go to Login page");
