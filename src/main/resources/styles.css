@@ -44,7 +44,7 @@
 }
 
 .button {
-    -fx-background-color: FFAF87;
+    -fx-background-color: #FFAF87;
     -fx-text-fill: white;
     -fx-font-size: 1.1em;
     -fx-font-weight: bold;
@@ -54,7 +54,14 @@
 }
 
 .button:hover {
-    -fx-background-color: FF8E72;
+    -fx-background-color: #FF8E72;
+}
+
+.button:pressed {
+    -fx-background-color: #FF8E72;
+    -fx-padding: 12 8 8 12;
+    -fx-border-color: #584B53;
+    -fx-effect: innershadow(gaussian, rgba(88, 75, 83, 0.4), 3, 1.0, 5, 5); /* Focus shadow on bottom-right corner */
 }
 
 
