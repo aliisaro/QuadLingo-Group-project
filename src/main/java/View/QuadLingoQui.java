@@ -13,6 +13,7 @@ public class QuadLingoQui extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //Setting the title of the window
         primaryStage.setTitle("QuadLingo");
 
         //Go to index page where there is login and register buttons
