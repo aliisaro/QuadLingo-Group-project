@@ -2,17 +2,123 @@ package DAO;
 
 import Model.FlashCard;
 
-public class FCImplement implements FlashCardDao{
-    @Override
-    public void createFlashCard(FlashCard flashCard) {
-        // Implement database operation to create a new flashcard
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FCImplement implements FlashCardDao {
+
+    private Connection connection;
+
+    public FCImplement(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
-    public FlashCard getFlashCard(String question) {
-        // Implement database operation to get a flashcard by question
-        return null;
+    public List<FlashCard> getFlashCardsByTopic(String topic) {
+        List<FlashCard> flashCards = new ArrayList<>();
+        String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE Topic = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, topic);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String term = rs.getString("Term");
+                    String translation = rs.getString("Translation");
+                    flashCards.add(new FlashCard(term, translation, topic));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return flashCards;
     }
 
-    // Implement other methods related to FlashCard database operations
+    @Override
+    public List<FlashCard> getTopics() {
+        List<FlashCard> topics = new ArrayList<>();
+        String query = "SELECT DISTINCT Topic FROM FLASHCARD";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                String topic = rs.getString("Topic");
+                topics.add(new FlashCard(null, null, topic));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return topics;
+    }
+
+    @Override
+    public List<FlashCard> getAllFlashCards() {
+        List<FlashCard> flashCards = new ArrayList<>();
+        String query = "SELECT Term, Translation, Topic FROM FLASHCARD";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                String term = rs.getString("Term");
+                String translation = rs.getString("Translation");
+                String topic = rs.getString("Topic");
+                flashCards.add(new FlashCard(term, translation, topic));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flashCards;
+    }
+
+    @Override
+    public void masterFlashCard(int flashCardId, int userId) {
+        String query = "INSERT INTO ISMASTERED (FlashCardID, UserID) VALUES (?, ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, flashCardId);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void unmasterFlashCard(int flashCardId, int userId) {
+        String query = "DELETE FROM ISMASTERED WHERE FlashCardID = ? AND UserID = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, flashCardId);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<FlashCard> getMasteredFlashCards(int userId) {
+        List<FlashCard> flashCards = new ArrayList<>();
+        String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE FlashCardID IN (SELECT FlashCardID FROM ISMASTERED WHERE UserID = ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String term = rs.getString("Term");
+                    String translation = rs.getString("Translation");
+                    String topic = rs.getString("Topic");
+                    flashCards.add(new FlashCard(term, translation, topic));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flashCards;
+    }
 }

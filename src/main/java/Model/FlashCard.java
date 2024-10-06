@@ -4,44 +4,26 @@ public class FlashCard {
 
     public String term;
 
-    public String definition;
+    public String translation;
 
-    public boolean isMastered;
+    public String topic;
 
-    public String group;
-
-    public FlashCard(String term, String definition, boolean isMastered, String group) {
+    public FlashCard(String term, String translation, String topic) {
         this.term = term;
-        this.definition = definition;
-        this.isMastered = isMastered;
-        this.group = group;
+        this.translation = translation;
+        this.topic = topic;
     }
 
     public String getTerm() {
         return term;
     }
 
-    public String getDefinition() {
-        return definition;
+    public String getTranslation() {
+        return translation;
     }
 
-    public boolean getIsMastered() {
-        return isMastered;
+    public String getTopic() {
+        return topic;
     }
 
-    public String getGroup() {
-        return group;
-    }
-
-    public void setTerm(String term) {
-        this.term = term;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-
-    public void setIsMastered(boolean isMastered) {
-        this.isMastered = isMastered;
-    }
 }
