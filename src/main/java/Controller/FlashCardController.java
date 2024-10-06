@@ -13,8 +13,8 @@ public class FlashCardController {
         this.flashCardDao = flashCardDao;
     }
 
-    public List<FlashCard> getFlashCardsByTopic(String topic) {
-        return flashCardDao.getFlashCardsByTopic(topic);
+    public List<FlashCard> getFlashCardsByTopic(String topic, int userId) {
+        return flashCardDao.getFlashCardsByTopic(topic, userId);
     }
 
     public List<FlashCard> getTopics() {
@@ -22,7 +22,7 @@ public class FlashCardController {
     }
 
     public List<FlashCard> getMasteredFlashCards(int userId) {
-        return flashCardDao.getMasteredFlashCards(userId);
+        return flashCardDao.getMasteredFlashCardsByUser(userId);
     }
 
     public List<FlashCard> getAllFlashCards() {

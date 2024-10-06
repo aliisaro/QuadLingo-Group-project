@@ -20,12 +20,13 @@ public class FCImplement implements FlashCardDao {
     }
 
     @Override
-    public List<FlashCard> getFlashCardsByTopic(String topic) {
+    public List<FlashCard> getFlashCardsByTopic(String topic, int userId) {
         List<FlashCard> flashCards = new ArrayList<>();
-        String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE Topic = ?";
+        String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE Topic = ? AND FlashCardID NOT IN (SELECT FlashCardID FROM ISMASTERED WHERE UserID = ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, topic);
+            stmt.setInt(2, userId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     String term = rs.getString("Term");
@@ -104,7 +105,7 @@ public class FCImplement implements FlashCardDao {
     }
 
     @Override
-    public List<FlashCard> getMasteredFlashCards(int userId) {
+    public List<FlashCard> getMasteredFlashCardsByUser(int userId) {
         List<FlashCard> flashCards = new ArrayList<>();
         String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE FlashCardID IN (SELECT FlashCardID FROM ISMASTERED WHERE UserID = ?)";
 
@@ -121,6 +122,7 @@ public class FCImplement implements FlashCardDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return flashCards;
     }
 

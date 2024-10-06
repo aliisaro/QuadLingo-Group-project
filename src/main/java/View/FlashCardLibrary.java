@@ -23,10 +23,10 @@ public class FlashCardLibrary extends BasePage {
     private FlashCardController flashCardController;
 
     public FlashCardLibrary(Stage stage) {
-        //Get current user
+        // Get current user
         User currentUser = SessionManager.getInstance().getCurrentUser();
 
-        //If user is not logged in, redirect to index page
+        // If user is not logged in, redirect to index page
         if (!SessionManager.getInstance().isLoggedIn()) {
             stage.setScene(new IndexPage(stage).createScene());
             return;
@@ -41,7 +41,7 @@ public class FlashCardLibrary extends BasePage {
     }
 
     private void setLayout(Stage stage, User currentUser, Connection connection) {
-        //Page title
+        // Page title
         Label pageTitle = new Label("Flashcard Library");
         pageTitle.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
 
@@ -67,15 +67,23 @@ public class FlashCardLibrary extends BasePage {
         // Add each topic to the VBox
         for (FlashCard topic : topics) {
             Button topicButton = new Button(topic.getTopic());
-            topicButton.maxWidth(350);
+            topicButton.setMaxWidth(350);
 
-            // Set the action for the topic button
             topicButton.setOnAction(e -> {
                 FlashCardsPage flashCardsPage = new FlashCardsPage(flashCardController.getFlashCardDao(), topic.getTopic(), stage);
                 stage.setScene(flashCardsPage.createScene());
             });
             topicBox.getChildren().add(topicButton);
         }
+
+        // Add a button for mastered flashcards
+        Button masteredFlashcardsButton = new Button("Mastered Flashcards");
+        masteredFlashcardsButton.setMaxWidth(350);
+        masteredFlashcardsButton.setOnAction(e -> {
+            FlashCardsPage flashCardsPage = new FlashCardsPage(flashCardController.getFlashCardDao(), "Mastered Flashcards", stage);
+            stage.setScene(flashCardsPage.createScene());
+        });
+        topicBox.getChildren().add(masteredFlashcardsButton);
 
         // Add all components to the layout
         this.getChildren().addAll(pageTitle, backButton, logoutButton, topicBox);

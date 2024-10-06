@@ -27,21 +27,28 @@ public class FlashCardsPage extends BasePage {
     private Button unmarkMasteredButton;
 
     public FlashCardsPage(FlashCardDao flashCardDao, String topic, Stage stage) {
-        // Initialize FlashCardDao and VBox
         this.flashCardDao = flashCardDao;
-        this.flashcards = flashCardDao.getFlashCardsByTopic(topic);
         this.userController = new UserController(new UserDaoImpl());
         this.userID = userController.getCurrentUserId();
 
+        if (topic.equals("Mastered Flashcards")) {
+            this.flashcards = flashCardDao.getMasteredFlashCardsByUser(userID);
+            if (this.flashcards.isEmpty()) {
+                Label noMasteredFlashcardsLabel = new Label("You don't have mastered flashcards yet");
+                this.getChildren().add(noMasteredFlashcardsLabel);
+                return;
+            }
+            isMastered =true;
+        } else {
+            this.flashcards = flashCardDao.getFlashCardsByTopic(topic, userID);
+        }
 
-        // Check if the user is logged in
         if (!SessionManager.getInstance().isLoggedIn()) {
             stage.setScene(new IndexPage(stage).createScene());
             return;
         }
-
-        initializeUI(stage); // Initialize UI components
-        loadFlashCard(false); // Load the first flashcard
+        initializeUI(stage);
+        loadFlashCard(false);
     }
 
     private void initializeUI(Stage stage) {
@@ -70,9 +77,11 @@ public class FlashCardsPage extends BasePage {
                 endSession()
         );
 
-
-
-        this.getChildren().addAll(termLabel, translationLabel, flipFlashCardButton, markMasteredButton, nextFlashCardButton, endFlashCardSessionButton);
+        if (isMastered) {
+            this.getChildren().addAll(termLabel, translationLabel, flipFlashCardButton, unmarkMasteredButton, nextFlashCardButton, endFlashCardSessionButton);
+        } else {
+            this.getChildren().addAll(termLabel, translationLabel, flipFlashCardButton, markMasteredButton, nextFlashCardButton, endFlashCardSessionButton);
+        }
     }
 
     private void loadFlashCard(boolean showAnswer) {
@@ -102,13 +111,31 @@ public class FlashCardsPage extends BasePage {
 
     private void toggleMasteredStatus() {
         if (isMastered) {
+            // Unmark as mastered
             isMastered = false;
+            currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
+            flashCardDao.unmasterFlashCard(currentFlashCardId, userID);
             this.getChildren().remove(unmarkMasteredButton);
             this.getChildren().add(markMasteredButton);
         } else {
+            // Mark as mastered
             isMastered = true;
+            currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
+            flashCardDao.masterFlashCard(currentFlashCardId, userID);
             this.getChildren().remove(markMasteredButton);
             this.getChildren().add(unmarkMasteredButton);
+        }
+
+        // Refresh the list of flashcards
+        if (flashcards.get(currentFlashCardIndex).getTopic().equals("Mastered Flashcards")) {
+            flashcards = flashCardDao.getMasteredFlashCardsByUser(userID);
+            if (flashcards.isEmpty()) {
+                Label noMasteredFlashcardsLabel = new Label("You don't have mastered flashcards yet");
+                this.getChildren().clear();
+                this.getChildren().add(noMasteredFlashcardsLabel);
+            } else {
+                loadFlashCard(false);
+            }
         }
     }
 
@@ -117,6 +144,11 @@ public class FlashCardsPage extends BasePage {
         translationLabel.setText("");
         // Reset the current flashcard index
         currentFlashCardIndex = 0;
+
+        if (isMastered) {
+            currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
+            flashCardDao.masterFlashCard(currentFlashCardId, userID);
+        }
 
         // Redirect to the FlashCardLibrary page
         this.getScene().setRoot(new FlashCardLibrary((Stage) this.getScene().getWindow()));
