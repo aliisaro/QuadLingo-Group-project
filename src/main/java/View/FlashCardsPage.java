@@ -71,6 +71,8 @@ public class FlashCardsPage extends BasePage {
         );
 
 
+
+        this.getChildren().addAll(termLabel, translationLabel, flipFlashCardButton, markMasteredButton, nextFlashCardButton, endFlashCardSessionButton);
     }
 
     private void loadFlashCard(boolean showAnswer) {
@@ -87,9 +89,15 @@ public class FlashCardsPage extends BasePage {
         if (isMastered) {
             currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
             flashCardDao.masterFlashCard(currentFlashCardId, userID);
-        };
+        }
         isMastered = false;
         currentFlashCardIndex++;
+
+        if (currentFlashCardIndex >= flashcards.size()) {
+            currentFlashCardIndex = 0; // Reset to the first flashcard
+        }
+
+        loadFlashCard(false);
     }
 
     private void toggleMasteredStatus() {
