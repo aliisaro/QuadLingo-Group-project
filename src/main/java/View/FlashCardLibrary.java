@@ -66,6 +66,11 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
             updateFlashcardProgress(progressBar3);
         });
 
+        //Styling for special button
+        unmasterAllButton.setStyle("-fx-background-color: #e86c6c;");
+        unmasterAllButton.setOnMouseEntered(e -> unmasterAllButton.setStyle("-fx-background-color: #d9534f;"));
+        unmasterAllButton.setOnMouseExited(e -> unmasterAllButton.setStyle("-fx-background-color: #e86c6c;"));
+
         // Fetch FlashCard topics
         List<FlashCard> topics = flashCardController.getTopics();
 
