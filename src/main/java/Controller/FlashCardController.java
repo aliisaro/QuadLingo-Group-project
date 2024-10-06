@@ -28,4 +28,8 @@ public class FlashCardController {
     public List<FlashCard> getAllFlashCards() {
         return flashCardDao.getAllFlashCards();
     }
+
+    public FlashCardDao getFlashCardDao() {
+        return flashCardDao;
+    }
 }

@@ -11,4 +11,6 @@ public interface FlashCardDao {
     void masterFlashCard(int flashCardId, int userId);
     void unmasterFlashCard(int flashCardId, int userId);
     List<FlashCard> getMasteredFlashCards(int userId);
+    void checkMasteredStatus(int flashCardId, int userId);
+    int getCurrentFlashCardId(String term);
 }

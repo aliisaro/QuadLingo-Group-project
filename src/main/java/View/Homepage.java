@@ -49,6 +49,12 @@ public class Homepage extends BasePage implements setMarginButton {
         quizLibraryButton.setOnAction(e -> stage.setScene(new QuizLibrary(stage).createScene()));
         this.getChildren().add(quizLibraryButton);
 
+        // Button to go to Flashcard Library page
+        Button flashcardLibraryButton = new Button("Go to Flashcard Library");
+        setMargin(flashcardLibraryButton, 10, 10, 10, 5);
+        flashcardLibraryButton.setOnAction(e -> stage.setScene(new FlashCardLibrary(stage).createScene()));
+        this.getChildren().add(flashcardLibraryButton);
+
         Button achieButton = new Button("Go to Achievements");
         setMargin(achieButton, 10, 10, 10, 5);
         achieButton.setOnAction(e -> stage.setScene(new AchiePage(stage).createScene()));

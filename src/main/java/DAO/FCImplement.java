@@ -12,6 +12,8 @@ import java.util.List;
 public class FCImplement implements FlashCardDao {
 
     private Connection connection;
+    private int flashCardId;
+
 
     public FCImplement(Connection connection) {
         this.connection = connection;
@@ -120,5 +122,42 @@ public class FCImplement implements FlashCardDao {
             e.printStackTrace();
         }
         return flashCards;
+    }
+
+    @Override
+    public void checkMasteredStatus(int flashCardId, int userId) {
+        String query = "SELECT * FROM ISMASTERED WHERE FlashCardID = ? AND UserID = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, flashCardId);
+            stmt.setInt(2, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    System.out.println("Flashcard " + flashCardId + " is mastered by user " + userId);
+                } else {
+                    System.out.println("Flashcard " + flashCardId + " is not mastered by user " + userId);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public int getCurrentFlashCardId(String term) {
+        String query = "SELECT FlashCardID FROM FLASHCARD WHERE Term = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, term);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    flashCardId = rs.getInt("FlashCardID");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return flashCardId;
     }
 }
