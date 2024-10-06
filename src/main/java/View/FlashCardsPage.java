@@ -106,11 +106,6 @@ public class FlashCardsPage extends BasePage {
 
     // Load the next flashcard
     private void nextFlashCard() {
-        // Put the current flashcard in the mastered list table if it is mastered
-        if (isMastered) {
-            currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
-            flashCardDao.masterFlashCard(currentFlashCardId, userID);
-        }
 
         // Move to the next flashcard
         currentFlashCardIndex++;

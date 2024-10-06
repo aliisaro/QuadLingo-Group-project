@@ -60,6 +60,12 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
             stage.setScene(new IndexPage(stage).createScene());
         });
 
+        Button unmasterAllButton = new Button("Unmaster all flashcards");
+        unmasterAllButton.setOnAction(e -> {
+            flashCardController.unmasterAllFlashcards(userID);
+            updateFlashcardProgress(progressBar3);
+        });
+
         // Fetch FlashCard topics
         List<FlashCard> topics = flashCardController.getTopics();
 
@@ -92,7 +98,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         updateFlashcardProgress(progressBar3);
 
         // Add all components to the layout
-        this.getChildren().addAll(pageTitle, backButton, logoutButton, topicBox);
+        this.getChildren().addAll(pageTitle, backButton, logoutButton, unmasterAllButton, topicBox);
     }
 
     @Override

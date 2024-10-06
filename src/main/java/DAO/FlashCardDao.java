@@ -14,4 +14,5 @@ public interface FlashCardDao {
     void checkMasteredStatus(int flashCardId, int userId);
     int getCurrentFlashCardId(String term);
     boolean isFlashCardMastered(int flashCardId, int userId);
+    void unmasterAllFlashCards(int userId);
 }

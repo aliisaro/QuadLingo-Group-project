@@ -32,4 +32,8 @@ public class FlashCardController {
     public FlashCardDao getFlashCardDao() {
         return flashCardDao;
     }
+
+    public void unmasterAllFlashcards(int userId) {
+        flashCardDao.unmasterAllFlashCards(userId);
+    }
 }

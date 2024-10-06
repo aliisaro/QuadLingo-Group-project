@@ -12,7 +12,6 @@ import java.util.List;
 public class FCImplement implements FlashCardDao {
 
     private Connection connection;
-    private int flashCardId;
 
 
     public FCImplement(Connection connection) {
@@ -147,6 +146,7 @@ public class FCImplement implements FlashCardDao {
 
     @Override
     public int getCurrentFlashCardId(String term) {
+        int flashCardId = 0;
         String query = "SELECT FlashCardID FROM FLASHCARD WHERE Term = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -177,5 +177,16 @@ public class FCImplement implements FlashCardDao {
             e.printStackTrace();
         }
         return isMastered;
+    }
+
+    @Override
+    public void unmasterAllFlashCards(int userId) {
+        String query = "DELETE FROM ISMASTERED WHERE UserID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
