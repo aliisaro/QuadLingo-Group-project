@@ -1,43 +1,36 @@
 pipeline {
-    agent any
+    agent any //
 
+    environment {
+        // Define Docker Hub credentials ID
+        DOCKERHUB_CREDENTIALS_ID = 'dockerhub_credential'
+        // Define Docker Hub repository name
+        DOCKERHUB_REPO = 'aliisar/quadlingo'
+        // Define Docker image tag
+        DOCKER_IMAGE_TAG = 'latest'
+    }
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                // Checkout code from your repository
+                // Checkout code from Git repository
                 git 'https://github.com/aliisaro/QuadLingo-Group-project.git'
             }
         }
-
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                // Build the project
-                bat 'mvn clean package'
-            }
-        }
-
-        stage('Run Unit Tests') {
-            steps {
-                // Run the unit tests
-                bat 'mvn test'
-            }
-            post {
-                always {
-                    // Capture the test results
-                    junit 'target/surefire-reports/*.xml'
+                // Build Docker image
+                script {
+                    docker.build("${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}")
                 }
             }
         }
-
-        stage('Code Coverage Report') {
+        stage('Push Docker Image to Docker Hub') {
             steps {
-                // Generate the JaCoCo coverage report
-                bat 'mvn jacoco:report'
-            }
-            post {
-                always {
-                    // Publish the JaCoCo coverage report
-                    jacoco execPattern: 'target/jacoco.exec', classPattern: 'target/classes', sourcePattern: 'src/main/java', exclusionPattern: '**/SomeExcludedClass*'
+                // Push Docker image to Docker Hub
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS_ID) {
+                        docker.image("${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}").push()
+                    }
                 }
             }
         }
