@@ -8,8 +8,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -34,8 +34,16 @@ public class Profile extends BasePage {
     }
 
     private void setLayout(Stage stage, User currentUser) {
+        // Apply padding directly to 'this' (inheriting VBox)
+        this.setPadding(new Insets(10));
+        this.setSpacing(5); // Add spacing between all child elements
+
         // Page title
         Label pageTitle = new Label("Profile");
+        pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        // Set VBox margin for the title
+        VBox.setMargin(pageTitle, new Insets(0, 0, 0, 130));
 
         // Display current user's username, email, and password
         Label usernameLabel = new Label("Username: " + currentUser.getUsername());
@@ -61,25 +69,46 @@ public class Profile extends BasePage {
         Label successLabel = new Label();
         successLabel.setStyle("-fx-text-fill: green;");
 
+        // Create a container (HBox) for save and logout buttons
+        HBox buttonContainer1 = new HBox(10);
+
+        // Create a container (HBox) for back and progress buttons
+        HBox buttonContainer2 = new HBox(10);
+
         // Save Button to handle saving the profile information
-        Button saveButton = new Button("Save");
+        Button saveButton = new Button("Save changes");
+        saveButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
         saveButton.setOnAction(e -> handleSaveAction(usernameTextField, emailTextField, passwordTextField, currentUser, errorLabel, successLabel));
-
-        // Return to the homepage
-        Button backButton = new Button("Back to Main");
-        backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
-
-        // Go to the Progress page
-        Button buttonProgress = new Button("Go to Progress");
-        buttonProgress.setOnAction(e -> stage.setScene(new ProgressPage(stage).createScene()));
 
         // Logout button: clears session and redirects to IndexPage
         Button logoutButton = new Button("Logout");
+        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
             stage.setScene(new IndexPage(stage).createScene());
         });
 
+        // Back to the homepage
+        Button backButton = new Button("Back to homepage");
+        backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;  -fx-pref-width: 165");
+        backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
+
+        // Go to the Progress page
+        Button buttonProgress = new Button("Go to Progress");
+        buttonProgress.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        buttonProgress.setOnAction(e -> stage.setScene(new ProgressPage(stage).createScene()));
+
+        // Add buttons to the first button container
+        buttonContainer1.getChildren().addAll(saveButton, logoutButton);
+
+        // Add buttons to the second button container
+        buttonContainer2.getChildren().addAll(backButton, buttonProgress);
+
+        // Add an empty label for spacing
+        Label spacerLabel = new Label();
+        spacerLabel.setMinHeight(10); // Set a minimum height for the spacer
+
+        // Add all components to the main layout
         this.getChildren().addAll(
                 pageTitle,
                 usernameLabel,
@@ -91,10 +120,9 @@ public class Profile extends BasePage {
                 emailTextField,
                 changePasswordLabel,
                 passwordTextField,
-                saveButton,
-                backButton,
-                buttonProgress,
-                logoutButton,
+                spacerLabel,
+                buttonContainer1,
+                buttonContainer2,
                 errorLabel,
                 successLabel
         );

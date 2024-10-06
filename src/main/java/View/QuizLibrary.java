@@ -12,6 +12,7 @@ import Model.Quiz;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.ProgressBar;
@@ -52,16 +53,27 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         Label pageTitle = new Label("Quiz Library");
         pageTitle.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
 
+        // Set VBox alignment to center the title
+        VBox.setMargin(pageTitle, new Insets(0, 0, 0, 100));
+
         // Return to the homepage
         Button backButton = new Button("Back to Homepage");
+        backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165;");
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         // Logout button: clears session and redirects to IndexPage
         Button logoutButton = new Button("Logout");
+        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165;");
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
             stage.setScene(new IndexPage(stage).createScene());
         });
+
+        // Group buttons in an HBox for better alignment
+        HBox buttonBox = new HBox(10); // Set spacing between buttons (10px)
+        buttonBox.setPadding(new Insets(10, 0, 10, 0));
+        buttonBox.setStyle("-fx-alignment: center;"); // Center the buttons horizontally
+        buttonBox.getChildren().addAll(backButton, logoutButton);
 
         // Fetch all quizzes from the database
         List<Quiz> quizzes = quizController.getAllQuizzes();
@@ -69,7 +81,7 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         // VBox to hold quiz buttons
         VBox quizzesBox = new VBox(10);
         quizzesBox.setPadding(new Insets(10));
-        quizzesBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 10px; -fx-spacing: 10px;");
+        quizzesBox.setStyle("-fx-padding: 10px; -fx-spacing: 10px;");
 
         for (Quiz quiz : quizzes) {
             Button quizButton = new Button(quiz.getQuizTitle());
@@ -89,11 +101,11 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         updateScoreProgress(progressBar2);
 
         // Add all components to the layout
+        // Add all components to the layout
         this.getChildren().addAll(
                 pageTitle,
                 quizzesBox,
-                backButton,
-                logoutButton
+                buttonBox
         );
 
     }

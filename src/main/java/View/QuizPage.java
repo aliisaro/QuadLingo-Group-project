@@ -6,9 +6,12 @@ import Model.Question;
 import Model.User;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
+import javafx.scene.paint.Color; // For color changes
 import java.util.List;
 
 public class QuizPage extends BasePage {
@@ -21,6 +24,7 @@ public class QuizPage extends BasePage {
     private ToggleGroup answerGroup;
     private RadioButton[] answerButtons;
     private Label errorLabel;
+    private Label feedbackLabel;
 
     public QuizPage(QuizDao quizDao, int quizId, Stage stage) {
         this.quizDao = quizDao;
@@ -33,11 +37,14 @@ public class QuizPage extends BasePage {
             return;
         }
 
-        initializeUI(stage); // Initialize UI components
+        setLayout(stage); // Initialize UI components
         loadQuestion(); // Load the first question
     }
 
-    private void initializeUI(Stage stage) {
+    private void setLayout(Stage stage) {
+        // Apply padding directly to 'this' (inheriting VBox)
+        this.setPadding(new Insets(20)); // 20px padding around the VBox
+
         // Initialize question label
         questionLabel = new Label();
         questionLabel.setWrapText(true);
@@ -59,24 +66,43 @@ public class QuizPage extends BasePage {
             answersBox.getChildren().add(answerButtons[i]);
         }
 
+        // Label for immediate feedback once answer is submitted
+        feedbackLabel = new Label();
+        feedbackLabel.setVisible(false); // Initially hidden
+
         // Initialize Submit Button
         Button submitButton = new Button("Submit Answer");
-        submitButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+        submitButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 175;");
         submitButton.setOnAction(e -> handleSubmitAnswer());
 
-        // Initialize error label
-        errorLabel = new Label();
-        errorLabel.setStyle("-fx-text-fill: red;");
+        // Initialize Cancel Button (to cancel the current quiz and go back)
+        Button cancelButton = new Button("Cancel Quiz");
+        cancelButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 150;");
+        cancelButton.setOnAction(e -> {
+            // Navigate back to Quiz Library without saving or finishing the quiz
+            stage.setScene(new QuizLibrary(stage).createScene());
+        });
 
         // Logout button
         Button logoutButton = new Button("Logout");
+        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125;");
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
             stage.setScene(new IndexPage(stage).createScene());
         });
 
+        // Group buttons in an HBox for better alignment
+        HBox buttonBox = new HBox(10); // Set spacing between buttons (10px)
+        buttonBox.setPadding(new Insets(10, 0, 10, 0));
+        buttonBox.setStyle("-fx-alignment: center;"); // Center the buttons horizontally
+        buttonBox.getChildren().addAll(submitButton, cancelButton, logoutButton);
+
+        // Initialize error label
+        errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red;");
+
         // Add all components to the layout
-        this.getChildren().addAll(questionLabel, answersBox, submitButton, errorLabel, logoutButton);
+        this.getChildren().addAll(questionLabel, answersBox, feedbackLabel, errorLabel, buttonBox);
     }
 
     private void loadQuestion() {
@@ -114,15 +140,28 @@ public class QuizPage extends BasePage {
             // Check if the selected answer is correct
             if (quizDao.checkAnswer(currentQuestion.getQuestionId(), selectedAnswer)) {
                 score++; // Increment score for correct answer
+                feedbackLabel.setText("Correct!"); // Set feedback for correct answer
+                feedbackLabel.setTextFill(Color.GREEN); // Set text color to green
+            } else {
+                feedbackLabel.setText("Incorrect! The correct answer is: " + currentQuestion.getCorrectAnswer()); // Display correct answer
+                feedbackLabel.setTextFill(Color.RED); // Set text color to red
             }
 
-            currentQuestionIndex++; // Move to next question
-            loadQuestion(); // Load the next question
+            feedbackLabel.setVisible(true); // Show feedback label
+
+            // Add a brief pause before loading the next question
+            PauseTransition pause = new PauseTransition(Duration.seconds(1)); // Adjust the duration as needed
+            pause.setOnFinished(event -> {
+                currentQuestionIndex++; // Move to next question
+                loadQuestion(); // Load the next question
+            });
+            pause.play(); // Start the pause transition
         } else {
             // Display error message in the UI instead of an alert
             errorLabel.setText("Please select an answer before submitting.");
         }
     }
+
 
     private void showFinalScore() {
         // Clear existing content
@@ -156,7 +195,7 @@ public class QuizPage extends BasePage {
 
         // Button to return to Quiz Library
         Button backButton = new Button("Back to Quiz Library");
-        backButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+        backButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;-fx-pref-width: 180;");
         backButton.setOnAction(e -> {
             Stage stage = (Stage) this.getScene().getWindow();
             stage.setScene(new QuizLibrary(stage).createScene());
