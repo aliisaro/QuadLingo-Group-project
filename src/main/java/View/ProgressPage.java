@@ -17,8 +17,12 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
     private final int userScore;
     private final int completedQuizzes;
     private final int allQuizzes;
+    private final int masteredFlashcards;
+    private final int allFlashcards;
+    private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
     private static final ProgressBar progressBar1 = new ProgressBar();
     private static final ProgressBar progressBar2 = new ProgressBar();
+    private static final ProgressBar progressBar3 = new ProgressBar();
 
     //Displays the progress page
     public ProgressPage(Stage stage) {
@@ -32,6 +36,8 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         maxScore = progressDao.getMaxScore(userID);
         completedQuizzes = progressDao.getAllCompletedQuizzes(userID);
         allQuizzes = progressDao.getQuizAmount();
+        masteredFlashcards = progressDao.getMasteredFlashcards(userID);
+        allFlashcards = progressDao.getFlashcardAmount();
 
         //Button to go to the profile page
         Button profileButton = new Button("Go to Profile");
@@ -47,7 +53,9 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         progressLabel1.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
         Label progressLabel2 = new Label("Your score progress:");
         Label progressLabel3 = new Label("Your quiz progress:");
+        Label progressLabel5 = new Label("Your flashcard progress:");
         Label progressLabel4 = new Label("You have done " + completedQuizzes + " out of " + allQuizzes + " quizzes.");
+        Label progressLabel6 = new Label("You have mastered " + masteredFlashcards + " out of " + allFlashcards + " flashcards.");
 
         //Styling the progress bars
         progressBar1.setStyle("-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;");
@@ -56,8 +64,13 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         progressBar2.setStyle("-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;");
         progressBar2.setPrefWidth(200);
         progressBar2.setPrefHeight(20);
+        progressBar3.setStyle("-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;");
+        progressBar3.setPrefWidth(200);
+        progressBar3.setPrefHeight(20);
+
         progressBar1.getStyleClass().add("progress-bar");
         progressBar2.getStyleClass().add("progress-bar");
+        progressBar3.getStyleClass().add("progress-bar");
 
         //Outer box for the progress bar
         VBox progressBarBox1 = new VBox();
@@ -83,9 +96,23 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
 
         progressBarBox2.getChildren().add(innerBox2);
 
+        //Outer box for the progress bar
+        VBox progressBarBox3 = new VBox();
+        progressBarBox3.getStyleClass().add("progressBarBox");
+        setMarginVbox(progressBarBox3, 5, 10, 5, 10);
+
+        //Inner box for the progress bar
+        VBox innerBox3 = new VBox();
+        innerBox3.setPadding(new Insets(0));
+        innerBox3.getChildren().addAll(progressLabel4, progressBar3);
+
+        progressBarBox3.getChildren().add(innerBox3);
+
         //Update the progress bars
         updateQuizProgress(progressBar1);
         updateScoreProgress(progressBar2);
+        updateFlashcardProgress(progressBar3);
+
 
         VBox mainBox = new VBox();
 
@@ -96,7 +123,11 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
                 buttonHome,
                 progressBarBox1,
                 progressLabel4,
-                progressBarBox2
+                progressBarBox2,
+                progressLabel5,
+                progressBarBox3,
+                progressLabel6
+
         );
 
         this.getChildren().add(mainBox);
@@ -108,6 +139,9 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
     }
     public static ProgressBar getProgressBar2() {
         return progressBar2;
+    }
+    public static ProgressBar getProgressBar3() {
+        return progressBar3;
     }
 
     @Override
@@ -127,6 +161,13 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
     //Update the score progress
     public void updateScoreProgress(ProgressBar progressBar) {
         double progressPercentage = (double) userScore / maxScore;
+        progressBar.setProgress(progressPercentage);
+    }
+
+    @Override
+    //Update the flashcard progress
+    public void updateFlashcardProgress(ProgressBar progressBar) {
+        double progressPercentage = (double) masteredFlashcards / allFlashcards;
         progressBar.setProgress(progressPercentage);
     }
 

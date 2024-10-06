@@ -113,4 +113,9 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         double progress = (double) userScore / maxScore;
         progressBar.setProgress(progress);
     }
+
+    @Override
+    public void updateFlashcardProgress(ProgressBar progressBar) {
+        // Not implemented
+    }
 }

@@ -11,9 +11,10 @@ public interface ProgressDao {
 
     int getQuizAmount();
     void updateProgressQuiz(int user, int score);
-    // Other methods related to Progress database operations
 
     int getMaxScore(int user);
 
-    /* void updateProgressFlashcard(int user, int score); */
+    int getMasteredFlashcards(int user);
+
+    int getFlashcardAmount();
 }

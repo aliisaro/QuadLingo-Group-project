@@ -157,21 +157,47 @@ public class ProgressDaoImpl implements ProgressDao {
         // Implement database operation to update progress
     }
 
-    // Uncomment if this method is needed
-    /* @Override
-    public void updateProgressFlashcard(int user, int flashcard) {
+    @Override
+    public int getMasteredFlashcards(int user) {
+        int totalMastered = 0;
+
         try (Connection connection = MariaDbConnection.getConnection()) {
-            String query = "UPDATE ISMASTERED SET FlashcardID = ? WHERE UserID = ?";
+            String query = "SELECT COUNT(*) AS TotalMastered FROM ISMASTERED WHERE UserID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, flashcard);
-            statement.setInt(2, user);
-            statement.executeUpdate();
+            statement.setInt(1, user);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                totalMastered = resultSet.getInt("TotalMastered");
+            }
+            resultSet.close();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace(); // Log the error
         }
-    } */
 
+        return totalMastered;
+    }
 
-    // Implement other methods related to Progress database operations
+    @Override
+    public int getFlashcardAmount() {
+        int totalFlashcards = 0;
+
+        try (Connection connection = MariaDbConnection.getConnection()) {
+            String query = "SELECT COUNT(*) AS TotalFlashcards FROM FLASHCARD";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                totalFlashcards = resultSet.getInt("TotalFlashcards");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the error
+        }
+
+        return totalFlashcards;
+    }
+
 }

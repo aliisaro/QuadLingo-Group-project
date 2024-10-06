@@ -3,6 +3,7 @@ package View;
 import Controller.FlashCardController;
 import Controller.UserController;
 import DAO.FCImplement;
+import DAO.ProgressDaoImpl;
 import DAO.UserDaoImpl;
 import Database.MariaDbConnection;
 import Main.SessionManager;
@@ -11,16 +12,19 @@ import Model.User;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.util.List;
 import javafx.scene.layout.VBox;
 
-public class FlashCardLibrary extends BasePage {
+public class FlashCardLibrary extends BasePage implements UpdateProgress{
     private final UserController userController = new UserController(new UserDaoImpl());
     private final int userID = userController.getCurrentUserId();
     private FlashCardController flashCardController;
+    private final ProgressBar progressBar3 = ProgressPage.getProgressBar3();
+    private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
 
     public FlashCardLibrary(Stage stage) {
         // Get current user
@@ -85,7 +89,27 @@ public class FlashCardLibrary extends BasePage {
         });
         topicBox.getChildren().add(masteredFlashcardsButton);
 
+        updateFlashcardProgress(progressBar3);
+
         // Add all components to the layout
         this.getChildren().addAll(pageTitle, backButton, logoutButton, topicBox);
+    }
+
+    @Override
+    public void updateQuizProgress(ProgressBar progressBar) {
+        // Not implemented
+    }
+
+    @Override
+    public void updateScoreProgress(ProgressBar progressBar) {
+        // Not implemented
+    }
+
+    @Override
+    public void updateFlashcardProgress(ProgressBar progressBar) {
+        int masteredFlashcards = progressDao.getMasteredFlashcards(userID);
+        int allFlashcards = progressDao.getFlashcardAmount();
+        double progress = (double) masteredFlashcards / allFlashcards;
+        progressBar.setProgress(progress);
     }
 }

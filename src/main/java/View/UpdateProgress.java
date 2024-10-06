@@ -8,4 +8,6 @@ public interface UpdateProgress {
 
     void updateScoreProgress(ProgressBar progressBar);
 
+    void updateFlashcardProgress(ProgressBar progressBar);
+
 }
