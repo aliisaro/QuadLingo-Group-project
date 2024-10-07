@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="Edited UI of QuizLibrary, QuizPage and profile page">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/QuizPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/QuizPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/RegistrationPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/RegistrationPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +107,7 @@
       <command value="mvn clean install" />
     </option>
   </component>
-  <component name="RunManager" selected="Docker.Dockerfile">
+  <component name="RunManager">
     <configuration name="UserTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
@@ -172,6 +172,7 @@
       <workItem from="1727960986358" duration="1333000" />
       <workItem from="1727970631091" duration="998000" />
       <workItem from="1727978820087" duration="2693000" />
+      <workItem from="1728288590909" duration="2465000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />

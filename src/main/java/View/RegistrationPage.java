@@ -6,6 +6,8 @@ import Main.SessionManager;
 import Model.User;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class RegistrationPage extends BasePage {
@@ -20,9 +22,16 @@ public class RegistrationPage extends BasePage {
     }
 
     private void setLayout(Stage stage) {
+        // Apply padding directly to 'this' (inheriting VBox)
+        this.setPadding(new Insets(10));
+        this.setSpacing(5); // Add spacing between all child elements
+
         // Elements
         Label titleLabel = new Label("Sign Up");
-        titleLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
+        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        // Set VBox margin for the title
+        VBox.setMargin(titleLabel, new Insets(0, 0, 0, 130));
 
         Label usernameLabel = new Label("Username");
         TextField usernameField = new TextField();
@@ -33,28 +42,30 @@ public class RegistrationPage extends BasePage {
         Label passwordLabel = new Label("Password");
         PasswordField passwordField = new PasswordField();
 
-        Button registerButton = new Button("Sign up");
-
-        Label hasAccountLabel = new Label("Already have an account?");
-        Label loginLabel = new Label("Login instead:");
-
-        Button loginButton = new Button("Login");
-
-        Label minimumRequirements = new Label("Password requirements: 1 uppercase, 1 number, 8 characters.");
-        minimumRequirements.setStyle("-fx-text-fill: green;");
-
-        Label errorLabel = new Label();
-        errorLabel.setStyle("-fx-text-fill: red;");
-
         // Handle registerButton click
-        registerButton.setOnAction(event -> handleRegisterAction(usernameField, emailField, passwordField, errorLabel, stage));
-
-        // Go to the login page
-        loginButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
+        Button registerButton = new Button("Sign up");
+        registerButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        registerButton.setOnAction(event -> handleRegisterAction(usernameField, emailField, passwordField, stage));
 
         // Back to Index Page button
-        Button indexPageButton = new Button("Go back to Index page");
+        Button indexPageButton = new Button("Go back");
+        indexPageButton .setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
         indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
+
+        // Add an empty label for spacing
+        Label spacerLabel = new Label();
+        spacerLabel.setMinHeight(10); // Set a minimum height for the spacer
+
+        Label hasAccountLabel = new Label("Already have an account? Login instead:");
+
+        // Go to the login page
+        Button loginButton = new Button("Login");
+        loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        loginButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
+
+        // Create a container (HBox) for buttons
+        HBox buttonContainer = new HBox(10);
+        buttonContainer.getChildren().addAll(registerButton, indexPageButton);
 
         // Add elements to layout
         this.getChildren().addAll(
@@ -65,17 +76,14 @@ public class RegistrationPage extends BasePage {
                 emailField,
                 passwordLabel,
                 passwordField,
-                registerButton,
-                minimumRequirements,
+                spacerLabel,
+                buttonContainer,
                 hasAccountLabel,
-                loginLabel,
-                loginButton,
-                errorLabel,
-                indexPageButton
+                loginButton
         );
     }
 
-    private void handleRegisterAction(TextField usernameField, TextField emailField, PasswordField passwordField, Label errorLabel, Stage stage) {
+    private void handleRegisterAction(TextField usernameField, TextField emailField, PasswordField passwordField, Stage stage) {
         String username = usernameField.getText();
         String email = emailField.getText();
         String password = passwordField.getText();
@@ -106,9 +114,13 @@ public class RegistrationPage extends BasePage {
             errorMessages.append("Password must be at least 8 characters.\n");
         }
 
-        // If there are errors, display them
+        // If there are errors, display them in an alert
         if (errorMessages.length() > 0) {
-            errorLabel.setText(errorMessages.toString());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Registration Error");
+            alert.setHeaderText(null);
+            alert.setContentText(errorMessages.toString());
+            alert.showAndWait();
         } else {
             // If validation passes, call the UserController to register the user
             User user = userController.createUser(username, password, email);
@@ -117,7 +129,11 @@ public class RegistrationPage extends BasePage {
                 stage.setScene(new Homepage(stage).createScene()); // Redirect to the homepage
                 System.out.println("Registration successful: " + user.getUsername() + "\n");
             } else {
-                errorLabel.setText("Registration failed. Please try again.");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Registration Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Registration failed. Please try again.");
+                alert.showAndWait();
                 System.out.println("Registration failed.\n");
             }
         }

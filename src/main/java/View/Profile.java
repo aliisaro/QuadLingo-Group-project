@@ -5,6 +5,7 @@ import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.User;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -62,13 +63,6 @@ public class Profile extends BasePage {
         Label changePasswordLabel = new Label("Change password:");
         PasswordField passwordTextField = new PasswordField();
 
-        // Labels for error and success messages
-        Label errorLabel = new Label();
-        errorLabel.setStyle("-fx-text-fill: red;");
-
-        Label successLabel = new Label();
-        successLabel.setStyle("-fx-text-fill: green;");
-
         // Create a container (HBox) for save and logout buttons
         HBox buttonContainer1 = new HBox(10);
 
@@ -78,7 +72,7 @@ public class Profile extends BasePage {
         // Save Button to handle saving the profile information
         Button saveButton = new Button("Save changes");
         saveButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
-        saveButton.setOnAction(e -> handleSaveAction(usernameTextField, emailTextField, passwordTextField, currentUser, errorLabel, successLabel));
+        saveButton.setOnAction(e -> handleSaveAction(usernameTextField, emailTextField, passwordTextField, currentUser));
 
         // Logout button: clears session and redirects to IndexPage
         Button logoutButton = new Button("Logout");
@@ -90,7 +84,7 @@ public class Profile extends BasePage {
 
         // Back to the homepage
         Button backButton = new Button("Back to homepage");
-        backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;  -fx-pref-width: 165");
+        backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         // Go to the Progress page
@@ -122,14 +116,12 @@ public class Profile extends BasePage {
                 passwordTextField,
                 spacerLabel,
                 buttonContainer1,
-                buttonContainer2,
-                errorLabel,
-                successLabel
+                buttonContainer2
         );
     }
 
     // Logic to handle saving the profile information
-    private void handleSaveAction(TextField usernameTextField, TextField emailTextField, PasswordField passwordTextField, User currentUser, Label errorLabel, Label successLabel) {
+    private void handleSaveAction(TextField usernameTextField, TextField emailTextField, PasswordField passwordTextField, User currentUser) {
         UserController userController = UserController.getInstance(UserDaoImpl.getInstance()); // Initialize UserController
 
         // Trim whitespace from inputs
@@ -139,8 +131,7 @@ public class Profile extends BasePage {
 
         // Check if all fields are empty
         if (username.isEmpty() && email.isEmpty() && password.isEmpty()) {
-            errorLabel.setText("At least one field must be filled out to update the profile.");
-            successLabel.setText(""); // Clear success message
+            showAlert("Error", "At least one field must be filled out to update the profile.");
             return; // Exit the method early
         }
 
@@ -177,17 +168,14 @@ public class Profile extends BasePage {
             }
         }
 
-        // If there are errors, display them
+        // If there are errors, display them as an alert
         if (errorMessages.length() > 0) {
-            errorLabel.setText(errorMessages.toString());
-            successLabel.setText(""); // Clear success message
+            showAlert("Error", errorMessages.toString());
         } else {
             // If no errors, update the user
             boolean isUpdated = userController.updateUser(currentUser);
             if (isUpdated) {
-                successLabel.setText("Profile updated successfully.");
-                errorLabel.setText(""); // Clear error message
-
+                showAlert("Success", "Profile updated successfully.");
                 System.out.println("Profile updated successfully:");
                 System.out.println("Username: " + currentUser.getUsername());
                 System.out.println("Email: " + currentUser.getEmail());
@@ -201,8 +189,7 @@ public class Profile extends BasePage {
                 // Refresh the page to display updated info
                 refreshProfilePage();
             } else {
-                errorLabel.setText("Failed to update profile.");
-                successLabel.setText(""); // Clear success message
+                showAlert("Error", "Failed to update profile.");
                 System.out.println("Failed to update profile.\n");
             }
         }
@@ -212,5 +199,14 @@ public class Profile extends BasePage {
     private void refreshProfilePage() {
         Stage currentStage = (Stage) this.getScene().getWindow();
         currentStage.setScene(new Profile(currentStage).createScene());
+    }
+
+    // Method to show an alert
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

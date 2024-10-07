@@ -48,7 +48,7 @@ public class QuizPage extends BasePage {
         // Initialize question label
         questionLabel = new Label();
         questionLabel.setWrapText(true);
-        questionLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        questionLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: bold;");
 
         // Initialize ToggleGroup for answers
         answerGroup = new ToggleGroup();

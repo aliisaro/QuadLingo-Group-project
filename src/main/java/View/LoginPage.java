@@ -4,7 +4,10 @@ import Controller.UserController;
 import DAO.UserDaoImpl; // Import UserDaoImpl
 import Main.SessionManager;
 import Model.User;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class LoginPage extends BasePage {
@@ -19,9 +22,16 @@ public class LoginPage extends BasePage {
     }
 
     private void setLayout(Stage stage) {
+        // Apply padding directly to 'this' (inheriting VBox)
+        this.setPadding(new Insets(10));
+        this.setSpacing(5); // Add spacing between all child elements
+
         // Create and configure the login page UI components
         Label titleLabel = new Label("Login");
-        titleLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
+        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        // Set VBox margin for the title
+        VBox.setMargin(titleLabel, new Insets(0, 0, 0, 130));
 
         Label usernameLabel = new Label("Username");
         TextField usernameField = new TextField();
@@ -29,25 +39,30 @@ public class LoginPage extends BasePage {
         Label passwordLabel = new Label("Password");
         PasswordField passwordField = new PasswordField();
 
-        Button loginButton = new Button("Login");
-
-        Label noAccountLabel = new Label("Don't have an account?");
-        Label registerLabel = new Label("Sign up instead:");
-
-        Button registerButton = new Button("Sign up");
-
-        Label errorLabel = new Label();
-        errorLabel.setStyle("-fx-text-fill: red;");
-
         // Handle login button click
-        loginButton.setOnAction(e -> handleLoginAction(usernameField, passwordField, errorLabel, stage));
-
-        // Go to the registration page
-        registerButton.setOnAction(e -> stage.setScene(new RegistrationPage(stage).createScene()));
+        Button loginButton = new Button("Login");
+        loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        loginButton.setOnAction(e -> handleLoginAction(usernameField, passwordField, stage));
 
         // Go back to the index page
-        Button indexPageButton = new Button("Go back to Index page");
+        Button indexPageButton = new Button("Go back");
+        indexPageButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
         indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
+
+        // Add an empty label for spacing
+        Label spacerLabel = new Label();
+        spacerLabel.setMinHeight(10); // Set a minimum height for the spacer
+
+        Label noAccountLabel = new Label("Don't have an account? Sign up instead:");
+
+        // Go to the registration page
+        Button registerButton = new Button("Sign up");
+        registerButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        registerButton.setOnAction(e -> stage.setScene(new RegistrationPage(stage).createScene()));
+
+        // Create a container (HBox) for buttons
+        HBox buttonContainer = new HBox(10);
+        buttonContainer.getChildren().addAll(loginButton, indexPageButton);
 
         // Add elements to layout
         getChildren().addAll(
@@ -56,15 +71,13 @@ public class LoginPage extends BasePage {
                 usernameField,
                 passwordLabel,
                 passwordField,
-                loginButton,
+                spacerLabel,
+                buttonContainer,
                 noAccountLabel,
-                registerLabel,
-                registerButton,
-                errorLabel,
-                indexPageButton);
+                registerButton);
     }
 
-    private void handleLoginAction(TextField usernameField, PasswordField passwordField, Label errorLabel, Stage stage) {
+    private void handleLoginAction(TextField usernameField, PasswordField passwordField, Stage stage) {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
@@ -89,6 +102,13 @@ public class LoginPage extends BasePage {
             }
         }
 
-        errorLabel.setText(errorMessages.toString()); // Display error messages
+        // If there are error messages, show them in an alert
+        if (errorMessages.length() > 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Login Error");
+            alert.setHeaderText(null);
+            alert.setContentText(errorMessages.toString());
+            alert.showAndWait();
+        }
     }
 }
