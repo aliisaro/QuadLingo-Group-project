@@ -10,6 +10,7 @@
     -fx-background-color: D6E3F8;
 }
 
+/* Styling for progress bar */
 .progressBarBox {
     -fx-background-color: #c1d3f6;
     -fx-padding: 15; /* Increase padding to make the box larger */
@@ -36,6 +37,8 @@
     -fx-max-width: 200px; /* Set maximum width */
     -fx-max-height: 20px; /* Set maximum height */
 }
+
+/* Styling for buttons */
 
 .label {
     -fx-padding: 10 10 10 5;
@@ -64,5 +67,17 @@
     -fx-effect: innershadow(gaussian, rgba(88, 75, 83, 0.4), 3, 1.0, 5, 5); /* Focus shadow on bottom-right corner */
 }
 
+/*Styling for flashcard pages*/
+.label-term {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+}
+
+.label-translation {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+}
 
 

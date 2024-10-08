@@ -62,11 +62,11 @@ public class FlashCardsPage extends BasePage {
     private void initializeUI(Stage stage) {
         termLabel = new Label();
         termLabel.setWrapText(true);
-        termLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        termLabel.getStyleClass().add("label-term");
 
         translationLabel = new Label();
         translationLabel.setWrapText(true);
-        translationLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        translationLabel.getStyleClass().add("label-translation");
 
         Button flipFlashCardButton = new Button("Show Answer");
         flipFlashCardButton.setOnAction(e -> loadFlashCard(true));

@@ -5,12 +5,37 @@
 
 ****
 **Quadlingo** is a fullstack app for learning languages. It is programmed using Java, JavaFX and CSS.
-While it is still under development, the app will have the following features: user registration, user login, profile creation, flashcards, quizzes, achievements, and a user progress tracker.
 
-We are a team of four people: Maisa, Cindy, Aliisa and Yasmin. We are all ICT engineering students at Metropolia University of Applied Sciences. This project is part of our studies.
+The app is designed to help English speakers learn the basics of Finnish. The app has a variety of features such as: user profile and progress, flashcards, quizzes and achievements.
+With the help of these features, the user can learn Finnish in a fun and interactive way.
 
 ****
 
+<h3>Technology utilized</h3>
+
+****
+
+For coding the projects Frontend and Backend we used Java, JavaFX and CSS. The whole project was made using IntelliJ IDEA.
+Since the project is a group project, we used GitHub for version control and Trello for project management. The prototype was made on Figma.
+We also used Google Docs for project Sprint documentation and Google Sheets for tracking work hours.
+
+Artificial intelligence was used for writing the questions and answers for the quizzes. For writing the code of some of the functionalities in this project, we used ChatGpt and Copilot.
+
+****
+
+<h3>Installation</h3>
+
+****
+
+1. Create a new project in IntelliJ IDEA.
+2. Clone the project from GitHub.
+```bash
+git clone https://github.com/aliisaro/QuadLingo-Group-project.git
+```
+3. Run the project.
+4. Enjoy!
+
+****
 
 <h3>Links:</h3>
 
