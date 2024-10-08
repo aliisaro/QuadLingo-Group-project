@@ -10,9 +10,11 @@ import Main.SessionManager;
 import Model.FlashCard;
 import Model.User;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
@@ -50,8 +52,10 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         pageTitle.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
 
         // Return to the homepage
-        Button backButton = new Button("Back to Homepage");
+        Button backButton = new Button("Homepage");
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
+        backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        backButton.setMaxWidth(Double.MAX_VALUE);
 
         // Logout button: clears session and redirects to IndexPage
         Button logoutButton = new Button("Logout");
@@ -59,17 +63,29 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
             SessionManager.getInstance().logout();
             stage.setScene(new IndexPage(stage).createScene());
         });
+        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        logoutButton.setMaxWidth(Double.MAX_VALUE);
 
-        Button unmasterAllButton = new Button("Unmaster all flashcards");
+        Button unmasterAllButton = new Button("Unmaster all");
         unmasterAllButton.setOnAction(e -> {
             flashCardController.unmasterAllFlashcards(userID);
             updateFlashcardProgress(progressBar3);
         });
 
         //Styling for special button
-        unmasterAllButton.setStyle("-fx-background-color: #e86c6c;");
+        unmasterAllButton.setStyle("-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px;");
+        unmasterAllButton.setMaxWidth(Double.MAX_VALUE);
         unmasterAllButton.setOnMouseEntered(e -> unmasterAllButton.setStyle("-fx-background-color: #d9534f;"));
         unmasterAllButton.setOnMouseExited(e -> unmasterAllButton.setStyle("-fx-background-color: #e86c6c;"));
+
+        // Create an HBox to hold the buttons
+        HBox buttonBox = new HBox(10); // 10px spacing between buttons
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.getChildren().addAll(backButton, logoutButton, unmasterAllButton);
+
+        HBox.setHgrow(backButton, javafx.scene.layout.Priority.ALWAYS);
+        HBox.setHgrow(logoutButton, javafx.scene.layout.Priority.ALWAYS);
+        HBox.setHgrow(unmasterAllButton, javafx.scene.layout.Priority.ALWAYS);
 
         // Fetch FlashCard topics
         List<FlashCard> topics = flashCardController.getTopics();
@@ -83,6 +99,10 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         for (FlashCard topic : topics) {
             Button topicButton = new Button(topic.getTopic());
             topicButton.setMaxWidth(350);
+            topicButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+            topicButton.setMaxWidth(Double.MAX_VALUE);
+
+            HBox.setHgrow(topicButton, javafx.scene.layout.Priority.ALWAYS);
 
             topicButton.setOnAction(e -> {
                 FlashCardsPage flashCardsPage = new FlashCardsPage(flashCardController.getFlashCardDao(), topic.getTopic(), stage);
@@ -94,6 +114,9 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         // Add a button for mastered flashcards
         Button masteredFlashcardsButton = new Button("Mastered Flashcards");
         masteredFlashcardsButton.setMaxWidth(350);
+        masteredFlashcardsButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+        masteredFlashcardsButton.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(masteredFlashcardsButton, javafx.scene.layout.Priority.ALWAYS);
         masteredFlashcardsButton.setOnAction(e -> {
             FlashCardsPage flashCardsPage = new FlashCardsPage(flashCardController.getFlashCardDao(), "Mastered Flashcards", stage);
             stage.setScene(flashCardsPage.createScene());
@@ -103,7 +126,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         updateFlashcardProgress(progressBar3);
 
         // Add all components to the layout
-        this.getChildren().addAll(pageTitle, backButton, logoutButton, unmasterAllButton, topicBox);
+        this.getChildren().addAll(pageTitle, topicBox, buttonBox);
     }
 
     @Override

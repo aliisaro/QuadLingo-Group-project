@@ -36,6 +36,7 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
         int userId = userController.getCurrentUserId();
 
         Label AchieLabel1 = new Label("Achievements Page");
+        AchieLabel1.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
 
         //Button to go to the profile page
         Button profileButton = new Button("Go to Profile");
@@ -56,7 +57,16 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
         addBadgesToContainer(unlockedBadgesContainer, lockedBadgesContainer, userId);
 
         Label AchieLabel2 = new Label("Earned badges");
+        AchieLabel2.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
+
         Label AchieLabel3 = new Label("Locked badges");
+        AchieLabel3.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
+
+        unlockedBadgesContainer.setPadding(new Insets(10, 10, 10, 5));
+        unlockedBadgesContainer.setStyle("-fx-background-color:rgba(255,175,135,0.62); -fx-border-color: #473d43; -fx-border-width: 2px; -fx-border-radius: 5px;");
+
+        lockedBadgesContainer.setPadding(new Insets(10, 10, 10, 5));
+        lockedBadgesContainer.setStyle("-fx-background-color:rgba(230,178,149,0.62); -fx-border-color: #473d43; -fx-border-width: 2px; -fx-border-radius: 5px;");
 
         this.getChildren().addAll(AchieLabel2, unlockedBadgesContainer, AchieLabel3, lockedBadgesContainer);
     }
