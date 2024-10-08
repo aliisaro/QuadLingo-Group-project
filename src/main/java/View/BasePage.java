@@ -23,7 +23,7 @@ public abstract class BasePage extends VBox {
 
 
         // Adjust scroll sensitivity
-        scrollPane.setVvalue(0.7); // Set initial vertical scroll position (0.0 to 1.0)
+        scrollPane.setVvalue(0.0); // Set initial vertical scroll position
         scrollPane.setHvalue(0.7); // Set initial horizontal scroll position (0.0 to 1.0)
 
         scrollPane.setStyle(
