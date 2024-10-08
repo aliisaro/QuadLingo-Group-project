@@ -5,12 +5,14 @@ import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.User;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -37,14 +39,14 @@ public class Profile extends BasePage {
     private void setLayout(Stage stage, User currentUser) {
         // Apply padding directly to 'this' (inheriting VBox)
         this.setPadding(new Insets(10));
-        this.setSpacing(5); // Add spacing between all child elements
 
         // Page title
         Label pageTitle = new Label("Profile");
         pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Set VBox margin for the title
-        VBox.setMargin(pageTitle, new Insets(0, 0, 0, 130));
+        // Create an HBox for the title and center it
+        HBox titleContainer = new HBox(pageTitle);
+        titleContainer.setAlignment(Pos.CENTER);  // Center the title horizontally
 
         // Display current user's username, email, and password
         Label usernameLabel = new Label("Username: " + currentUser.getUsername());
@@ -65,18 +67,22 @@ public class Profile extends BasePage {
 
         // Create a container (HBox) for save and logout buttons
         HBox buttonContainer1 = new HBox(10);
+        buttonContainer1.setPadding(new Insets(20, 0, 5, 0));
 
         // Create a container (HBox) for back and progress buttons
         HBox buttonContainer2 = new HBox(10);
+        buttonContainer2.setPadding(new Insets(5, 0,5 , 0));
 
         // Save Button to handle saving the profile information
         Button saveButton = new Button("Save changes");
         saveButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        saveButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         saveButton.setOnAction(e -> handleSaveAction(usernameTextField, emailTextField, passwordTextField, currentUser));
 
         // Logout button: clears session and redirects to IndexPage
         Button logoutButton = new Button("Logout");
-        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
+        logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
             stage.setScene(new IndexPage(stage).createScene());
@@ -84,12 +90,14 @@ public class Profile extends BasePage {
 
         // Back to the homepage
         Button backButton = new Button("Back to homepage");
-        backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
+        backButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         // Go to the Progress page
         Button buttonProgress = new Button("Go to Progress");
-        buttonProgress.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        buttonProgress.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
+        buttonProgress.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         buttonProgress.setOnAction(e -> stage.setScene(new ProgressPage(stage).createScene()));
 
         // Add buttons to the first button container
@@ -98,13 +106,15 @@ public class Profile extends BasePage {
         // Add buttons to the second button container
         buttonContainer2.getChildren().addAll(backButton, buttonProgress);
 
-        // Add an empty label for spacing
-        Label spacerLabel = new Label();
-        spacerLabel.setMinHeight(10); // Set a minimum height for the spacer
+        // Allow the buttons to grow with the HBox
+        HBox.setHgrow(backButton, Priority.ALWAYS);
+        HBox.setHgrow(logoutButton, Priority.ALWAYS);
+        HBox.setHgrow(buttonProgress, Priority.ALWAYS);
+        HBox.setHgrow(saveButton, Priority.ALWAYS);
 
         // Add all components to the main layout
         this.getChildren().addAll(
-                pageTitle,
+                titleContainer,
                 usernameLabel,
                 emailLabel,
                 passwordLabel,
@@ -114,7 +124,6 @@ public class Profile extends BasePage {
                 emailTextField,
                 changePasswordLabel,
                 passwordTextField,
-                spacerLabel,
                 buttonContainer1,
                 buttonContainer2
         );

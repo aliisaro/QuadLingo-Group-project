@@ -1,20 +1,25 @@
 package View;
 
+import Controller.UserController;
 import Main.SessionManager;
 import Model.User;
 import Controller.QuizController;
 import DAO.QuizDaoImpl;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.sql.Connection;
 import Database.MariaDbConnection;
 
-public class Homepage extends BasePage implements setMarginButton {
+public class Homepage extends BasePage {
 
     private QuizController quizController; // Declare the QuizController
+    private UserController userController; // UserController object
 
     public Homepage(Stage stage) {
         // Get the current logged-in user from the session
@@ -30,40 +35,8 @@ public class Homepage extends BasePage implements setMarginButton {
         Connection connection = MariaDbConnection.getConnection(); // Get the database connection
         this.quizController = new QuizController(new QuizDaoImpl(connection)); // Pass the connection
 
-        // Welcome message and logout button
-        Label welcomeLabel = new Label("Welcome, " + currentUser.getUsername());
-        Button logoutButton = new Button("Logout");
-
-        // Logout logic: clears session and redirects to IndexPage
-        logoutButton.setOnAction(e -> {
-            SessionManager.getInstance().logout();
-            stage.setScene(new IndexPage(stage).createScene());
-        });
-
-        // Add elements to layout
-        this.getChildren().addAll(welcomeLabel, logoutButton);
-
-        // Button to go to Quiz Library page
-        Button quizLibraryButton = new Button("Go to Quiz Library");
-        setMargin(quizLibraryButton, 10, 10, 10, 5);
-        quizLibraryButton.setOnAction(e -> stage.setScene(new QuizLibrary(stage).createScene()));
-        this.getChildren().add(quizLibraryButton);
-
-        // Button to go to Flashcard Library page
-        Button flashcardLibraryButton = new Button("Go to Flashcard Library");
-        setMargin(flashcardLibraryButton, 10, 10, 10, 5);
-        flashcardLibraryButton.setOnAction(e -> stage.setScene(new FlashCardLibrary(stage).createScene()));
-        this.getChildren().add(flashcardLibraryButton);
-
-        Button achieButton = new Button("Go to Achievements");
-        setMargin(achieButton, 10, 10, 10, 5);
-        achieButton.setOnAction(e -> stage.setScene(new AchiePage(stage).createScene()));
-        this.getChildren().add(achieButton);
-
-        Button profileButton = new Button("Go to Profile");
-        setMargin(profileButton, 10, 10, 10, 5);
-        profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
-        this.getChildren().add(profileButton);
+        // Set up the layout
+        setLayout(stage, currentUser);
 
         // Close the connection when the application is exiting (or you might want to manage it elsewhere)
         stage.setOnCloseRequest(event -> {
@@ -71,8 +44,68 @@ public class Homepage extends BasePage implements setMarginButton {
         });
     }
 
-    @Override
-    public void setMargin(Button button, int top, int right, int bottom, int left) {
-        VBox.setMargin(button, new Insets(top, right, bottom, left));
+    private void setLayout(Stage stage, User currentUser) {
+        // Apply padding and spacing to the VBox
+        this.setPadding(new Insets(10));
+
+        // Set the alignment of the entire page to center
+        this.setAlignment(Pos.CENTER);
+
+        // Page title
+        Label pageTitle = new Label("Homepage");
+        pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        // Welcome message
+        Label welcomeLabel = new Label("Welcome, " + currentUser.getUsername());
+        welcomeLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        // Quiz Library button
+        Button quizLibraryButton = new Button("Go to Quiz Library");
+        quizLibraryButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+        quizLibraryButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        quizLibraryButton.setOnAction(e -> stage.setScene(new QuizLibrary(stage).createScene()));
+
+        // Flashcard Library button
+        Button flashcardLibraryButton = new Button("Go to Flashcard Library");
+        flashcardLibraryButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+        flashcardLibraryButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        flashcardLibraryButton.setOnAction(e -> stage.setScene(new FlashCardLibrary(stage).createScene()));
+
+        // Achievements button
+        Button achieButton = new Button("Go to Achievements");
+        achieButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+        achieButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        achieButton.setOnAction(e -> stage.setScene(new AchiePage(stage).createScene()));
+
+        // Profile button
+        Button profileButton = new Button("Go to Profile");
+        profileButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+        profileButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
+
+        // Logout button
+        Button logoutButton = new Button("Logout");
+        logoutButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+        logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        logoutButton.setOnAction(e -> {
+            SessionManager.getInstance().logout();
+            stage.setScene(new IndexPage(stage).createScene());
+        });
+
+        // Create a container (vbox) for the buttons
+        VBox buttonContainer = new VBox(10);
+        buttonContainer.getChildren().addAll(quizLibraryButton, flashcardLibraryButton, achieButton, profileButton, logoutButton);
+
+        buttonContainer.setAlignment(Pos.CENTER);
+        VBox.setVgrow(buttonContainer, Priority.ALWAYS);  // Allow the VBox to take the full height
+
+        // Add all components to the layout
+        this.getChildren().addAll(
+                welcomeLabel,
+                buttonContainer
+        );
     }
+
+
+
 }

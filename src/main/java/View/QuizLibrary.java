@@ -10,13 +10,14 @@ import Main.SessionManager;
 import Model.User;
 import Model.Quiz;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.ProgressBar;
-
 import java.sql.Connection;
 import java.util.List;
 
@@ -49,65 +50,74 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
     }
 
     private void setLayout(Stage stage, User currentUser, Connection connection) {
+        // Apply padding and spacing to the VBox
+        this.setPadding(new Insets(10));
+
+        // Set the alignment of the entire page to center
+        this.setAlignment(Pos.CENTER);
+
         // Page title
         Label pageTitle = new Label("Quiz Library");
-        pageTitle.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
+        pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Set VBox alignment to center the title
-        VBox.setMargin(pageTitle, new Insets(0, 0, 0, 100));
-
-        // Return to the homepage
+        // Return to the homepage button
         Button backButton = new Button("Back to Homepage");
-        backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165;");
+        backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        backButton.setMaxWidth(Double.MAX_VALUE); // Allow responsiveness, max width based on window size
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         // Logout button: clears session and redirects to IndexPage
         Button logoutButton = new Button("Logout");
-        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165;");
+        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow responsiveness, max width based on window size
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
             stage.setScene(new IndexPage(stage).createScene());
         });
 
-        // Group buttons in an HBox for better alignment
-        HBox buttonBox = new HBox(10); // Set spacing between buttons (10px)
-        buttonBox.setPadding(new Insets(10, 0, 10, 0));
-        buttonBox.setStyle("-fx-alignment: center;"); // Center the buttons horizontally
+        // Group the buttons in an HBox
+        HBox buttonBox = new HBox(10); // 10px spacing between buttons
+        buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(backButton, logoutButton);
 
         // Fetch all quizzes from the database
         List<Quiz> quizzes = quizController.getAllQuizzes();
 
         // VBox to hold quiz buttons
-        VBox quizzesBox = new VBox(10);
+        VBox quizzesBox = new VBox(10); // 10px spacing between quiz buttons
         quizzesBox.setPadding(new Insets(10));
         quizzesBox.setStyle("-fx-padding: 10px; -fx-spacing: 10px;");
+        quizzesBox.setAlignment(Pos.CENTER);
 
+        // Add quiz buttons
         for (Quiz quiz : quizzes) {
             Button quizButton = new Button(quiz.getQuizTitle());
-            quizButton.setMaxWidth(350); // Make buttons stretch horizontally
             quizButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+            quizButton.setMaxWidth(Double.MAX_VALUE); // Allow quiz buttons to stretch fully in their container
 
-            // Set action to navigate to the QuizPage
+            HBox.setHgrow(quizButton, Priority.ALWAYS);
+
             quizButton.setOnAction(e -> {
                 QuizPage quizPage = new QuizPage(quizController.getQuizDao(), quiz.getQuizId(), stage);
                 stage.setScene(quizPage.createScene());
             });
-
             quizzesBox.getChildren().add(quizButton);
         }
 
+        // Allow the buttons to grow with the HBox
+        HBox.setHgrow(backButton, Priority.ALWAYS);
+        HBox.setHgrow(logoutButton, Priority.ALWAYS);
+
+        // Update progress bars
         updateQuizProgress(progressBar1);
         updateScoreProgress(progressBar2);
 
-        // Add all components to the layout
-        // Add all components to the layout
+        // Add components to the layout
         this.getChildren().addAll(
                 pageTitle,
                 quizzesBox,
                 buttonBox
         );
-
     }
 
     @Override

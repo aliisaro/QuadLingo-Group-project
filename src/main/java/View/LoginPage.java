@@ -5,8 +5,10 @@ import DAO.UserDaoImpl; // Import UserDaoImpl
 import Main.SessionManager;
 import Model.User;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -27,11 +29,12 @@ public class LoginPage extends BasePage {
         this.setSpacing(5); // Add spacing between all child elements
 
         // Create and configure the login page UI components
-        Label titleLabel = new Label("Login");
-        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        Label pageTitle = new Label("Login");
+        pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Set VBox margin for the title
-        VBox.setMargin(titleLabel, new Insets(0, 0, 0, 130));
+        // Create an HBox for the title and center it
+        HBox titleContainer = new HBox(pageTitle);
+        titleContainer.setAlignment(Pos.CENTER);  // Center the title horizontally
 
         Label usernameLabel = new Label("Username");
         TextField usernameField = new TextField();
@@ -41,37 +44,40 @@ public class LoginPage extends BasePage {
 
         // Handle login button click
         Button loginButton = new Button("Login");
-        loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        loginButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         loginButton.setOnAction(e -> handleLoginAction(usernameField, passwordField, stage));
 
         // Go back to the index page
         Button indexPageButton = new Button("Go back");
-        indexPageButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        indexPageButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        indexPageButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
-
-        // Add an empty label for spacing
-        Label spacerLabel = new Label();
-        spacerLabel.setMinHeight(10); // Set a minimum height for the spacer
 
         Label noAccountLabel = new Label("Don't have an account? Sign up instead:");
 
         // Go to the registration page
-        Button registerButton = new Button("Sign up");
-        registerButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+        Button registerButton = new Button("Go to Sign Up Page");
+        registerButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        registerButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         registerButton.setOnAction(e -> stage.setScene(new RegistrationPage(stage).createScene()));
 
         // Create a container (HBox) for buttons
         HBox buttonContainer = new HBox(10);
+        buttonContainer.setPadding(new Insets(10, 0, 0, 0));
         buttonContainer.getChildren().addAll(loginButton, indexPageButton);
+
+        // Allow the buttons to grow with the HBox
+        HBox.setHgrow(loginButton, Priority.ALWAYS);
+        HBox.setHgrow(indexPageButton, Priority.ALWAYS);
 
         // Add elements to layout
         getChildren().addAll(
-                titleLabel,
+                titleContainer,
                 usernameLabel,
                 usernameField,
                 passwordLabel,
                 passwordField,
-                spacerLabel,
                 buttonContainer,
                 noAccountLabel,
                 registerButton);
