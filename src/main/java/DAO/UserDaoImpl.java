@@ -239,6 +239,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public int getFlashcardsMastered(int userId) {
+        int flashcardsMastered = 0;
+        try (Connection connection = getConnection()) {
+            String query = "SELECT COUNT(*) FROM ISMASTERED WHERE UserID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                flashcardsMastered = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flashcardsMastered;
+    }
+
+    @Override
     public String getEmail() {
         try (Connection connection = getConnection()) {
             String query = "SELECT Email FROM LINGOUSER WHERE UserID = ?";

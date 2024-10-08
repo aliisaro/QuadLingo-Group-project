@@ -72,6 +72,13 @@ public class UserController {
         return quizzesCompleted;
     }
 
+    public int getFlashcardsMastered(int userId) {
+        System.out.println("Retrieving flashcards mastered for user: " + userId);
+        int flashcardsMastered = userDao.getFlashcardsMastered(userId);
+        System.out.println("Flashcards mastered: " + flashcardsMastered);
+        return flashcardsMastered;
+    }
+
     public String getEmailDao() {
         return userDao.getEmail();
     }

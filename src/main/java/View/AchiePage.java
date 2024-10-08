@@ -27,9 +27,11 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
         this.badges = new ArrayList<>();
 
         //Paths to badge images
-        badges.add(new Badge("file:src/main/resources/FirstBadge.png", 1, "Complete one quiz"));
-        badges.add(new Badge("file:src/main/resources/SecondBadge.png", 5, "Complete five quizzes"));
-        badges.add(new Badge("file:src/main/resources/ThirdBadge.png", 10, "Complete ten quizzes"));
+        badges.add(new Badge("file:src/main/resources/FirstBadge.png", 1, "Complete one quiz","quiz"));
+        badges.add(new Badge("file:src/main/resources/SecondBadge.png", 5, "Complete five quizzes", "quiz"));
+        badges.add(new Badge("file:src/main/resources/ThirdBadge.png", 10, "Complete ten quizzes", "quiz"));
+        badges.add(new Badge("file:src/main/resources/FlashcardBadge1.png", 5, "Master five flashcards", "flashcard"));
+        badges.add(new Badge("file:src/main/resources/FlashcardBadge2.png", 10, "Master ten flashcards", "flashcard"));
 
         int userId = userController.getCurrentUserId();
 
@@ -70,22 +72,33 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
         for (Badge badge : badges) {
             ImageView imageView = new ImageView(badge.getImage());
             imageView.setPreserveRatio(true);
-            setImageSize(imageView, 130, 130);
+            setImageSize(imageView, 140, 140);
 
             Label description = new Label(badge.getDescription());
             VBox badgeContainer = new VBox(5, imageView, description);
 
             int quizzesCompleted = userController.getQuizzesCompleted(userID);
+            int flashcardsMastered = userController.getFlashcardsMastered(userID);
             int badgeThreshold = badge.getThreshold();
+            String checker = badge.getChecker();
 
             // Debug statements
             System.out.println("Badge: " + badge.getDescription());
             System.out.println("Quizzes Completed: " + quizzesCompleted);
+            System.out.println("Flashcards Mastered: " + flashcardsMastered);
             System.out.println("Badge Threshold: " + badgeThreshold);
 
-            //Checks if the user has completed enough quizzes to unlock the badge
-            if (quizzesCompleted >= badgeThreshold) {
-                //Adds the badge to the unlocked container
+            boolean isUnlocked = false;
+
+            // Check if the badge is for quizzes or flashcards
+            if ("quiz".equals(checker) && quizzesCompleted >= badgeThreshold) {
+                isUnlocked = true;
+            } else if ("flashcard".equals(checker) && flashcardsMastered >= badgeThreshold) {
+                isUnlocked = true;
+            }
+
+            // Adds the badge to the appropriate container
+            if (isUnlocked) {
                 if (unlockedBadgeCount % 2 == 0) {
                     currentUnlockedRow = new HBox(10);
                     VBox.setMargin(currentUnlockedRow, new Insets(10, 10, 10, 5));
@@ -94,7 +107,6 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
                 unlockBadge(imageView);
                 currentUnlockedRow.getChildren().add(badgeContainer);
                 unlockedBadgeCount++;
-            //Adds the badge to the locked container
             } else {
                 if (lockedBadgeCount % 2 == 0) {
                     currentLockedRow = new HBox(10);
@@ -124,9 +136,9 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
     @Override
     //Unlocks the badge
     public void unlockBadge(ImageView imageView) {
-            ColorAdjust desaturate = new ColorAdjust();
-            desaturate.setSaturation(0);
-            imageView.setEffect(desaturate);
+        ColorAdjust desaturate = new ColorAdjust();
+        desaturate.setSaturation(0);
+        imageView.setEffect(desaturate);
     }
 
     @Override
