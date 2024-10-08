@@ -27,6 +27,7 @@ public class RegistrationPage extends BasePage {
         // Apply padding directly to 'this' (inheriting VBox)
         this.setPadding(new Insets(10));
         this.setSpacing(5); // Add spacing between all child elements
+        this.setAlignment(Pos.CENTER);
 
         // Elements
         Label pageTitle = new Label("Sign Up");

@@ -27,6 +27,7 @@ public class LoginPage extends BasePage {
         // Apply padding directly to 'this' (inheriting VBox)
         this.setPadding(new Insets(10));
         this.setSpacing(5); // Add spacing between all child elements
+        this.setAlignment(Pos.CENTER);
 
         // Create and configure the login page UI components
         Label pageTitle = new Label("Login");

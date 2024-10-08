@@ -5,6 +5,7 @@ import DAO.FlashCardDao;
 import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.FlashCard;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -30,6 +31,8 @@ public class FlashCardsPage extends BasePage {
         this.flashCardDao = flashCardDao;
         this.userController = new UserController(new UserDaoImpl());
         this.userID = userController.getCurrentUserId();
+
+        this.setAlignment(Pos.CENTER);
 
         // Get the flashcards based on the topic
         if (topic.equals("Mastered Flashcards")) {
