@@ -38,7 +38,7 @@ public abstract class BasePage extends VBox {
                         "-fx-control-inner-background-inactive: #E0E0E0;"
         );
 
-        Scene scene = new Scene(scrollPane,640, 640);
+        Scene scene = new Scene(scrollPane,400, 660);
         scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
 
         return scene;

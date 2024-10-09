@@ -1,6 +1,7 @@
 // QuadLingoQui.java
 package View;
 
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.application.Application;
 
@@ -28,5 +29,10 @@ public class QuadLingoQui extends Application{
 
         //Showing the window
         primaryStage.show();
+
+        // Force layout update to ensure scrollbars and other dynamic content are properly displayed
+        Platform.runLater(() -> {
+            primaryStage.sizeToScene(); // Adjust the stage size based on the content
+        });
     }
 }
