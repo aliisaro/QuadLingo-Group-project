@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="fixed UI problem">
-      <change afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="deleted dependency-reduced-pom.xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/UserTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +112,7 @@
       <command value="mvn clean package " />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Docker.Dockerfile">
     <configuration name="UserDaoImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
@@ -126,10 +122,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserTests" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="UserTests" />
+      <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -205,7 +202,7 @@
       <workItem from="1728288590909" duration="2465000" />
       <workItem from="1728368930535" duration="5286000" />
       <workItem from="1728499405950" duration="2502000" />
-      <workItem from="1728569897297" duration="2603000" />
+      <workItem from="1728569897297" duration="4656000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
@@ -287,7 +284,23 @@
       <option name="project" value="LOCAL" />
       <updated>1728457000562</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="update pom, dockerfile and usertest">
+      <option name="closed" value="true" />
+      <created>1728572673579</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1728572673579</updated>
+    </task>
+    <task id="LOCAL-00012" summary="deleted dependency-reduced-pom.xml">
+      <option name="closed" value="true" />
+      <created>1728572710296</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1728572710296</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,6 +332,8 @@
     <MESSAGE value="updated login, register, profile and quiz page" />
     <MESSAGE value="updated index page" />
     <MESSAGE value="fixed UI problem" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed UI problem" />
+    <MESSAGE value="update pom, dockerfile and usertest" />
+    <MESSAGE value="deleted dependency-reduced-pom.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleted dependency-reduced-pom.xml" />
   </component>
 </project>

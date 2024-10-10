@@ -23,4 +23,4 @@ WORKDIR /app
 COPY --from=build /app/target/QuadLingo.jar ./QuadLingo.jar
 
 # Specify the command to run the JAR file
-ENTRYPOINT ["java", "--module-path", "/path/to/javafx/lib", "--add-modules", "javafx.controls,javafx.fxml", "-jar", "QuadLingo.jar"]
+ENTRYPOINT ["java", "--module-path", "/path/to/javafx/lib", "--add-modules", "javafx.controls", "-jar", "QuadLingo.jar"]
