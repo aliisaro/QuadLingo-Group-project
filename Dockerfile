@@ -1,23 +1,26 @@
-# Stage 1: Build the application
-FROM maven:3.8.5-openjdk-17 AS builder
+# Use OpenJDK base image
+FROM openjdk:17-slim AS build
 
-# Copy your project files into the container
-COPY --chown=maven:maven . /home/maven/QuadLingo
-WORKDIR /home/maven/QuadLingo
+# Install Maven
+RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 
-# Build the application using Maven (skip tests temporarily)
+# Set the working directory
+WORKDIR /app
+
+# Copy the pom.xml and the source code into the container
+COPY pom.xml .
+COPY src ./src
+
+# Package the application
 RUN mvn clean package -DskipTests
 
-# Stage 2: Create the runtime environment
-FROM openjdk:17-jdk
+# Set the working directory in the final image
+FROM openjdk:17-slim
 
-# Copy the built JAR from the builder stage
-COPY --from=builder /home/maven/QuadLingo/target/QuadLingo-1.0-SNAPSHOT.jar /QuadLingo.jar
+WORKDIR /app
 
-# Install required packages for running JavaFX applications
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y xorg libgl1-mesa-glx && \
-    rm -rf /var/lib/apt/lists/*
+# Copy the JAR file from the build stage
+COPY --from=build /app/target/QuadLingo.jar ./QuadLingo.jar
 
-# Specify the command to run your application
-CMD ["java", "-jar", "/QuadLingo.jar"]
+# Specify the command to run the JAR file
+ENTRYPOINT ["java", "--module-path", "/path/to/javafx/lib", "--add-modules", "javafx.controls,javafx.fxml", "-jar", "QuadLingo.jar"]

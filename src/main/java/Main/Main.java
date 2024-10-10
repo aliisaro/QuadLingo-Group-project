@@ -6,7 +6,7 @@ import View.QuadLingoQui;
 
 
 // This launches the whole program
-public class  Main {
+public class Main {
     public static void main(String[] args) throws Exception {
         UserDaoImpl userDao = new UserDaoImpl();
         UserController.getInstance(userDao);

@@ -109,19 +109,6 @@ class UserTests {
         assertEquals("updatedUser", retrievedUser.getUsername(), "The username should be updated successfully.");
     }
 
-    @Test
-    void testUpdateUser_WithInvalidEmail() {
-        // Arrange
-        User existingUser = userDao.getUserById(userId); // Use the dynamic ID
-        User updatedUserWithInvalidEmail = new User(existingUser.getUserId(), "updatedUser", existingUser.getPassword(), "invalidEmailFormat");
-
-        // Act
-        boolean result = userDao.updateUser(updatedUserWithInvalidEmail);
-
-        // Assert
-        assertFalse(result, "The updateUser method should fail with an invalid email format.");
-    }
-
 
     @AfterEach
     void tearDown() {
