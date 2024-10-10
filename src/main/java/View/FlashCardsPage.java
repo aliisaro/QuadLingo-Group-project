@@ -5,6 +5,7 @@ import DAO.FlashCardDao;
 import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.FlashCard;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,13 +28,12 @@ public class FlashCardsPage extends BasePage {
     private boolean isFlipped = false;
     private Button markMasteredButton;
     private Button flipFlashCardButton;
+    private VBox flashcardContainer;
 
     public FlashCardsPage(FlashCardDao flashCardDao, String topic, Stage stage) {
         this.flashCardDao = flashCardDao;
         this.userController = new UserController(new UserDaoImpl());
         this.userID = userController.getCurrentUserId();
-
-        this.setAlignment(Pos.CENTER);
 
         // Get the flashcards based on the topic
         if (topic.equals("Mastered Flashcards")) {
@@ -72,6 +72,10 @@ public class FlashCardsPage extends BasePage {
         translationLabel.setWrapText(true);
         translationLabel.getStyleClass().add("label-translation");
 
+        flashcardContainer = new VBox(10, termLabel, translationLabel);
+        flashcardContainer.setPadding(new Insets(10));
+        flashcardContainer.getStyleClass().add("flashcard-container");
+
         flipFlashCardButton = new Button("Show Answer");
         flipFlashCardButton.setOnAction(e -> {
             if (!isFlipped) {
@@ -86,8 +90,6 @@ public class FlashCardsPage extends BasePage {
         markMasteredButton = new Button("Master this");
         markMasteredButton.setOnAction(e -> toggleMasteredStatus());
 
-
-
         Button nextFlashCardButton = new Button("Next Flashcard");
         nextFlashCardButton.setOnAction(e -> nextFlashCard());
 
@@ -96,13 +98,17 @@ public class FlashCardsPage extends BasePage {
                 endSession()
         );
 
+        VBox buttonContainer = new VBox(10, flipFlashCardButton, markMasteredButton, nextFlashCardButton, endFlashCardSessionButton);
+        buttonContainer.setPadding(new Insets(20));
+        buttonContainer.getStyleClass().add("button-container");
+
         // Add the UI components to the layout based on the mastered status
         if (isMastered) {
             markMasteredButton.setText("Unmaster this");
-            this.getChildren().addAll(termLabel, translationLabel, flipFlashCardButton, markMasteredButton, nextFlashCardButton, endFlashCardSessionButton);
+            this.getChildren().addAll(flashcardContainer, buttonContainer);
         } else {
             markMasteredButton.setText("Master this");
-            this.getChildren().addAll(termLabel, translationLabel, flipFlashCardButton, markMasteredButton, nextFlashCardButton, endFlashCardSessionButton);
+            this.getChildren().addAll(flashcardContainer, buttonContainer);
         }
     }
 
