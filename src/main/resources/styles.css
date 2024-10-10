@@ -81,30 +81,28 @@
 }
 
 .flashcard-container {
-    -fx-background-color: #FFFFFF; /* White background */
-    -fx-border-color: #584B53; /* Grey border */
-    -fx-border-width: 2px; /* Border width */
-    -fx-border-radius: 5px; /* Rounded corners */
-    -fx-padding: 15px; /* Padding inside the container */
-    -fx-spacing: 5px; /* Spacing between elements */
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #584B53;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-padding: 15px;
+    -fx-spacing: 5px;
 }
 
-/* Styling for term label inside flashcard container */
 .flashcard-container .label-term {
-    -fx-font-size: 20px; /* Font size */
-    -fx-font-weight: bold; /* Bold font */
-    -fx-text-fill: #584B53; /* Dark brown text color */
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #584B53;
 }
 
-/* Styling for translation label inside flashcard container */
 .flashcard-container .label-translation {
-    -fx-font-size: 18px; /* Font size */
-    -fx-font-weight: bold; /* Normal font weight */
-    -fx-text-fill: #9b9FB5; /* Grey text color */
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #9b9FB5;
 }
 
 .button-container {
-    -fx-spacing: 5px; /* Spacing between buttons */
+    -fx-spacing: 5px;
 }
 
 
