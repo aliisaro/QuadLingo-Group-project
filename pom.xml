@@ -78,7 +78,6 @@
                     </includes>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
@@ -86,12 +85,7 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>17</version> <!-- Needed for graphics -->
+            <version>11</version>
         </dependency>
 
         <dependency>
