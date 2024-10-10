@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="fixed UI problem">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/UserTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +22,8 @@
       <list>
         <option value="CSS File" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="Dockerfile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -41,12 +41,12 @@
     &quot;assignee&quot;: &quot;aliisaro&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/aliisaro/QuadLingo-Group-project",
-    "accountId": "20de4316-1e1e-4a2c-be14-46480de67c64"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/aliisaro/QuadLingo-Group-project&quot;,
+    &quot;accountId&quot;: &quot;20de4316-1e1e-4a2c-be14-46480de67c64&quot;
   }
-}]]></component>
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -79,14 +79,16 @@
     "Application.Profile.executor": "Run",
     "Application.QuadLingoQui.executor": "Run",
     "Docker.Dockerfile.executor": "Run",
+    "JUnit.UserDaoImplTest.executor": "Run",
     "JUnit.UserTests.executor": "Run",
+    "JUnit.UserTests.testUpdateUser.executor": "Run",
     "Maven.QuadLingo [clean,install].executor": "Run",
     "Maven.QuadLingo [clean,package,-DskipTests].executor": "Run",
     "Maven.QuadLingo [clean,package].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "aliisa",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo",
     "list.type.of.created.stylesheet": "CSS",
@@ -114,12 +116,31 @@
       <command value="mvn clean package" />
     </option>
   </component>
-  <component name="RunManager" selected="Docker.Dockerfile">
+  <component name="RunManager">
+    <configuration name="UserDaoImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="QuadLingo" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="UserDaoImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="UserTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="UserTests" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserTests.testUpdateUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="QuadLingo" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="UserTests" />
+      <option name="METHOD_NAME" value="testUpdateUser" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -134,11 +155,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UserTests" />
+        <item itemvalue="JUnit.UserDaoImplTest" />
+        <item itemvalue="JUnit.UserTests.testUpdateUser" />
         <item itemvalue="Docker.Dockerfile" />
         <item itemvalue="JUnit.UserTests" />
-        <item itemvalue="JUnit.UserTests" />
-        <item itemvalue="Docker.Dockerfile" />
-        <item itemvalue="Docker.Dockerfile" />
       </list>
     </recent_temporary>
   </component>

@@ -29,6 +29,25 @@ public class UserDaoImpl implements UserDao {
     // Inserts a new user into the LINGOUSER table
     @Override
     public int createUser(User user) {
+        // Validate the email format first
+        if (user.getEmail() == null || !user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            return -1; // Return -1 to indicate invalid email format
+        }
+
+        // Password validation
+        if (user.getPassword() == null) {
+            return -1; // Invalid password
+        }
+        if (!user.getPassword().matches(".*[A-Z].*")) {
+            return -1; // Password must include at least 1 uppercase letter
+        }
+        if (!user.getPassword().matches(".*\\d.*")) {
+            return -1; // Password must include at least 1 number
+        }
+        if (user.getPassword().length() < 8) {
+            return -1; // Password must be at least 8 characters
+        }
+
         String query = "INSERT INTO LINGOUSER (Username, UserPassword, Email) VALUES (?, ?, ?)";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -58,6 +77,7 @@ public class UserDaoImpl implements UserDao {
         }
         return -1; // Indicate failure
     }
+
 
     // Logs in a user by their username and password
     @Override
@@ -119,9 +139,50 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
+
     // Updates a user's info in the LINGOUSER table (if password is changed, it will be hashed)
     @Override
     public boolean updateUser(User user) {
+        StringBuilder errorMessages = new StringBuilder(); // Object to store error messages
+
+        // First, retrieve the original username and email from the database
+        User originalUser = getUserById(user.getUserId()); // You may need to implement this method to fetch the user by ID
+
+        // Validate username if changed
+        if (!user.getUsername().equals(originalUser.getUsername()) && doesUsernameExist(user.getUsername())) {
+            errorMessages.append("Username already exists.\n");
+        }
+
+        // Validate email if changed
+        if (!user.getEmail().equals(originalUser.getEmail())) {
+            if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+                errorMessages.append("Invalid email format.\n");
+            } else if (doesEmailExist(user.getEmail())) {
+                errorMessages.append("An account with this email already exists.\n");
+            }
+        }
+
+        // Validate password if changed
+        if (user.isPasswordChanged()) {
+            String password = user.getPassword();
+            if (!password.matches(".*[A-Z].*")) {
+                errorMessages.append("Password must include at least 1 uppercase letter.\n");
+            }
+            if (!password.matches(".*\\d.*")) {
+                errorMessages.append("Password must include at least 1 number.\n");
+            }
+            if (password.length() < 8) {
+                errorMessages.append("Password must be at least 8 characters.\n");
+            }
+        }
+
+        // If there are error messages, log them and prevent the update
+        if (errorMessages.length() > 0) {
+            System.out.println("Profile update errors: " + errorMessages.toString());
+            return false; // Indicate the update was not successful
+        }
+
+        // Proceed with the update if all validations pass
         boolean isUpdated = false;
         String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = COALESCE(?, UserPassword), Email = ?, QuizzesCompleted = ? WHERE UserID = ?";
 
@@ -150,7 +211,7 @@ public class UserDaoImpl implements UserDao {
         }
         return isUpdated;
     }
-
+    
 
     // Checks if a username exists in the LINGOUSER table
     @Override
