@@ -24,8 +24,9 @@ public class FlashCardsPage extends BasePage {
     private int userID;
     private int currentFlashCardId;
     private boolean isMastered = false;
+    private boolean isFlipped = false;
     private Button markMasteredButton;
-    private Button unmarkMasteredButton;
+    private Button flipFlashCardButton;
 
     public FlashCardsPage(FlashCardDao flashCardDao, String topic, Stage stage) {
         this.flashCardDao = flashCardDao;
@@ -71,14 +72,21 @@ public class FlashCardsPage extends BasePage {
         translationLabel.setWrapText(true);
         translationLabel.getStyleClass().add("label-translation");
 
-        Button flipFlashCardButton = new Button("Show Answer");
-        flipFlashCardButton.setOnAction(e -> loadFlashCard(true));
+        flipFlashCardButton = new Button("Show Answer");
+        flipFlashCardButton.setOnAction(e -> {
+            if (!isFlipped) {
+                loadFlashCard(true);
+                isFlipped = true;
+            } else {
+                loadFlashCard(false);
+                isFlipped = false;
+            }
+        });
 
         markMasteredButton = new Button("Master this");
         markMasteredButton.setOnAction(e -> toggleMasteredStatus());
 
-        unmarkMasteredButton = new Button("Unmaster this");
-        unmarkMasteredButton.setOnAction(e -> toggleMasteredStatus());
+
 
         Button nextFlashCardButton = new Button("Next Flashcard");
         nextFlashCardButton.setOnAction(e -> nextFlashCard());
@@ -90,20 +98,25 @@ public class FlashCardsPage extends BasePage {
 
         // Add the UI components to the layout based on the mastered status
         if (isMastered) {
-            this.getChildren().addAll(termLabel, translationLabel, flipFlashCardButton, unmarkMasteredButton, nextFlashCardButton, endFlashCardSessionButton);
+            markMasteredButton.setText("Unmaster this");
+            this.getChildren().addAll(termLabel, translationLabel, flipFlashCardButton, markMasteredButton, nextFlashCardButton, endFlashCardSessionButton);
         } else {
+            markMasteredButton.setText("Master this");
             this.getChildren().addAll(termLabel, translationLabel, flipFlashCardButton, markMasteredButton, nextFlashCardButton, endFlashCardSessionButton);
         }
     }
 
     // Load the flashcard term or translation
     private void loadFlashCard(boolean showAnswer) {
-        if (!showAnswer) {
+        if (!showAnswer || isFlipped) {
             // Display the term of the flashcard
             termLabel.setText(flashcards.get(currentFlashCardIndex).getTerm());
+            translationLabel.setText("");
+            flipFlashCardButton.setText("Show Translation");
         } else {
             // Display the translation of the flashcard
             translationLabel.setText(flashcards.get(currentFlashCardIndex).getTranslation());
+            flipFlashCardButton.setText("Hide Translation");
         }
     }
 
@@ -124,15 +137,9 @@ public class FlashCardsPage extends BasePage {
 
         // Update the button state based on the mastered status
         if (isMastered) {
-            this.getChildren().remove(markMasteredButton);
-            if (!this.getChildren().contains(unmarkMasteredButton)) {
-                this.getChildren().add(unmarkMasteredButton);
-            }
+            markMasteredButton.setText("Unmaster this");
         } else {
-            this.getChildren().remove(unmarkMasteredButton);
-            if (!this.getChildren().contains(markMasteredButton)) {
-                this.getChildren().add(markMasteredButton);
-            }
+            markMasteredButton.setText("Master this");
         }
 
         loadFlashCard(false);
@@ -145,15 +152,13 @@ public class FlashCardsPage extends BasePage {
             isMastered = false;
             currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
             flashCardDao.unmasterFlashCard(currentFlashCardId, userID);
-            this.getChildren().remove(unmarkMasteredButton);
-            this.getChildren().add(markMasteredButton);
+            markMasteredButton.setText("Master this");
         } else {
             // Mark as mastered
             isMastered = true;
             currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
             flashCardDao.masterFlashCard(currentFlashCardId, userID);
-            this.getChildren().remove(markMasteredButton);
-            this.getChildren().add(unmarkMasteredButton);
+            markMasteredButton.setText("Unmaster this");
         }
 
         // Refresh the list of flashcards
