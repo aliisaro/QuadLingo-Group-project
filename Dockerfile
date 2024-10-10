@@ -7,11 +7,11 @@ RUN apt-get update && apt-get install -y maven wget unzip && rm -rf /var/lib/apt
 # Set the working directory
 WORKDIR /app
 
-# Copy the pom.xml and source code
+# Copy the Maven files
 COPY pom.xml .
 COPY src ./src
 
-# Package the application
+# Build the application
 RUN mvn clean package -DskipTests
 
 # Stage 2: Create the final image with JavaFX
@@ -24,9 +24,9 @@ RUN apt-get update && apt-get install -y wget unzip && rm -rf /var/lib/apt/lists
 WORKDIR /app
 
 # Define JavaFX version
-ENV JAVAFX_VERSION=17.0.2
+ENV JAVAFX_VERSION=11.0.2
 
-# Download and install JavaFX SDK
+# Download and install JavaFX SDK for Linux
 RUN wget https://download2.gluonhq.com/openjfx/${JAVAFX_VERSION}/openjfx-${JAVAFX_VERSION}_linux-x64_bin-sdk.zip \
     && unzip openjfx-${JAVAFX_VERSION}_linux-x64_bin-sdk.zip \
     && mv javafx-sdk-${JAVAFX_VERSION} /opt/javafx \
@@ -35,5 +35,5 @@ RUN wget https://download2.gluonhq.com/openjfx/${JAVAFX_VERSION}/openjfx-${JAVAF
 # Copy the JAR file from the build stage
 COPY --from=build /app/target/QuadLingo.jar ./QuadLingo.jar
 
-# Specify the command to run the JAR file with JavaFX modules
-ENTRYPOINT ["java", "--module-path", "/opt/javafx/lib", "--add-modules", "javafx.controls,javafx.graphics", "-jar", "QuadLingo.jar"]
+# Specify the command to run the JAR file with JavaFX dependencies in the classpath
+CMD ["java", "-cp", "QuadLingo.jar:/opt/javafx/lib/*", "Main.Main"]
