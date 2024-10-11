@@ -12,8 +12,11 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from Git repository
-                git 'https://github.com/aliisaro/QuadLingo-Group-project.git'
+                // Checkout code from Git repository specifying the branch
+                git branch: 'main', 
+                    url: 'https://github.com/aliisaro/QuadLingo-Group-project.git'
+                    // Uncomment the next line if credentials are required
+                    // credentialsId: 'your-git-credentials-id'
             }
         }
         stage('Build') {
