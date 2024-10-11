@@ -47,9 +47,10 @@ git clone https://github.com/aliisaro/QuadLingo-Group-project.git
 - [Work hours](https://docs.google.com/spreadsheets/d/10PlqGo4965hiHXeSnTN6XlKYykul5-xdi_aEbyekmFA/edit?gid=0#gid=0)
 
 ****
-<h3>Database</h3>
+<h3>Database design</h3>
 
-![ER-diagram](https://github.com/aliisaro/QuadLingo-Group-project/blob/main/ER-diagram.png?raw=true)
+![ER-diagram](./docs/images/ER-diagram.png)
 
-![Relational Schema](https://github.com/aliisaro/QuadLingo-Group-project/blob/main/Schema.png?raw=true)
+![Relational Schema](./docs/images/Schema.png)
+
 
