@@ -1,5 +1,5 @@
 pipeline {
-    agent any //
+    agent any
 
     environment {
         // Define Docker Hub credentials ID
@@ -14,6 +14,31 @@ pipeline {
             steps {
                 // Checkout code from Git repository
                 git 'https://github.com/aliisaro/QuadLingo-Group-project.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                bat 'mvn clean package'  // Build the project using Maven
+            }
+        }
+        stage('Run Unit Tests') {
+            steps {
+                bat 'mvn test'  // Run unit tests using Maven
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'  // Capture test reports
+                }
+            }
+        }
+        stage('Code Coverage Report') {
+            steps {
+                bat 'mvn jacoco:report'  // Generate JaCoCo coverage report
+            }
+            post {
+                always {
+                    jacoco execPattern: 'target/jacoco.exec'  // Publish JaCoCo code coverage results
+                }
             }
         }
         stage('Build Docker Image') {
