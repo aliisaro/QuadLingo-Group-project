@@ -36,7 +36,7 @@ Artificial intelligence was used for writing the questions and answers for the q
 ```bash
 git clone https://github.com/aliisaro/QuadLingo-Group-project.git
 ```
-4. Run the project.
+4. Run the class Main.java in the package `Main` to start the application.
 5. Enjoy!
 
 ****
