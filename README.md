@@ -27,13 +27,17 @@ Artificial intelligence was used for writing the questions and answers for the q
 
 ****
 
-1. Create a new project in IntelliJ IDEA.
-2. Clone the project from GitHub.
+1. Download and install IntelliJ IDEA.
+    - [IntelliJ IDEA (Windows)](https://www.jetbrains.com/idea/download/?section=windows)
+    - [IntelliJ IDEA (Mac)](https://www.jetbrains.com/idea/download/?section=mac)
+    - [IntelliJ IDEA (Linux)](https://www.jetbrains.com/idea/download/?section=linux)
+2. Create a new project in IntelliJ IDEA.
+3. Clone the project from GitHub.
 ```bash
 git clone https://github.com/aliisaro/QuadLingo-Group-project.git
 ```
-3. Run the project.
-4. Enjoy!
+4. Run the project.
+5. Enjoy!
 
 ****
 
