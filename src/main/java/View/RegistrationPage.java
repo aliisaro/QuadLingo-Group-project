@@ -133,7 +133,7 @@ public class RegistrationPage extends BasePage {
             User user = userController.createUser(username, password, email);
             if (user != null) {
                 SessionManager.getInstance().setCurrentUser(user); // Start a new session
-                stage.setScene(new Homepage(stage).createScene()); // Redirect to the homepage
+                stage.setScene(new LoginPage(stage).createScene()); // Redirect to the login page
                 System.out.println("Registration successful: " + user.getUsername() + "\n");
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
