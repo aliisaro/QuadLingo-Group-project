@@ -32,7 +32,7 @@ Artificial intelligence was used for writing the questions and answers for the q
     - [IntelliJ IDEA (Mac)](https://www.jetbrains.com/idea/download/?section=mac)
     - [IntelliJ IDEA (Linux)](https://www.jetbrains.com/idea/download/?section=linux)
 2. Create a new project in IntelliJ IDEA.
-3. Clone the project from GitHub.
+3. Clone Quadlingo from GitHub.
 ```bash
 git clone https://github.com/aliisaro/QuadLingo-Group-project.git
 ```
