@@ -41,6 +41,18 @@ git clone https://github.com/aliisaro/QuadLingo-Group-project.git
 
 ****
 
+<h3>Usage</h3>
+
+****
+
+1. Register a new user.
+2. Log in with the new user.
+3. Start learning Finnish by practicing with flashcards and doing quizzes.
+4. Check your progress and achievements.
+5. Log out when you are done.
+
+****
+
 <h3>Links:</h3>
 
 ****
