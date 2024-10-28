@@ -5,11 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="update dockerfile">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_6_2024_7_26_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_6_2024_7_26_PM__Changes_.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Config/LanguageConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Config/LanguageOHJE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_AR.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_FR.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_ZH.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,6 +111,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\aliis\IdeaProjects\QuadLingo-Group-project\src\main\java\Config" />
+      <recent name="C:\Users\aliis\IdeaProjects\QuadLingo-Group-project\src\main\java" />
       <recent name="C:\Users\aliis\IdeaProjects\QuadLingo-Group-project\docs\images" />
     </key>
   </component>
@@ -130,11 +136,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserTests" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <configuration name="UserTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="UserTests" />
-      <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -160,11 +165,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.Dockerfile" />
-        <item itemvalue="JUnit.UserTests" />
-        <item itemvalue="JUnit.UserDaoImplTest" />
         <item itemvalue="JUnit.UserTests.testUpdateUser" />
         <item itemvalue="JUnit.UserTests" />
+        <item itemvalue="JUnit.UserDaoImplTest" />
+        <item itemvalue="Docker.Dockerfile" />
+        <item itemvalue="Docker.Dockerfile" />
       </list>
     </recent_temporary>
   </component>
@@ -341,7 +346,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728581834181</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa">
+      <option name="closed" value="true" />
+      <created>1730139286482</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1730139286482</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -378,6 +391,7 @@
     <MESSAGE value="small change to dockerfile" />
     <MESSAGE value="update pom.xml" />
     <MESSAGE value="update dockerfile" />
-    <option name="LAST_COMMIT_MESSAGE" value="update dockerfile" />
+    <MESSAGE value="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa" />
+    <option name="LAST_COMMIT_MESSAGE" value="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa" />
   </component>
 </project>
