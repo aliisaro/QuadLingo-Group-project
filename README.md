@@ -65,8 +65,8 @@ git clone https://github.com/aliisaro/QuadLingo-Group-project.git
 ****
 <h3>Database design</h3>
 
-![ER-diagram](./docs/images/ER-diagram.png)
+![ER-diagram](docs/diagrams/ER-diagram.png)
 
-![Relational Schema](./docs/images/Schema.png)
+![Relational Schema](docs/diagrams/Schema.png)
 
 

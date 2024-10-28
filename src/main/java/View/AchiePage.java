@@ -27,11 +27,11 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
         this.badges = new ArrayList<>();
 
         //Paths to badge images
-        badges.add(new Badge("file:src/main/resources/FirstBadge.png", 1, "Complete one quiz","quiz"));
-        badges.add(new Badge("file:src/main/resources/SecondBadge.png", 5, "Complete five quizzes", "quiz"));
-        badges.add(new Badge("file:src/main/resources/ThirdBadge.png", 10, "Complete ten quizzes", "quiz"));
-        badges.add(new Badge("file:src/main/resources/FlashcardBadge1.png", 5, "Master five flashcards", "flashcard"));
-        badges.add(new Badge("file:src/main/resources/FlashcardBadge2.png", 10, "Master ten flashcards", "flashcard"));
+        badges.add(new Badge("file:docs/badges/FirstBadge.png", 1, "Complete one quiz","quiz"));
+        badges.add(new Badge("file:docs/badges/SecondBadge.png", 5, "Complete five quizzes", "quiz"));
+        badges.add(new Badge("file:docs/badges/Thirdbadge.png", 10, "Complete ten quizzes", "quiz"));
+        badges.add(new Badge("file:docs/badges/FlashcardBadge1.png", 5, "Master five flashcards", "flashcard"));
+        badges.add(new Badge("file:docs/badges/FlashcardBadge2.png", 10, "Master ten flashcards", "flashcard"));
 
         int userId = userController.getCurrentUserId();
 
