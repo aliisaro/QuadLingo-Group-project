@@ -19,13 +19,13 @@ public abstract class BasePage extends VBox {
         scrollPane.setContent(this);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
-        scrollPane.setStyle("-fx-background: #D6E3F8; -fx-background-color: #584B53; -fx-border-color: #584B53; -fx-border-width: 2px;");
 
 
         // Adjust scroll sensitivity
         scrollPane.setVvalue(0.0); // Set initial vertical scroll position
         scrollPane.setHvalue(0.7); // Set initial horizontal scroll position (0.0 to 1.0)
 
+        // Set the style of the scroll pane
         scrollPane.setStyle(
                 "-fx-background: #D6E3F8;" +
                         "-fx-background-color: #a5adbf;" +

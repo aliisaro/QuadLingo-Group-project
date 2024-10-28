@@ -6,7 +6,6 @@ import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.FlashCard;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -50,6 +49,15 @@ public class FlashCardsPage extends BasePage {
             isMastered =true;
         } else {
             this.flashcards = flashCardDao.getFlashCardsByTopic(topic, userID);
+            if (this.flashcards.isEmpty()) {
+                Label noFlashcardsLabel = new Label("You have mastered all flashcards in this topic. Great job!");
+                Button endFlashCardSessionButton = new Button("Go back to library");
+                endFlashCardSessionButton.setOnAction(e ->
+                        this.getScene().setRoot(new FlashCardLibrary((Stage) this.getScene().getWindow()))
+                );
+                this.getChildren().addAll(noFlashcardsLabel, endFlashCardSessionButton);
+                return;
+            }
         }
 
         // If user is not logged in, redirect to index page

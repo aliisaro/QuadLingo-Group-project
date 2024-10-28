@@ -81,7 +81,7 @@
 }
 
 .flashcard-container {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: linear-gradient(to bottom, #facdb3, #FFFFFF);
     -fx-border-color: #584B53;
     -fx-border-width: 2px;
     -fx-border-radius: 5px;
