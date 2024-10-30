@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="update dockerfile">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Config/LanguageConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Config/LanguageOHJE" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_AR.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_FR.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_ZH.properties" afterDir="false" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="Lisäsin resource bundle pohjat muille kielille. Lisäsin index sivulle kielivalikon. Loin LanguageConfig luokan, joka hakee ja asettaa nykyisen kielen käyttäjälle. Lisäsin myös esimerkin miten voi lokalisoida sivu.">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Config/LanguageOHJE" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Config/LanguageOHJE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/Homepage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Homepage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +32,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="aliisa" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -50,7 +46,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/aliisaro/QuadLingo-Group-project&quot;,
-    &quot;accountId&quot;: &quot;20de4316-1e1e-4a2c-be14-46480de67c64&quot;
+    &quot;accountId&quot;: &quot;8f5e8fcd-3279-4d3f-a7b4-f0c0f2ce3e5e&quot;
   }
 }</component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -88,7 +84,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "aliisa",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo",
     "list.type.of.created.stylesheet": "CSS",
@@ -100,7 +96,7 @@
     "project.structure.last.edited": "Global Libraries",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "MavenSettings",
+    "settings.editor.selected.configurable": "File.Encoding",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -217,6 +213,9 @@
       <workItem from="1728499405950" duration="2502000" />
       <workItem from="1728569897297" duration="6643000" />
       <workItem from="1728639315536" duration="345000" />
+      <workItem from="1730188070794" duration="525000" />
+      <workItem from="1730189294133" duration="213000" />
+      <workItem from="1730301426324" duration="1982000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />

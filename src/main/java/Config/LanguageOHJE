@@ -5,7 +5,6 @@ ESIMERKKI MITEN LOKALISOIDA SIVU:
 import Config.LanguageConfig;
 import java.util.ResourceBundle;
 
-
 public class ExamplePage {
     private ResourceBundle bundle; // ResourceBundle-instanssi kielitietojen hakemiseen
 
