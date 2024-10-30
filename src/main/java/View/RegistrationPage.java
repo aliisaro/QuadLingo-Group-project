@@ -16,8 +16,8 @@ import javafx.stage.Stage;
 import java.util.ResourceBundle;
 
 public class RegistrationPage extends BasePage {
-    private UserController userController; // UserController object
-    private ResourceBundle bundle;
+    private final UserController userController; // UserController object
+    private final ResourceBundle bundle;
 
     public RegistrationPage(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
@@ -104,26 +104,26 @@ public class RegistrationPage extends BasePage {
 
         // Basic validation: Check if fields are empty
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            errorMessages.append(bundle.getString("allFieldsRequired" + "\n")); //All fields are required.
+            errorMessages.append(bundle.getString("allFieldsRequired")).append("\n"); // All fields are required.
         }
         // Email format validation
         else if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            errorMessages.append(bundle.getString("invalidEmail" + "\n")); //Invalid email format.
+            errorMessages.append(bundle.getString("invalidEmail")).append("\n"); // Invalid email format.
         }
         // Check if the email is already registered
         else if (userController.doesEmailExist(email)) {
-            errorMessages.append(bundle.getString("accountExists" + "\n")); //An account with this email already exists.
+            errorMessages.append(bundle.getString("accountExists")).append("\n"); // An account with this email already exists.
         }
 
         // Password validation
         if (!password.matches(".*[A-Z].*")) {
-            errorMessages.append(bundle.getString("oneUppercaseLetter" + "\n")); //Password must include at least 1 uppercase letter.
+            errorMessages.append(bundle.getString("oneUppercaseLetter")).append("\n"); // Password must include at least 1 uppercase letter.
         }
         if (!password.matches(".*\\d.*")) {
-            errorMessages.append(bundle.getString("oneNumber" + "\n")); //Password must include at least 1 number.
+            errorMessages.append(bundle.getString("oneNumber")).append("\n"); // Password must include at least 1 number.
         }
         if (password.length() < 8) {
-            errorMessages.append(bundle.getString("atLeastEight" + "\n")); //Password must be at least 8 characters.
+            errorMessages.append(bundle.getString("atLeastEight")).append("\n"); // Password must be at least 8 characters.
         }
 
         // If there are errors, display them in an alert
@@ -144,7 +144,7 @@ public class RegistrationPage extends BasePage {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(bundle.getString("registrationError"));
                 alert.setHeaderText(null);
-                alert.setContentText(bundle.getString("errorContext")); //Register failed. Please try again
+                alert.setContentText(bundle.getString("errorContext")); // Register failed. Please try again.
                 alert.showAndWait();
                 System.out.println("Registration failed.\n");
             }

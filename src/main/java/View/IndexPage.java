@@ -35,7 +35,7 @@ public class IndexPage extends BasePage {
         descriptionLabel = new Label(bundle.getString("descriptionMessage"));
         descriptionLabel.setStyle("-fx-font-size: 16px;");
 
-        loginPageButton = new Button(bundle.getString("gotToLoginButton"));
+        loginPageButton = new Button(bundle.getString("goToLoginButton"));
         loginPageButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px; -fx-pref-width: 200px;");
         loginPageButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
 
@@ -86,7 +86,7 @@ public class IndexPage extends BasePage {
     private void updateTexts() {
         welcomeLabel.setText(bundle.getString("welcomeMessage"));
         descriptionLabel.setText(bundle.getString("descriptionMessage"));
-        loginPageButton.setText(bundle.getString("gotToLoginButton")); // Make sure this key is correct
+        loginPageButton.setText(bundle.getString("goToLoginButton")); // Make sure this key is correct
         registerPageButton.setText(bundle.getString("registerButton"));
     }
 }

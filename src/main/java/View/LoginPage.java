@@ -66,7 +66,7 @@ public class LoginPage extends BasePage {
         Label noAccountLabel = new Label(bundle.getString("noAccountMessage")); // Use bundle for label text
 
         // Go to the registration page
-        Button registerButton = new Button(bundle.getString("gotToSignupButton")); // Use bundle for button text
+        Button registerButton = new Button(bundle.getString("goToSignupButton")); // Use bundle for button text
         registerButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         registerButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         registerButton.setOnAction(e -> stage.setScene(new RegistrationPage(stage).createScene()));
