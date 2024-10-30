@@ -5,11 +5,15 @@ import DAO.FlashCardDao;
 import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.FlashCard;
+import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.animation.RotateTransition;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
 import java.util.List;
 
@@ -19,7 +23,6 @@ public class FlashCardsPage extends BasePage {
     private final UserController userController;
     private List<FlashCard> flashcards;
     private Label termLabel;
-    private Label translationLabel;
     private int currentFlashCardIndex = 0;
     private int userID;
     private int currentFlashCardId;
@@ -76,21 +79,17 @@ public class FlashCardsPage extends BasePage {
         termLabel.setWrapText(true);
         termLabel.getStyleClass().add("label-term");
 
-        translationLabel = new Label();
-        translationLabel.setWrapText(true);
-        translationLabel.getStyleClass().add("label-translation");
-
-        flashcardContainer = new VBox(10, termLabel, translationLabel);
+        flashcardContainer = new VBox(10, termLabel);
         flashcardContainer.setPadding(new Insets(10));
         flashcardContainer.getStyleClass().add("flashcard-container");
 
         flipFlashCardButton = new Button("Show Answer");
         flipFlashCardButton.setOnAction(e -> {
             if (!isFlipped) {
-                loadFlashCard(true);
+                applyFlipTransition(flashcardContainer, true);
                 isFlipped = true;
             } else {
-                loadFlashCard(false);
+                applyFlipTransition(flashcardContainer, false);
                 isFlipped = false;
             }
         });
@@ -125,11 +124,10 @@ public class FlashCardsPage extends BasePage {
         if (!showAnswer || isFlipped) {
             // Display the term of the flashcard
             termLabel.setText(flashcards.get(currentFlashCardIndex).getTerm());
-            translationLabel.setText("");
             flipFlashCardButton.setText("Show Translation");
         } else {
             // Display the translation of the flashcard
-            translationLabel.setText(flashcards.get(currentFlashCardIndex).getTranslation());
+            termLabel.setText(flashcards.get(currentFlashCardIndex).getTranslation());
             flipFlashCardButton.setText("Hide Translation");
         }
     }
@@ -157,6 +155,30 @@ public class FlashCardsPage extends BasePage {
         }
 
         loadFlashCard(false);
+    }
+
+    private void applyFlipTransition(VBox container, boolean show) {
+        RotateTransition flipOut = new RotateTransition(Duration.millis(150), container);
+        flipOut.setAxis(Rotate.Y_AXIS);
+        flipOut.setFromAngle(0);
+        flipOut.setToAngle(90);
+
+        ScaleTransition flipIn = new ScaleTransition(Duration.millis(150), container);
+        flipIn.setFromX(0);
+        flipIn.setToX(1);
+
+
+            if (show) {
+                loadFlashCard(true);
+            } else {
+                loadFlashCard(false);
+            }
+
+            flipIn.play();
+        flipIn.setOnFinished(e -> {
+            // Reset the text orientation
+            container.setScaleX(1);
+        });
     }
 
     // Toggle the mastered status of the flashcard
@@ -191,7 +213,6 @@ public class FlashCardsPage extends BasePage {
     // End the flashcard session
     private void endSession(){
         // Clear the translation label
-        translationLabel.setText("");
         // Reset the current flashcard index
         currentFlashCardIndex = 0;
 
