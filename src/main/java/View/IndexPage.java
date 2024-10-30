@@ -65,7 +65,7 @@ public class IndexPage extends BasePage {
                 locale = new Locale("fr");
                 break;
             case "Chinese":
-                locale = new Locale("zh"); // Simplified Chinese
+                locale = new Locale("ch"); // Simplified Chinese
                 break;
             case "Arabic":
                 locale = new Locale("ar");

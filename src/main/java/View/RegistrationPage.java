@@ -1,5 +1,6 @@
 package View;
 
+import Config.LanguageConfig;
 import Controller.UserController;
 import DAO.UserDaoImpl; // Import UserDaoImpl
 import Main.SessionManager;
@@ -12,12 +13,16 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ResourceBundle;
+
 public class RegistrationPage extends BasePage {
     private UserController userController; // UserController object
+    private ResourceBundle bundle;
 
     public RegistrationPage(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
         userController = new UserController(new UserDaoImpl());
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
         // Set layout to the stage
         setLayout(stage);
@@ -30,38 +35,38 @@ public class RegistrationPage extends BasePage {
         this.setAlignment(Pos.CENTER);
 
         // Elements
-        Label pageTitle = new Label("Sign Up");
+        Label pageTitle = new Label(bundle.getString("registerTitle"));
         pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Create an HBox for the title and center it
         HBox titleContainer = new HBox(pageTitle);
         titleContainer.setAlignment(Pos.CENTER);  // Center the title horizontally
 
-        Label usernameLabel = new Label("Username");
+        Label usernameLabel = new Label(bundle.getString("usernameLabel"));
         TextField usernameField = new TextField();
 
-        Label emailLabel = new Label("Email");
+        Label emailLabel = new Label(bundle.getString("emailLabel"));
         TextField emailField = new TextField();
 
-        Label passwordLabel = new Label("Password");
+        Label passwordLabel = new Label(bundle.getString("passwordLabel"));
         PasswordField passwordField = new PasswordField();
 
         // Handle registerButton click
-        Button registerButton = new Button("Sign up");
+        Button registerButton = new Button(bundle.getString("registerButton"));
         registerButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         registerButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         registerButton.setOnAction(event -> handleRegisterAction(usernameField, emailField, passwordField, stage));
 
         // Back to Index Page button
-        Button indexPageButton = new Button("Go back");
+        Button indexPageButton = new Button(bundle.getString("goBackButton"));
         indexPageButton .setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         indexPageButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
 
-        Label hasAccountLabel = new Label("Already have an account? Login instead:");
+        Label hasAccountLabel = new Label(bundle.getString("hasAccountLabel"));
 
         // Go to the login page
-        Button loginButton = new Button("Go To Login Page");
+        Button loginButton = new Button(bundle.getString("goToLoginButton"));
         loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
         loginButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         loginButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
@@ -99,32 +104,32 @@ public class RegistrationPage extends BasePage {
 
         // Basic validation: Check if fields are empty
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            errorMessages.append("All fields are required.\n");
+            errorMessages.append(bundle.getString("allFieldsRequired" + "\n")); //All fields are required.
         }
         // Email format validation
         else if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            errorMessages.append("Invalid email format.\n");
+            errorMessages.append(bundle.getString("invalidEmail" + "\n")); //Invalid email format.
         }
         // Check if the email is already registered
         else if (userController.doesEmailExist(email)) {
-            errorMessages.append("An account with this email already exists.\n");
+            errorMessages.append(bundle.getString("accountExists" + "\n")); //An account with this email already exists.
         }
 
         // Password validation
         if (!password.matches(".*[A-Z].*")) {
-            errorMessages.append("Password must include at least 1 uppercase letter.\n");
+            errorMessages.append(bundle.getString("oneUppercaseLetter" + "\n")); //Password must include at least 1 uppercase letter.
         }
         if (!password.matches(".*\\d.*")) {
-            errorMessages.append("Password must include at least 1 number.\n");
+            errorMessages.append(bundle.getString("oneNumber" + "\n")); //Password must include at least 1 number.
         }
         if (password.length() < 8) {
-            errorMessages.append("Password must be at least 8 characters.\n");
+            errorMessages.append(bundle.getString("atLeastEight" + "\n")); //Password must be at least 8 characters.
         }
 
         // If there are errors, display them in an alert
         if (errorMessages.length() > 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Registration Error");
+            alert.setTitle(bundle.getString("registrationError"));
             alert.setHeaderText(null);
             alert.setContentText(errorMessages.toString());
             alert.showAndWait();
@@ -137,9 +142,9 @@ public class RegistrationPage extends BasePage {
                 System.out.println("Registration successful: " + user.getUsername() + "\n");
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Registration Error");
+                alert.setTitle(bundle.getString("registrationError"));
                 alert.setHeaderText(null);
-                alert.setContentText("Registration failed. Please try again.");
+                alert.setContentText(bundle.getString("errorContext")); //Register failed. Please try again
                 alert.showAndWait();
                 System.out.println("Registration failed.\n");
             }
