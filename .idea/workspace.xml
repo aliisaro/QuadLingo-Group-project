@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="update dockerfile">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Config/LanguageConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Config/LanguageOHJE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_AR.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_FR.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_ZH.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ER-diagram.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/images/ER-diagram.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Schema.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/images/Schema.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +36,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="aliisa" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -65,46 +71,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Profile.executor&quot;: &quot;Run&quot;,
-    &quot;Application.QuadLingoQui.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.Dockerfile.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserDaoImplTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTests.testUpdateUser.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.QuadLingo [clean,install].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.QuadLingo [clean,package,-DskipTests].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.QuadLingo [clean,package,-U].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.QuadLingo [clean,package].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.Main.executor": "Run",
+    "Application.Profile.executor": "Run",
+    "Application.QuadLingoQui.executor": "Run",
+    "Docker.Dockerfile.executor": "Run",
+    "JUnit.UserDaoImplTest.executor": "Run",
+    "JUnit.UserTests.executor": "Run",
+    "JUnit.UserTests.testUpdateUser.executor": "Run",
+    "Maven.QuadLingo [clean,install].executor": "Run",
+    "Maven.QuadLingo [clean,package,-DskipTests].executor": "Run",
+    "Maven.QuadLingo [clean,package,-U].executor": "Run",
+    "Maven.QuadLingo [clean,package].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "aliisa",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Global Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "MavenSettings",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mariadb&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\aliis\IdeaProjects\QuadLingo-Group-project\src\main\java\Config" />
+      <recent name="C:\Users\aliis\IdeaProjects\QuadLingo-Group-project\src\main\java" />
       <recent name="C:\Users\aliis\IdeaProjects\QuadLingo-Group-project\docs\images" />
     </key>
   </component>
@@ -118,7 +126,7 @@
       <command value="mvn clean package " />
     </option>
   </component>
-  <component name="RunManager" selected="Docker.Dockerfile">
+  <component name="RunManager">
     <configuration name="UserDaoImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
@@ -128,11 +136,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserTests" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <configuration name="UserTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="UserTests" />
-      <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -158,11 +165,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.Dockerfile" />
-        <item itemvalue="JUnit.UserTests" />
-        <item itemvalue="JUnit.UserDaoImplTest" />
         <item itemvalue="JUnit.UserTests.testUpdateUser" />
         <item itemvalue="JUnit.UserTests" />
+        <item itemvalue="JUnit.UserDaoImplTest" />
+        <item itemvalue="Docker.Dockerfile" />
+        <item itemvalue="Docker.Dockerfile" />
       </list>
     </recent_temporary>
   </component>
@@ -339,7 +346,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728581834181</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa">
+      <option name="closed" value="true" />
+      <created>1730139286482</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1730139286482</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -376,6 +391,7 @@
     <MESSAGE value="small change to dockerfile" />
     <MESSAGE value="update pom.xml" />
     <MESSAGE value="update dockerfile" />
-    <option name="LAST_COMMIT_MESSAGE" value="update dockerfile" />
+    <MESSAGE value="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa" />
+    <option name="LAST_COMMIT_MESSAGE" value="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa" />
   </component>
 </project>

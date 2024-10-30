@@ -1,7 +1,8 @@
 package View;
 
+import Config.LanguageConfig;
 import Controller.UserController;
-import DAO.UserDaoImpl; // Import UserDaoImpl
+import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.User;
 import javafx.geometry.Insets;
@@ -12,12 +13,18 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ResourceBundle;
+
 public class LoginPage extends BasePage {
-    private UserController userController; // UserController object
+    private UserController userController;
+    private ResourceBundle bundle;
 
     public LoginPage(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
         userController = new UserController(new UserDaoImpl());
+
+        // Use the global locale from Config
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale()); // Initialize bundle here
 
         // Set layout to the stage
         setLayout(stage);
@@ -30,35 +37,36 @@ public class LoginPage extends BasePage {
         this.setAlignment(Pos.CENTER);
 
         // Create and configure the login page UI components
-        Label pageTitle = new Label("Login");
+        Label pageTitle = new Label(bundle.getString("loginPageTitle")); // Use bundle for page title
         pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Create an HBox for the title and center it
         HBox titleContainer = new HBox(pageTitle);
-        titleContainer.setAlignment(Pos.CENTER);  // Center the title horizontally
+        // Center the title horizontally
+        titleContainer.setAlignment(Pos.CENTER);
 
-        Label usernameLabel = new Label("Username");
+        Label usernameLabel = new Label(bundle.getString("usernameLabel")); // Use bundle for label
         TextField usernameField = new TextField();
 
-        Label passwordLabel = new Label("Password");
+        Label passwordLabel = new Label(bundle.getString("passwordLabel")); // Use bundle for label
         PasswordField passwordField = new PasswordField();
 
         // Handle login button click
-        Button loginButton = new Button("Login");
+        Button loginButton = new Button(bundle.getString("loginButton")); // Use bundle for button text
         loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         loginButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         loginButton.setOnAction(e -> handleLoginAction(usernameField, passwordField, stage));
 
         // Go back to the index page
-        Button indexPageButton = new Button("Go back");
+        Button indexPageButton = new Button(bundle.getString("goBackButton")); // Use bundle for button text
         indexPageButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         indexPageButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
 
-        Label noAccountLabel = new Label("Don't have an account? Sign up instead:");
+        Label noAccountLabel = new Label(bundle.getString("noAccountMessage")); // Use bundle for label text
 
         // Go to the registration page
-        Button registerButton = new Button("Go to Sign Up Page");
+        Button registerButton = new Button(bundle.getString("gotToSignupButton")); // Use bundle for button text
         registerButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         registerButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         registerButton.setOnAction(e -> stage.setScene(new RegistrationPage(stage).createScene()));
