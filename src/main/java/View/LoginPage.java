@@ -100,14 +100,14 @@ public class LoginPage extends BasePage {
 
         // Basic validation: Check if fields are empty
         if (username.isEmpty() || password.isEmpty()) {
-            errorMessages.append("All fields are required.\n");
+            errorMessages.append(bundle.getString("allFieldsRequired")).append("\n"); // All fields are required.
         } else if (!userController.doesUsernameExist(username)) { // Check if the user exists
-            errorMessages.append("User not found. Please check your username.\n");
+            errorMessages.append(bundle.getString("userDoesNotExist")).append("\n"); // User does not exist.
         } else {
             // Attempt to log in
             User user = userController.loginUser(username, password);
             if (user == null) {
-                errorMessages.append("Invalid password. Please try again.\n");
+                errorMessages.append(bundle.getString("incorrectPassword")).append("\n"); // Incorrect password.
             } else {
                 // Successful login
                 SessionManager.getInstance().setCurrentUser(user); // Start a new session
@@ -120,7 +120,7 @@ public class LoginPage extends BasePage {
         // If there are error messages, show them in an alert
         if (errorMessages.length() > 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Error");
+            alert.setTitle(bundle.getString("loginErrorTitle")); // Use bundle for alert title
             alert.setHeaderText(null);
             alert.setContentText(errorMessages.toString());
             alert.showAndWait();
