@@ -35,6 +35,7 @@ public class Homepage extends BasePage {
             return;
         }
 
+        // Use the global locale from Config
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
         // Initialize the QuizController with a new instance of QuizDaoImpl and a database connection

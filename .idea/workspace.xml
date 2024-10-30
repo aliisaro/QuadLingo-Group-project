@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="Lisäsin resource bundle pohjat muille kielille. Lisäsin index sivulle kielivalikon. Loin LanguageConfig luokan, joka hakee ja asettaa nykyisen kielen käyttäjälle. Lisäsin myös esimerkin miten voi lokalisoida sivu.">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Config/LanguageOHJE" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Config/LanguageOHJE" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/Homepage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Homepage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Profile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -84,7 +84,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "aliisa",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo",
     "list.type.of.created.stylesheet": "CSS",
@@ -391,6 +391,7 @@
     <MESSAGE value="update pom.xml" />
     <MESSAGE value="update dockerfile" />
     <MESSAGE value="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa" />
-    <option name="LAST_COMMIT_MESSAGE" value="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa" />
+    <MESSAGE value="lokalisoin kotisivun ja muokkasin english resource bundle" />
+    <option name="LAST_COMMIT_MESSAGE" value="lokalisoin kotisivun ja muokkasin english resource bundle" />
   </component>
 </project>
