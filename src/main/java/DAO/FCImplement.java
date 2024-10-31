@@ -126,25 +126,6 @@ public class FCImplement implements FlashCardDao {
     }
 
     @Override
-    public void checkMasteredStatus(int flashCardId, int userId) {
-        String query = "SELECT * FROM ISMASTERED WHERE FlashCardID = ? AND UserID = ?";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, flashCardId);
-            stmt.setInt(2, userId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    System.out.println("Flashcard " + flashCardId + " is mastered by user " + userId);
-                } else {
-                    System.out.println("Flashcard " + flashCardId + " is not mastered by user " + userId);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public int getCurrentFlashCardId(String term) {
         int flashCardId = 0;
         String query = "SELECT FlashCardID FROM FLASHCARD WHERE Term = ?";
