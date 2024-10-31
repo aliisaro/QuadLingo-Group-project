@@ -1,5 +1,6 @@
 package View;
 
+import Config.LanguageConfig;
 import DAO.UserDaoImpl;
 import Model.Badge;
 import javafx.geometry.Insets;
@@ -14,37 +15,40 @@ import Controller.UserController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class AchiePage extends BasePage implements ImageSize, setMarginButton, BadgeLock {
     private UserController userController;
     private List<Badge> badges;
     private VBox unlockedBadgesContainer;
     private VBox lockedBadgesContainer;
+    private ResourceBundle bundle;
 
     //Displays the Achievements page
     public AchiePage(Stage stage) {
         this.userController = UserController.getInstance(UserDaoImpl.getInstance());
         this.badges = new ArrayList<>();
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
         //Paths to badge images
-        badges.add(new Badge("file:docs/badges/FirstBadge.png", 1, "Complete one quiz","quiz"));
-        badges.add(new Badge("file:docs/badges/SecondBadge.png", 5, "Complete five quizzes", "quiz"));
-        badges.add(new Badge("file:docs/badges/Thirdbadge.png", 10, "Complete ten quizzes", "quiz"));
-        badges.add(new Badge("file:docs/badges/FlashcardBadge1.png", 5, "Master five flashcards", "flashcard"));
-        badges.add(new Badge("file:docs/badges/FlashcardBadge2.png", 10, "Master ten flashcards", "flashcard"));
+        badges.add(new Badge("file:docs/badges/FirstBadge.png", 1, bundle.getString("quizRequirement1"),"quiz"));
+        badges.add(new Badge("file:docs/badges/SecondBadge.png", 5, bundle.getString("quizRequirement5"), "quiz"));
+        badges.add(new Badge("file:docs/badges/Thirdbadge.png", 10, bundle.getString("quizRequirement10"), "quiz"));
+        badges.add(new Badge("file:docs/badges/FlashcardBadge1.png", 5, bundle.getString("flashcardRequirement5"), "flashcard"));
+        badges.add(new Badge("file:docs/badges/FlashcardBadge2.png", 10, bundle.getString("flashcardRequirement10"), "flashcard"));
 
         int userId = userController.getCurrentUserId();
 
-        Label AchieLabel1 = new Label("Achievements Page");
+        Label AchieLabel1 = new Label(bundle.getString("achievementsTitle"));
         AchieLabel1.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
 
         //Button to go to the profile page
-        Button profileButton = new Button("Go to Profile");
+        Button profileButton = new Button(bundle.getString("profileButton"));
         setMargin(profileButton, 10, 10, 10, 5);
         profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
 
         //Button to go back to the homepage
-        Button buttonHome = new Button("Go Home");
+        Button buttonHome = new Button(bundle.getString("homeButton"));
         setMargin(buttonHome, 10, 10, 10, 5);
         buttonHome.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
@@ -56,10 +60,10 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
 
         addBadgesToContainer(unlockedBadgesContainer, lockedBadgesContainer, userId);
 
-        Label AchieLabel2 = new Label("Earned badges");
+        Label AchieLabel2 = new Label(bundle.getString("unlockedBadges"));
         AchieLabel2.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
 
-        Label AchieLabel3 = new Label("Locked badges");
+        Label AchieLabel3 = new Label(bundle.getString("lockedBadges"));
         AchieLabel3.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
 
         unlockedBadgesContainer.setPadding(new Insets(10, 10, 10, 5));
