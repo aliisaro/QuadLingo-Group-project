@@ -4,6 +4,9 @@ import Controller.UserController;
 import DAO.UserDaoImpl;
 import View.QuadLingoQui;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 
 // This launches the whole program
 public class Main {

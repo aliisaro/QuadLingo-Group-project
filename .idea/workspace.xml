@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="Lisäsin resource bundle pohjat muille kielille. Lisäsin index sivulle kielivalikon. Loin LanguageConfig luokan, joka hakee ja asettaa nykyisen kielen käyttäjälle. Lisäsin myös esimerkin miten voi lokalisoida sivu.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/Homepage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Homepage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/bundle_SE.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/RegistrationPage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/SignUpPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/SignUpPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -84,7 +87,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "aliisa",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo",
     "list.type.of.created.stylesheet": "CSS",
