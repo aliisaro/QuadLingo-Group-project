@@ -128,7 +128,7 @@ public class SignUpPage extends BasePage {
         // If there are errors, display them in an alert
         if (errorMessages.length() > 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(bundle.getString("signUpError"));
+            alert.setTitle(bundle.getString("signUpErrorTitle"));
             alert.setHeaderText(null);
             alert.setContentText(errorMessages.toString());
             alert.showAndWait();
@@ -141,7 +141,7 @@ public class SignUpPage extends BasePage {
                 System.out.println("Sign up successful: " + user.getUsername() + "\n");
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle(bundle.getString("signUpError"));
+                alert.setTitle(bundle.getString("signUpErrorTitle"));
                 alert.setHeaderText(null);
                 alert.setContentText(bundle.getString("errorContext")); // Register failed. Please try again.
                 alert.showAndWait();
