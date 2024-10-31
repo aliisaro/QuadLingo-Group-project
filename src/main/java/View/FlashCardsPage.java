@@ -1,5 +1,6 @@
 package View;
 
+import Config.LanguageConfig;
 import Controller.UserController;
 import DAO.FlashCardDao;
 import DAO.UserDaoImpl;
@@ -16,6 +17,7 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 //Page for Flash Cards
 public class FlashCardsPage extends BasePage {
@@ -31,18 +33,20 @@ public class FlashCardsPage extends BasePage {
     private Button markMasteredButton;
     private Button flipFlashCardButton;
     private VBox flashcardContainer;
+    private final ResourceBundle bundle;
 
     public FlashCardsPage(FlashCardDao flashCardDao, String topic, Stage stage) {
         this.flashCardDao = flashCardDao;
         this.userController = new UserController(new UserDaoImpl());
         this.userID = userController.getCurrentUserId();
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
         // Get the flashcards based on the topic
         if (topic.equals("Mastered Flashcards")) {
             this.flashcards = flashCardDao.getMasteredFlashCardsByUser(userID);
             if (this.flashcards.isEmpty()) {
-                Label noMasteredFlashcardsLabel = new Label("You don't have mastered flashcards yet");
-                Button endFlashCardSessionButton = new Button("Go back to library");
+                Label noMasteredFlashcardsLabel = new Label(bundle.getString("noMastered")); // You don't have mastered flashcards yet
+                Button endFlashCardSessionButton = new Button(bundle.getString("backToFlashLibraryButton")); // Go back to library
                 endFlashCardSessionButton.setOnAction(e ->
                         this.getScene().setRoot(new FlashCardLibrary((Stage) this.getScene().getWindow()))
                 );
@@ -53,8 +57,8 @@ public class FlashCardsPage extends BasePage {
         } else {
             this.flashcards = flashCardDao.getFlashCardsByTopic(topic, userID);
             if (this.flashcards.isEmpty()) {
-                Label noFlashcardsLabel = new Label("You have mastered all flashcards in this topic. Great job!");
-                Button endFlashCardSessionButton = new Button("Go back to library");
+                Label noFlashcardsLabel = new Label(bundle.getString("masterAllTopic")); // You have mastered all flashcards in this topic. Great job!
+                Button endFlashCardSessionButton = new Button(bundle.getString("backToFlashLibraryButton")); // Go back to library
                 endFlashCardSessionButton.setOnAction(e ->
                         this.getScene().setRoot(new FlashCardLibrary((Stage) this.getScene().getWindow()))
                 );
@@ -83,7 +87,7 @@ public class FlashCardsPage extends BasePage {
         flashcardContainer.setPadding(new Insets(10));
         flashcardContainer.getStyleClass().add("flashcard-container");
 
-        flipFlashCardButton = new Button("Show Answer");
+        flipFlashCardButton = new Button(bundle.getString("showAnswer")); // Show Answer
         flipFlashCardButton.setOnAction(e -> {
             if (!isFlipped) {
                 applyFlipTransition(flashcardContainer, true);
@@ -94,13 +98,13 @@ public class FlashCardsPage extends BasePage {
             }
         });
 
-        markMasteredButton = new Button("Master this");
+        markMasteredButton = new Button(bundle.getString("masterThis")); // Master this
         markMasteredButton.setOnAction(e -> toggleMasteredStatus());
 
-        Button nextFlashCardButton = new Button("Next Flashcard");
+        Button nextFlashCardButton = new Button(bundle.getString("nextFlashcard")); // Next Flashcard
         nextFlashCardButton.setOnAction(e -> nextFlashCard());
 
-        Button endFlashCardSessionButton = new Button("Go back to library");
+        Button endFlashCardSessionButton = new Button(bundle.getString("backToFlashLibraryButton")); // Go back to library
         endFlashCardSessionButton.setOnAction(e ->
                 endSession()
         );
@@ -111,10 +115,10 @@ public class FlashCardsPage extends BasePage {
 
         // Add the UI components to the layout based on the mastered status
         if (isMastered) {
-            markMasteredButton.setText("Unmaster this");
+            markMasteredButton.setText(bundle.getString("unmasterThis")); // Unmaster this
             this.getChildren().addAll(flashcardContainer, buttonContainer);
         } else {
-            markMasteredButton.setText("Master this");
+            markMasteredButton.setText(bundle.getString("masterThis")); // Master this
             this.getChildren().addAll(flashcardContainer, buttonContainer);
         }
     }
@@ -124,11 +128,11 @@ public class FlashCardsPage extends BasePage {
         if (!showAnswer || isFlipped) {
             // Display the term of the flashcard
             termLabel.setText(flashcards.get(currentFlashCardIndex).getTerm());
-            flipFlashCardButton.setText("Show Translation");
+            flipFlashCardButton.setText(bundle.getString("showTranslation")); // Show Translation
         } else {
             // Display the translation of the flashcard
             termLabel.setText(flashcards.get(currentFlashCardIndex).getTranslation());
-            flipFlashCardButton.setText("Hide Translation");
+            flipFlashCardButton.setText(bundle.getString("showTerm")); // Hide Translation
         }
     }
 
@@ -149,9 +153,9 @@ public class FlashCardsPage extends BasePage {
 
         // Update the button state based on the mastered status
         if (isMastered) {
-            markMasteredButton.setText("Unmaster this");
+            markMasteredButton.setText(bundle.getString("unmasterThis")); // Unmaster this
         } else {
-            markMasteredButton.setText("Master this");
+            markMasteredButton.setText(bundle.getString("masterThis")); // Master this
         }
 
         loadFlashCard(false);
@@ -188,20 +192,20 @@ public class FlashCardsPage extends BasePage {
             isMastered = false;
             currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
             flashCardDao.unmasterFlashCard(currentFlashCardId, userID);
-            markMasteredButton.setText("Master this");
+            markMasteredButton.setText(bundle.getString("masterThis")); // Master this
         } else {
             // Mark as mastered
             isMastered = true;
             currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
             flashCardDao.masterFlashCard(currentFlashCardId, userID);
-            markMasteredButton.setText("Unmaster this");
+            markMasteredButton.setText(bundle.getString("unmasterThis")); // Unmaster this
         }
 
         // Refresh the list of flashcards
         if (flashcards.get(currentFlashCardIndex).getTopic().equals("Mastered Flashcards")) {
             flashcards = flashCardDao.getMasteredFlashCardsByUser(userID);
             if (flashcards.isEmpty()) {
-                Label noMasteredFlashcardsLabel = new Label("You don't have mastered flashcards yet");
+                Label noMasteredFlashcardsLabel = new Label(bundle.getString("noMastered")); // You don't have mastered flashcards yet
                 this.getChildren().clear();
                 this.getChildren().add(noMasteredFlashcardsLabel);
             } else {
