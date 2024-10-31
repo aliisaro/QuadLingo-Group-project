@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
@@ -37,7 +36,7 @@ public class LoginPage extends BasePage {
         this.setAlignment(Pos.CENTER);
 
         // Create and configure the login page UI components
-        Label pageTitle = new Label(bundle.getString("loginPageTitle")); // Use bundle for page title
+        Label pageTitle = new Label(bundle.getString("login")); // Use bundle for page title
         pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Create an HBox for the title and center it
@@ -52,7 +51,7 @@ public class LoginPage extends BasePage {
         PasswordField passwordField = new PasswordField();
 
         // Handle login button click
-        Button loginButton = new Button(bundle.getString("loginButton")); // Use bundle for button text
+        Button loginButton = new Button(bundle.getString("login")); // Use bundle for button text
         loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         loginButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         loginButton.setOnAction(e -> handleLoginAction(usernameField, passwordField, stage));
@@ -66,10 +65,10 @@ public class LoginPage extends BasePage {
         Label noAccountLabel = new Label(bundle.getString("noAccountMessage")); // Use bundle for label text
 
         // Go to the registration page
-        Button registerButton = new Button(bundle.getString("goToSignupButton")); // Use bundle for button text
-        registerButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
-        registerButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
-        registerButton.setOnAction(e -> stage.setScene(new RegistrationPage(stage).createScene()));
+        Button signUpButton = new Button(bundle.getString("signUp")); // Use bundle for button text
+        signUpButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        signUpButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        signUpButton.setOnAction(e -> stage.setScene(new SignUpPage(stage).createScene()));
 
         // Create a container (HBox) for buttons
         HBox buttonContainer = new HBox(10);
@@ -89,7 +88,7 @@ public class LoginPage extends BasePage {
                 passwordField,
                 buttonContainer,
                 noAccountLabel,
-                registerButton);
+                signUpButton);
     }
 
     private void handleLoginAction(TextField usernameField, PasswordField passwordField, Stage stage) {

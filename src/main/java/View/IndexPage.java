@@ -16,7 +16,7 @@ public class IndexPage extends BasePage {
     private Label welcomeLabel;
     private Label descriptionLabel;
     private Button loginPageButton;
-    private Button registerPageButton;
+    private Button signUpPageButton;
     private ComboBox<String> languageComboBox;
 
     public IndexPage(Stage stage) {
@@ -35,13 +35,13 @@ public class IndexPage extends BasePage {
         descriptionLabel = new Label(bundle.getString("descriptionMessage"));
         descriptionLabel.setStyle("-fx-font-size: 16px;");
 
-        loginPageButton = new Button(bundle.getString("loginButton"));
+        loginPageButton = new Button(bundle.getString("login"));
         loginPageButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px; -fx-pref-width: 200px;");
         loginPageButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
 
-        registerPageButton = new Button(bundle.getString("registerButton"));
-        registerPageButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px; -fx-pref-width: 200px;");
-        registerPageButton.setOnAction(e -> stage.setScene(new RegistrationPage(stage).createScene()));
+        signUpPageButton = new Button(bundle.getString("signUp"));
+        signUpPageButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px; -fx-pref-width: 200px;");
+        signUpPageButton.setOnAction(e -> stage.setScene(new SignUpPage(stage).createScene()));
 
         // Language selection ComboBox
         languageComboBox = new ComboBox<>();
@@ -50,7 +50,7 @@ public class IndexPage extends BasePage {
         languageComboBox.setOnAction(e -> switchLanguage(languageComboBox.getValue()));
 
         // Layout for buttons and language selector
-        VBox buttonContainer = new VBox(10, loginPageButton, registerPageButton, languageComboBox);
+        VBox buttonContainer = new VBox(10, loginPageButton, signUpPageButton, languageComboBox);
         buttonContainer.setPadding(new Insets(10, 0, 0, 0));
         buttonContainer.setAlignment(Pos.CENTER);
 
@@ -86,7 +86,7 @@ public class IndexPage extends BasePage {
     private void updateTexts() {
         welcomeLabel.setText(bundle.getString("welcomeMessage"));
         descriptionLabel.setText(bundle.getString("descriptionMessage"));
-        loginPageButton.setText(bundle.getString("goToLoginButton")); // Make sure this key is correct
-        registerPageButton.setText(bundle.getString("registerButton"));
+        loginPageButton.setText(bundle.getString("login")); // Make sure this key is correct
+        signUpPageButton.setText(bundle.getString("signUp"));
     }
 }
