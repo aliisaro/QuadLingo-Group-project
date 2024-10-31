@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AchiePage extends BasePage implements ImageSize, setMarginButton, BadgeLock {
+public class AchiePage extends BasePage implements ImageSize, setMarginButton {
     private UserController userController;
     private List<Badge> badges;
     private VBox unlockedBadgesContainer;
@@ -147,7 +147,7 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
         VBox.setMargin(button, new Insets(top, right, bottom, left));
     }
 
-    @Override
+
     //Unlocks the badge
     public void unlockBadge(ImageView imageView) {
         ColorAdjust desaturate = new ColorAdjust();
@@ -155,7 +155,6 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton, B
         imageView.setEffect(desaturate);
     }
 
-    @Override
     //Locks the badge
     public void lockBadge(boolean value, ImageView imageView) {
         if (value) {
