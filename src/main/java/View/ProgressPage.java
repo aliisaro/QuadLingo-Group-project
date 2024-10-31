@@ -15,7 +15,7 @@ import Controller.UserController;
 
 import java.util.ResourceBundle;
 
-public class ProgressPage extends BasePage implements setMarginButton, UpdateProgress, setMarginVBox {
+public class ProgressPage extends BasePage implements setMarginButton, UpdateProgress {
 
     private final int maxScore;
     private final int userScore;
@@ -176,7 +176,6 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         progressBar.setProgress(progressPercentage);
     }
 
-    @Override
     //Set the margin of a VBox
     public void setMarginVbox(VBox vBox, int top, int right, int bottom, int left) {
         VBox.setMargin(vBox, new Insets(top, right, bottom, left));
