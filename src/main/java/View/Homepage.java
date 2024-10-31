@@ -1,5 +1,6 @@
 package View;
 
+import Config.LanguageConfig;
 import Controller.UserController;
 import Main.SessionManager;
 import Model.User;
@@ -14,12 +15,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.sql.Connection;
+import java.util.ResourceBundle;
+
 import Database.MariaDbConnection;
 
 public class Homepage extends BasePage {
 
     private QuizController quizController; // Declare the QuizController
     private UserController userController; // UserController object
+    private ResourceBundle bundle;
 
     public Homepage(Stage stage) {
         // Get the current logged-in user from the session
@@ -30,6 +34,9 @@ public class Homepage extends BasePage {
             stage.setScene(new IndexPage(stage).createScene());
             return;
         }
+
+        // Use the global locale from Config
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
         // Initialize the QuizController with a new instance of QuizDaoImpl and a database connection
         Connection connection = MariaDbConnection.getConnection(); // Get the database connection
@@ -51,40 +58,36 @@ public class Homepage extends BasePage {
         // Set the alignment of the entire page to center
         this.setAlignment(Pos.CENTER);
 
-        // Page title
-        Label pageTitle = new Label("Homepage");
-        pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-
         // Welcome message
-        Label welcomeLabel = new Label("Welcome, " + currentUser.getUsername());
+        Label welcomeLabel = new Label(bundle.getString("welcomeLabel")+ currentUser.getUsername());
         welcomeLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Quiz Library button
-        Button quizLibraryButton = new Button("Go to Quiz Library");
+        Button quizLibraryButton = new Button(bundle.getString("quizLibraryButton"));
         quizLibraryButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         quizLibraryButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         quizLibraryButton.setOnAction(e -> stage.setScene(new QuizLibrary(stage).createScene()));
 
         // Flashcard Library button
-        Button flashcardLibraryButton = new Button("Go to Flashcard Library");
+        Button flashcardLibraryButton = new Button(bundle.getString("flashcardLibraryButton"));
         flashcardLibraryButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         flashcardLibraryButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         flashcardLibraryButton.setOnAction(e -> stage.setScene(new FlashCardLibrary(stage).createScene()));
 
         // Achievements button
-        Button achieButton = new Button("Go to Achievements");
+        Button achieButton = new Button(bundle.getString("achievementsButton"));
         achieButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         achieButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         achieButton.setOnAction(e -> stage.setScene(new AchiePage(stage).createScene()));
 
         // Profile button
-        Button profileButton = new Button("Go to Profile");
+        Button profileButton = new Button(bundle.getString("profileButton"));
         profileButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         profileButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
 
         // Logout button
-        Button logoutButton = new Button("Logout");
+        Button logoutButton = new Button(bundle.getString("logoutButton"));
         logoutButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         logoutButton.setOnAction(e -> {
@@ -105,7 +108,4 @@ public class Homepage extends BasePage {
                 buttonContainer
         );
     }
-
-
-
 }

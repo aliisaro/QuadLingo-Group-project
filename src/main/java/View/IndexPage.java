@@ -35,7 +35,7 @@ public class IndexPage extends BasePage {
         descriptionLabel = new Label(bundle.getString("descriptionMessage"));
         descriptionLabel.setStyle("-fx-font-size: 16px;");
 
-        loginPageButton = new Button(bundle.getString("goToLoginButton"));
+        loginPageButton = new Button(bundle.getString("loginButton"));
         loginPageButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px; -fx-pref-width: 200px;");
         loginPageButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
 

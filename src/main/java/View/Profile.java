@@ -1,5 +1,6 @@
 package View;
 
+import Config.LanguageConfig;
 import Controller.UserController;
 import DAO.UserDaoImpl;
 import Main.SessionManager;
@@ -16,8 +17,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ResourceBundle;
+
 public class Profile extends BasePage {
     private UserController userController; // UserController object
+    private ResourceBundle bundle;
 
     public Profile(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
@@ -32,6 +36,9 @@ public class Profile extends BasePage {
             return;
         }
 
+        // Use the global locale from Config
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
+
         // Set layout to the stage
         setLayout(stage, currentUser);
     }
@@ -41,7 +48,7 @@ public class Profile extends BasePage {
         this.setPadding(new Insets(10));
 
         // Page title
-        Label pageTitle = new Label("Profile");
+        Label pageTitle = new Label(bundle.getString("profilePageTitle"));
         pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Create an HBox for the title and center it
@@ -49,20 +56,20 @@ public class Profile extends BasePage {
         titleContainer.setAlignment(Pos.CENTER);  // Center the title horizontally
 
         // Display current user's username, email, and password
-        Label usernameLabel = new Label("Username: " + currentUser.getUsername());
-        Label emailLabel = new Label("Email: " + currentUser.getEmail());
-        Label passwordLabel = new Label("Password: **********");
+        Label usernameLabel = new Label(bundle.getString("currentUsernameLabel") + currentUser.getUsername());
+        Label emailLabel = new Label(bundle.getString("currentEmailLabel")+ currentUser.getEmail());
+        Label passwordLabel = new Label(bundle.getString("currentPasswordLabel"));
 
         // Change username field
-        Label changeUsernameLabel = new Label("Change username:");
+        Label changeUsernameLabel = new Label(bundle.getString("changeUsernameLabel"));
         TextField usernameTextField = new TextField();
 
         // Change email field
-        Label changeEmailLabel = new Label("Change email:");
+        Label changeEmailLabel = new Label(bundle.getString("changeEmailLabel"));
         TextField emailTextField = new TextField();
 
         // Change password field
-        Label changePasswordLabel = new Label("Change password:");
+        Label changePasswordLabel = new Label(bundle.getString("changePasswordLabel"));
         PasswordField passwordTextField = new PasswordField();
 
         // Create a container (HBox) for save and logout buttons
@@ -74,13 +81,13 @@ public class Profile extends BasePage {
         buttonContainer2.setPadding(new Insets(5, 0,5 , 0));
 
         // Save Button to handle saving the profile information
-        Button saveButton = new Button("Save changes");
+        Button saveButton = new Button(bundle.getString("saveChangesButton"));
         saveButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
         saveButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         saveButton.setOnAction(e -> handleSaveAction(usernameTextField, emailTextField, passwordTextField, currentUser));
 
         // Logout button: clears session and redirects to IndexPage
-        Button logoutButton = new Button("Logout");
+        Button logoutButton = new Button(bundle.getString("logoutButton"));
         logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
         logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         logoutButton.setOnAction(e -> {
@@ -89,13 +96,13 @@ public class Profile extends BasePage {
         });
 
         // Back to the homepage
-        Button backButton = new Button("Back to homepage");
+        Button backButton = new Button(bundle.getString("backToHomeButton"));
         backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
         backButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         // Go to the Progress page
-        Button buttonProgress = new Button("Go to Progress");
+        Button buttonProgress = new Button(bundle.getString("progressPageButton"));
         buttonProgress.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
         buttonProgress.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         buttonProgress.setOnAction(e -> stage.setScene(new ProgressPage(stage).createScene()));
@@ -140,7 +147,7 @@ public class Profile extends BasePage {
 
         // Check if all fields are empty
         if (username.isEmpty() && email.isEmpty() && password.isEmpty()) {
-            showAlert("Error", "At least one field must be filled out to update the profile.");
+            showAlert(bundle.getString("errorAlertTitle"), bundle.getString("emptyFieldsAlert"));
             return; // Exit the method early
         }
 
@@ -154,9 +161,9 @@ public class Profile extends BasePage {
         // Validate email if provided
         if (!email.isEmpty() && !email.equals(currentUser.getEmail())) {
             if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-                errorMessages.append("Invalid email format.\n");
+                errorMessages.append(bundle.getString("invalidEmail")).append("\n"); // Invalid email format.
             } else if (userController.doesEmailExist(email)) {
-                errorMessages.append("An account with this email already exists.\n");
+                errorMessages.append(bundle.getString("accountExists")).append("\n"); // An account with this email already exists.
             } else {
                 currentUser.setEmail(email);
             }
@@ -165,13 +172,13 @@ public class Profile extends BasePage {
         // Validate password if provided
         if (!password.isEmpty()) {
             if (!password.matches(".*[A-Z].*")) {
-                errorMessages.append("Password must include at least 1 uppercase letter.\n");
+                errorMessages.append(bundle.getString("oneUppercaseLetter")).append("\n"); // Password must include at least 1 uppercase letter.
             }
             if (!password.matches(".*\\d.*")) {
-                errorMessages.append("Password must include at least 1 number.\n");
+                errorMessages.append(bundle.getString("oneNumber")).append("\n"); // Password must include at least 1 number.
             }
             if (password.length() < 8) {
-                errorMessages.append("Password must be at least 8 characters.\n");
+                errorMessages.append(bundle.getString("atLeastEight")).append("\n"); // Password must be at least 8 characters.
             } else {
                 currentUser.setPassword(password, true);
             }
@@ -179,12 +186,12 @@ public class Profile extends BasePage {
 
         // If there are errors, display them as an alert
         if (errorMessages.length() > 0) {
-            showAlert("Error", errorMessages.toString());
+            showAlert(bundle.getString("errorAlertTitle"), errorMessages.toString());
         } else {
             // If no errors, update the user
             boolean isUpdated = userController.updateUser(currentUser);
             if (isUpdated) {
-                showAlert("Success", "Profile updated successfully.");
+                showAlert(bundle.getString("successAlertTitle"), bundle.getString("profileUpdateSuccessAlert"));
                 System.out.println("Profile updated successfully:");
                 System.out.println("Username: " + currentUser.getUsername());
                 System.out.println("Email: " + currentUser.getEmail());
@@ -198,7 +205,7 @@ public class Profile extends BasePage {
                 // Refresh the page to display updated info
                 refreshProfilePage();
             } else {
-                showAlert("Error", "Failed to update profile.");
+                showAlert(bundle.getString("errorAlertTitle"), bundle.getString("profileUpdateFailedAlert"));
                 System.out.println("Failed to update profile.\n");
             }
         }
