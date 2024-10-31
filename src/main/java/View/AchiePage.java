@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AchiePage extends BasePage implements ImageSize, setMarginButton {
+public class AchiePage extends BasePage implements setMarginButton {
     private UserController userController;
     private List<Badge> badges;
     private VBox unlockedBadgesContainer;
@@ -134,7 +134,6 @@ public class AchiePage extends BasePage implements ImageSize, setMarginButton {
         }
     }
 
-    @Override
     //Sets the size of the image
     public void setImageSize(ImageView imageView, int width, int height) {
         imageView.setFitWidth(width);
