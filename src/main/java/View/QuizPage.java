@@ -111,6 +111,7 @@ public class QuizPage extends BasePage {
         this.getChildren().addAll(questionLabel, answersBox, feedbackLabel, errorLabel, buttonBox);
     }
 
+
     private void loadQuestion() {
         // Reset the answer selection for the new question
         answerGroup.selectToggle(null);

@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="update english bundle + lisäsin successAlertTitlen chinese bundleen">
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="localized quiz library and quiz page">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/QuizController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/QuizController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/QuizDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/QuizDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/QuizDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/QuizDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Quiz.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Quiz.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/QuizLibrary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/QuizLibrary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/QuizPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/QuizPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +218,8 @@
       <workItem from="1730188070794" duration="525000" />
       <workItem from="1730189294133" duration="213000" />
       <workItem from="1730301426324" duration="1982000" />
-      <workItem from="1730536800648" duration="1086000" />
+      <workItem from="1730536800648" duration="1347000" />
+      <workItem from="1730538413498" duration="6044000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
@@ -369,7 +373,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730404301528</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="localized quiz library and quiz page">
+      <option name="closed" value="true" />
+      <created>1730538052877</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1730538052877</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -410,6 +422,7 @@
     <MESSAGE value="lokalisoin kotisivun ja muokkasin english resource bundle" />
     <MESSAGE value="muutin register ---&gt; signUp" />
     <MESSAGE value="update english bundle + lisäsin successAlertTitlen chinese bundleen" />
-    <option name="LAST_COMMIT_MESSAGE" value="update english bundle + lisäsin successAlertTitlen chinese bundleen" />
+    <MESSAGE value="localized quiz library and quiz page" />
+    <option name="LAST_COMMIT_MESSAGE" value="localized quiz library and quiz page" />
   </component>
 </project>

@@ -31,6 +31,7 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
     private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
     private final int userID = userController.getCurrentUserId();
     private ResourceBundle bundle;
+    private String languageCode;
 
     public QuizLibrary(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
@@ -50,6 +51,9 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
 
         // Use the global locale from Config
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale()); // Initialize bundle here
+
+        // Retrieve the current language code
+        this.languageCode = LanguageConfig.getInstance().getCurrentLocale().getLanguage();
 
         // Set layout to the stage
         setLayout(stage, currentUser, connection);
@@ -86,14 +90,18 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(backButton, logoutButton);
 
-        // Fetch all quizzes from the database
-        List<Quiz> quizzes = quizController.getAllQuizzes();
+        // Fetch quizzes based on the selected language
+        System.out.println("Language Code: " + languageCode);
+        List<Quiz> quizzes = quizController.getAllQuizzes(languageCode);
+        System.out.println("Number of quizzes retrieved: " + quizzes.size());
+
 
         // VBox to hold quiz buttons
         VBox quizzesBox = new VBox(10); // 10px spacing between quiz buttons
         quizzesBox.setPadding(new Insets(10));
         quizzesBox.setStyle("-fx-padding: 10px; -fx-spacing: 10px;");
         quizzesBox.setAlignment(Pos.CENTER);
+
 
         // Add quiz buttons
         for (Quiz quiz : quizzes) {
@@ -129,7 +137,7 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
     @Override
     public void updateQuizProgress(ProgressBar progressBar) {
         int completedQuizzes = userController.getQuizzesCompleted(userID);
-        int allQuizzes = quizController.getAllQuizzes().size();
+        int allQuizzes = quizController.getAllQuizzes(languageCode).size();
         double progress = (double) completedQuizzes / allQuizzes;
         progressBar.setProgress(progress);
     }
