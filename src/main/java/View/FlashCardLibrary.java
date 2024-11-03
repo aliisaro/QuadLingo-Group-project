@@ -33,8 +33,6 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
     private ResourceBundle bundle;
 
     public FlashCardLibrary(Stage stage) {
-        // Get current user
-        User currentUser = SessionManager.getInstance().getCurrentUser();
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
         // If user is not logged in, redirect to index page
@@ -48,10 +46,10 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         flashCardController = new FlashCardController(new FCImplement(connection));
 
         // Set layout to the stage
-        setLayout(stage, currentUser, connection);
+        setLayout(stage);
     }
 
-    private void setLayout(Stage stage, User currentUser, Connection connection) {
+    private void setLayout(Stage stage) {
         // Page title
         Label pageTitle = new Label(bundle.getString("flashcardTitle")); // Flashcard Library
         pageTitle.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
