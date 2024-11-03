@@ -1,5 +1,6 @@
 package View;
 
+import Config.LanguageConfig;
 import Controller.FlashCardController;
 import Controller.UserController;
 import DAO.FCImplement;
@@ -19,6 +20,8 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.ResourceBundle;
+
 import javafx.scene.layout.VBox;
 
 public class FlashCardLibrary extends BasePage implements UpdateProgress{
@@ -27,10 +30,12 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
     private FlashCardController flashCardController;
     private final ProgressBar progressBar3 = ProgressPage.getProgressBar3();
     private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
+    private ResourceBundle bundle;
 
     public FlashCardLibrary(Stage stage) {
         // Get current user
         User currentUser = SessionManager.getInstance().getCurrentUser();
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
         // If user is not logged in, redirect to index page
         if (!SessionManager.getInstance().isLoggedIn()) {
@@ -48,17 +53,17 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
 
     private void setLayout(Stage stage, User currentUser, Connection connection) {
         // Page title
-        Label pageTitle = new Label("Flashcard Library");
+        Label pageTitle = new Label(bundle.getString("flashcardTitle")); // Flashcard Library
         pageTitle.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
 
         // Return to the homepage
-        Button backButton = new Button("Homepage");
+        Button backButton = new Button(bundle.getString("homeButton")); // Homepage
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
         backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         backButton.setMaxWidth(Double.MAX_VALUE);
 
         // Logout button: clears session and redirects to IndexPage
-        Button logoutButton = new Button("Logout");
+        Button logoutButton = new Button(bundle.getString("logoutButton")); // Logout
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
             stage.setScene(new IndexPage(stage).createScene());
@@ -66,7 +71,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         logoutButton.setMaxWidth(Double.MAX_VALUE);
 
-        Button unmasterAllButton = new Button("Unmaster all");
+        Button unmasterAllButton = new Button(bundle.getString("unmasterAllButton")); // Unmaster All
         unmasterAllButton.setOnAction(e -> {
             flashCardController.unmasterAllFlashcards(userID);
             updateFlashcardProgress(progressBar3);
@@ -112,7 +117,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         }
 
         // Add a button for mastered flashcards
-        Button masteredFlashcardsButton = new Button("Mastered Flashcards");
+        Button masteredFlashcardsButton = new Button(bundle.getString("masteredFlashcardsButton")); // Mastered Flashcards
         masteredFlashcardsButton.setMaxWidth(350);
         masteredFlashcardsButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         masteredFlashcardsButton.setMaxWidth(Double.MAX_VALUE);
