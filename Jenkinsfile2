@@ -1,5 +1,14 @@
 pipeline {
     agent any
+    //TÄHÄN PITÄÄ LAITTAA OMAT CREDENTIALS JA DOCKERHUB REPO
+    environment {
+        // Define Docker Hub credentials ID
+        DOCKERHUB_CREDENTIALS_ID = 'dockerhub_credential'
+        // Define Docker Hub repository name
+        DOCKERHUB_REPO = 'aliisar/quadlingo'
+        // Define Docker image tag
+        DOCKER_IMAGE_TAG = 'latest'
+    }
     stages {
         stage('Checkout Code') {
             steps {
