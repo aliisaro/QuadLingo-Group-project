@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="update dockerfile">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/language_fr_FR.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ui-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/954e1759-575f-4b21-8ae5-e1b515dbbc9b.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_19_9_2024_16_00__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_19_9_2024_16_00__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_6_2024_7_26_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_6_2024_7_26_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ER-diagram.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/images/ER-diagram.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Schema.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/images/Schema.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +29,7 @@
         <option value="Interface" />
         <option value="Dockerfile" />
         <option value="Class" />
+        <option value="FxmlFile" />
       </list>
     </option>
   </component>
@@ -84,7 +90,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/maisa/Documents/aa-maisa/a-amk/suunnittelu/projekti (amir)/project&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -169,8 +175,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+        <option value="jdk-17.0.9-jbr-17.0.9-4caba194b151-51f1b679" />
       </set>
     </attachedChunks>
   </component>
@@ -210,6 +215,9 @@
       <workItem from="1728499405950" duration="2502000" />
       <workItem from="1728569897297" duration="6643000" />
       <workItem from="1728639315536" duration="345000" />
+      <workItem from="1729495560877" duration="1115000" />
+      <workItem from="1730123093097" duration="463000" />
+      <workItem from="1730361595318" duration="546000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
