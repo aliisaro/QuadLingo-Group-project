@@ -13,8 +13,6 @@ public abstract class BasePage extends VBox {
             this.getChildren().add(new javafx.scene.control.Label(""));
         }
 
-        this.getChildren().add(new javafx.scene.control.Label("If the page has enough content, you can scroll it!"));
-
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(this);
         scrollPane.setFitToWidth(true);
