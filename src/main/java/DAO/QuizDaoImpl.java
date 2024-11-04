@@ -19,18 +19,20 @@ public class QuizDaoImpl implements QuizDao {
     }
 
     @Override
-    public List<Quiz> getAllQuizzes() {
+    public List<Quiz> getAllQuizzes(String language) {
         List<Quiz> quizzes = new ArrayList<>();
-        String query = "SELECT QuizID, QuizTitle, QuizScore FROM QUIZ";
+        String query = "SELECT * FROM QUIZ WHERE language_code = ?";
 
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, language);
+            ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 int quizId = rs.getInt("QuizID");
                 String quizTitle = rs.getString("QuizTitle");
                 int quizScore = rs.getInt("QuizScore");
-                quizzes.add(new Quiz(quizId, quizTitle, quizScore));
+                String languageCode = rs.getString("language_code");
+                quizzes.add(new Quiz(quizId, quizTitle, quizScore, languageCode));
             }
         } catch (SQLException e) {
             e.printStackTrace();

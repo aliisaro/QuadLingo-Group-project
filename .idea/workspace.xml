@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="update dockerfile">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/language_fr_FR.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ui-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/954e1759-575f-4b21-8ae5-e1b515dbbc9b.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_19_9_2024_16_00__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_19_9_2024_16_00__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_6_2024_7_26_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_6_2024_7_26_PM__Changes_.xml" beforeDir="false" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="localized quiz library and quiz page">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/QuizController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/QuizController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/QuizDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/QuizDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/QuizDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/QuizDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Quiz.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Quiz.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/QuizLibrary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/QuizLibrary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/QuizPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/QuizPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +28,6 @@
         <option value="Interface" />
         <option value="Dockerfile" />
         <option value="Class" />
-        <option value="FxmlFile" />
       </list>
     </option>
   </component>
@@ -50,7 +48,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/aliisaro/QuadLingo-Group-project&quot;,
-    &quot;accountId&quot;: &quot;20de4316-1e1e-4a2c-be14-46480de67c64&quot;
+    &quot;accountId&quot;: &quot;8f5e8fcd-3279-4d3f-a7b4-f0c0f2ce3e5e&quot;
   }
 }</component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -90,7 +88,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/maisa/Documents/aa-maisa/a-amk/suunnittelu/projekti (amir)/project&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -100,7 +98,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -111,6 +109,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\aliis\IdeaProjects\QuadLingo-Group-project\src\main\java\Config" />
+      <recent name="C:\Users\aliis\IdeaProjects\QuadLingo-Group-project\src\main\java" />
       <recent name="C:\Users\aliis\IdeaProjects\QuadLingo-Group-project\docs\images" />
     </key>
   </component>
@@ -124,7 +124,7 @@
       <command value="mvn clean package " />
     </option>
   </component>
-  <component name="RunManager" selected="Docker.Dockerfile">
+  <component name="RunManager">
     <configuration name="UserDaoImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
@@ -134,11 +134,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserTests" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <configuration name="UserTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="UserTests" />
-      <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -164,18 +163,19 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.Dockerfile" />
-        <item itemvalue="JUnit.UserTests" />
-        <item itemvalue="JUnit.UserDaoImplTest" />
         <item itemvalue="JUnit.UserTests.testUpdateUser" />
         <item itemvalue="JUnit.UserTests" />
+        <item itemvalue="JUnit.UserDaoImplTest" />
+        <item itemvalue="Docker.Dockerfile" />
+        <item itemvalue="Docker.Dockerfile" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.9-jbr-17.0.9-4caba194b151-51f1b679" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
       </set>
     </attachedChunks>
   </component>
@@ -215,9 +215,11 @@
       <workItem from="1728499405950" duration="2502000" />
       <workItem from="1728569897297" duration="6643000" />
       <workItem from="1728639315536" duration="345000" />
-      <workItem from="1729495560877" duration="1115000" />
-      <workItem from="1730123093097" duration="463000" />
-      <workItem from="1730361595318" duration="546000" />
+      <workItem from="1730188070794" duration="525000" />
+      <workItem from="1730189294133" duration="213000" />
+      <workItem from="1730301426324" duration="1982000" />
+      <workItem from="1730536800648" duration="1347000" />
+      <workItem from="1730538413498" duration="6044000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
@@ -347,7 +349,39 @@
       <option name="project" value="LOCAL" />
       <updated>1728581834181</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa">
+      <option name="closed" value="true" />
+      <created>1730139286482</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1730139286482</updated>
+    </task>
+    <task id="LOCAL-00018" summary="muutin register ---&gt; signUp">
+      <option name="closed" value="true" />
+      <created>1730377886523</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1730377886523</updated>
+    </task>
+    <task id="LOCAL-00019" summary="update english bundle + lisäsin successAlertTitlen chinese bundleen">
+      <option name="closed" value="true" />
+      <created>1730404301528</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1730404301528</updated>
+    </task>
+    <task id="LOCAL-00020" summary="localized quiz library and quiz page">
+      <option name="closed" value="true" />
+      <created>1730538052877</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1730538052877</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -384,6 +418,11 @@
     <MESSAGE value="small change to dockerfile" />
     <MESSAGE value="update pom.xml" />
     <MESSAGE value="update dockerfile" />
-    <option name="LAST_COMMIT_MESSAGE" value="update dockerfile" />
+    <MESSAGE value="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa" />
+    <MESSAGE value="lokalisoin kotisivun ja muokkasin english resource bundle" />
+    <MESSAGE value="muutin register ---&gt; signUp" />
+    <MESSAGE value="update english bundle + lisäsin successAlertTitlen chinese bundleen" />
+    <MESSAGE value="localized quiz library and quiz page" />
+    <option name="LAST_COMMIT_MESSAGE" value="localized quiz library and quiz page" />
   </component>
 </project>

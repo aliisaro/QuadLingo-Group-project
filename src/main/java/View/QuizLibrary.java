@@ -1,5 +1,6 @@
 package View;
 
+import Config.LanguageConfig;
 import Controller.UserController;
 import Controller.QuizController; // Ensure you have a QuizController
 import DAO.ProgressDaoImpl;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.ProgressBar;
 import java.sql.Connection;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class QuizLibrary extends BasePage implements UpdateProgress {
     private final UserController userController = new UserController(new UserDaoImpl()); // UserController object
@@ -28,6 +30,8 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
     private final ProgressBar progressBar2 = ProgressPage.getProgressBar2();
     private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
     private final int userID = userController.getCurrentUserId();
+    private ResourceBundle bundle;
+    private String languageCode;
 
     public QuizLibrary(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
@@ -45,6 +49,12 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         Connection connection = MariaDbConnection.getConnection();
         quizController = new QuizController(new QuizDaoImpl(connection));
 
+        // Use the global locale from Config
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale()); // Initialize bundle here
+
+        // Retrieve the current language code
+        this.languageCode = LanguageConfig.getInstance().getCurrentLocale().getLanguage();
+
         // Set layout to the stage
         setLayout(stage, currentUser, connection);
     }
@@ -57,17 +67,17 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         this.setAlignment(Pos.CENTER);
 
         // Page title
-        Label pageTitle = new Label("Quiz Library");
+        Label pageTitle = new Label(bundle.getString("quizLibraryButton"));
         pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Return to the homepage button
-        Button backButton = new Button("Back to Homepage");
+        Button backButton = new Button(bundle.getString("backToHomeButton"));
         backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         backButton.setMaxWidth(Double.MAX_VALUE); // Allow responsiveness, max width based on window size
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         // Logout button: clears session and redirects to IndexPage
-        Button logoutButton = new Button("Logout");
+        Button logoutButton = new Button(bundle.getString("logoutButton"));
         logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow responsiveness, max width based on window size
         logoutButton.setOnAction(e -> {
@@ -80,14 +90,18 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(backButton, logoutButton);
 
-        // Fetch all quizzes from the database
-        List<Quiz> quizzes = quizController.getAllQuizzes();
+        // Fetch quizzes based on the selected language
+        System.out.println("Language Code: " + languageCode);
+        List<Quiz> quizzes = quizController.getAllQuizzes(languageCode);
+        System.out.println("Number of quizzes retrieved: " + quizzes.size());
+
 
         // VBox to hold quiz buttons
         VBox quizzesBox = new VBox(10); // 10px spacing between quiz buttons
         quizzesBox.setPadding(new Insets(10));
         quizzesBox.setStyle("-fx-padding: 10px; -fx-spacing: 10px;");
         quizzesBox.setAlignment(Pos.CENTER);
+
 
         // Add quiz buttons
         for (Quiz quiz : quizzes) {
@@ -123,7 +137,7 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
     @Override
     public void updateQuizProgress(ProgressBar progressBar) {
         int completedQuizzes = userController.getQuizzesCompleted(userID);
-        int allQuizzes = quizController.getAllQuizzes().size();
+        int allQuizzes = quizController.getAllQuizzes(languageCode).size();
         double progress = (double) completedQuizzes / allQuizzes;
         progressBar.setProgress(progress);
     }

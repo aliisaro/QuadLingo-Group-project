@@ -74,14 +74,8 @@
     -fx-padding: 10px;
 }
 
-.label-translation {
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-padding: 10px;
-}
-
 .flashcard-container {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: linear-gradient(to bottom, #facdb3, #FFFFFF);
     -fx-border-color: #584B53;
     -fx-border-width: 2px;
     -fx-border-radius: 5px;

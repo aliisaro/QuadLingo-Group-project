@@ -1,5 +1,6 @@
 package View;
 
+import Config.LanguageConfig;
 import DAO.QuizDao;
 import Main.SessionManager;
 import Model.Question;
@@ -13,6 +14,7 @@ import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 import javafx.scene.paint.Color; // For color changes
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class QuizPage extends BasePage {
     private QuizDao quizDao;
@@ -25,6 +27,7 @@ public class QuizPage extends BasePage {
     private RadioButton[] answerButtons;
     private Label errorLabel;
     private Label feedbackLabel;
+    private ResourceBundle bundle;
 
     public QuizPage(QuizDao quizDao, int quizId, Stage stage) {
         this.quizDao = quizDao;
@@ -36,6 +39,9 @@ public class QuizPage extends BasePage {
             stage.setScene(new IndexPage(stage).createScene());
             return;
         }
+
+        // Use the global locale from Config
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale()); // Initialize bundle here
 
         setLayout(stage); // Initialize UI components
         loadQuestion(); // Load the first question
@@ -71,12 +77,12 @@ public class QuizPage extends BasePage {
         feedbackLabel.setVisible(false); // Initially hidden
 
         // Initialize Submit Button
-        Button submitButton = new Button("Submit Answer");
+        Button submitButton = new Button(bundle.getString("submitAnswer"));
         submitButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 175;");
         submitButton.setOnAction(e -> handleSubmitAnswer());
 
         // Initialize Cancel Button (to cancel the current quiz and go back)
-        Button cancelButton = new Button("Cancel Quiz");
+        Button cancelButton = new Button(bundle.getString("cancelQuiz"));
         cancelButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 150;");
         cancelButton.setOnAction(e -> {
             // Navigate back to Quiz Library without saving or finishing the quiz
@@ -84,7 +90,7 @@ public class QuizPage extends BasePage {
         });
 
         // Logout button
-        Button logoutButton = new Button("Logout");
+        Button logoutButton = new Button(bundle.getString("logoutButton"));
         logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125;");
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
@@ -104,6 +110,7 @@ public class QuizPage extends BasePage {
         // Add all components to the layout
         this.getChildren().addAll(questionLabel, answersBox, feedbackLabel, errorLabel, buttonBox);
     }
+
 
     private void loadQuestion() {
         // Reset the answer selection for the new question
@@ -140,10 +147,10 @@ public class QuizPage extends BasePage {
             // Check if the selected answer is correct
             if (quizDao.checkAnswer(currentQuestion.getQuestionId(), selectedAnswer)) {
                 score++; // Increment score for correct answer
-                feedbackLabel.setText("Correct!"); // Set feedback for correct answer
+                feedbackLabel.setText(bundle.getString("correct")); // Set feedback for correct answer
                 feedbackLabel.setTextFill(Color.GREEN); // Set text color to green
             } else {
-                feedbackLabel.setText("Incorrect! The correct answer is: " + currentQuestion.getCorrectAnswer()); // Display correct answer
+                feedbackLabel.setText(bundle.getString("incorrect") + currentQuestion.getCorrectAnswer()); // Display correct answer
                 feedbackLabel.setTextFill(Color.RED); // Set text color to red
             }
 
@@ -158,7 +165,7 @@ public class QuizPage extends BasePage {
             pause.play(); // Start the pause transition
         } else {
             // Display error message in the UI instead of an alert
-            errorLabel.setText("Please select an answer before submitting.");
+            errorLabel.setText(bundle.getString("selectAnswerError"));
         }
     }
 
@@ -169,10 +176,10 @@ public class QuizPage extends BasePage {
         this.setPadding(new Insets(20));
 
         // Display final score
-        Label scoreLabel = new Label("Quiz Finished!");
+        Label scoreLabel = new Label(bundle.getString("quizFinished"));
         scoreLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        Label resultLabel = new Label("Your score: " + score + " out of " + questions.size());
+        Label resultLabel = new Label(bundle.getString("yourScore") + score + bundle.getString("outOf") + questions.size());
         resultLabel.setStyle("-fx-font-size: 18px;");
 
         // Get current user and quiz ID
@@ -194,7 +201,7 @@ public class QuizPage extends BasePage {
         this.getChildren().addAll(scoreLabel, resultLabel);
 
         // Button to return to Quiz Library
-        Button backButton = new Button("Back to Quiz Library");
+        Button backButton = new Button(bundle.getString("quizLibraryButton"));
         backButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;-fx-pref-width: 180;");
         backButton.setOnAction(e -> {
             Stage stage = (Stage) this.getScene().getWindow();

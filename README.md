@@ -6,7 +6,7 @@
 ****
 **Quadlingo** is a fullstack app for learning languages. It is programmed using Java, JavaFX and CSS.
 
-The app is designed to help English speakers learn the basics of Finnish. The app has a variety of features such as: user profile and progress, flashcards, quizzes and achievements.
+The app is designed to help English, French, Chinese and Arabian speakers learn the basics of Finnish. The app has a variety of features such as: user profile and progress, flashcards, quizzes and achievements.
 With the help of these features, the user can learn Finnish in a fun and interactive way.
 
 ****
@@ -31,12 +31,12 @@ Artificial intelligence was used for writing the questions and answers for the q
     - [IntelliJ IDEA (Windows)](https://www.jetbrains.com/idea/download/?section=windows)
     - [IntelliJ IDEA (Mac)](https://www.jetbrains.com/idea/download/?section=mac)
     - [IntelliJ IDEA (Linux)](https://www.jetbrains.com/idea/download/?section=linux)
-2. Create a new project in IntelliJ IDEA.
+2. Create a new Java project in IntelliJ IDEA. Use Maven as build system.
 3. Clone Quadlingo from GitHub.
 ```bash
 git clone https://github.com/aliisaro/QuadLingo-Group-project.git
 ```
-4. Run the project.
+4. Run the class Main.java in the package `Main` to start the application.
 5. Enjoy!
 
 ****
@@ -44,12 +44,12 @@ git clone https://github.com/aliisaro/QuadLingo-Group-project.git
 <h3>Usage</h3>
 
 ****
-
-1. Register a new user.
-2. Log in with the new user.
-3. Start learning Finnish by practicing with flashcards and doing quizzes.
-4. Check your progress and achievements.
-5. Log out when you are done.
+1. Choose your language.
+2. Register a new user if you don't have one.
+3. Log in with the new user.
+4. Start learning Finnish by practicing with flashcards and doing quizzes.
+5. Check your progress and achievements.
+6. Log out when you are done.
 
 ****
 
@@ -65,8 +65,8 @@ git clone https://github.com/aliisaro/QuadLingo-Group-project.git
 ****
 <h3>Database design</h3>
 
-![ER-diagram](./docs/images/ER-diagram.png)
+![ER-diagram](docs/diagrams/ER-diagram.png)
 
-![Relational Schema](./docs/images/Schema.png)
+![Relational Schema](docs/diagrams/Schema.png)
 
 

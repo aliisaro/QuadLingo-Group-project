@@ -4,7 +4,6 @@ import Controller.UserController;
 import DAO.UserDaoImpl;
 import View.QuadLingoQui;
 
-
 // This launches the whole program
 public class Main {
     public static void main(String[] args) throws Exception {

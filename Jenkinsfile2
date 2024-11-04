@@ -1,8 +1,13 @@
 pipeline {
     agent any
-    tools {
-        maven 'Maven3.9.9'  // Ensure Maven is installed
-        jdk 'JDK21'         // Ensure JDK is installed
+    //TÄHÄN PITÄÄ LAITTAA OMAT CREDENTIALS JA DOCKERHUB REPO
+    environment {
+        // Define Docker Hub credentials ID
+        DOCKERHUB_CREDENTIALS_ID = 'dockerhub_credential'
+        // Define Docker Hub repository name
+        DOCKERHUB_REPO = 'aliisar/quadlingo'
+        // Define Docker image tag
+        DOCKER_IMAGE_TAG = 'latest'
     }
     stages {
         stage('Checkout Code') {

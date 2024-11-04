@@ -1,7 +1,8 @@
 package View;
 
+import Config.LanguageConfig;
 import Controller.UserController;
-import DAO.UserDaoImpl; // Import UserDaoImpl
+import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.User;
 import javafx.geometry.Insets;
@@ -9,15 +10,20 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ResourceBundle;
+
 public class LoginPage extends BasePage {
-    private UserController userController; // UserController object
+    private UserController userController;
+    private ResourceBundle bundle;
 
     public LoginPage(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
         userController = new UserController(new UserDaoImpl());
+
+        // Use the global locale from Config
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale()); // Initialize bundle here
 
         // Set layout to the stage
         setLayout(stage);
@@ -30,38 +36,39 @@ public class LoginPage extends BasePage {
         this.setAlignment(Pos.CENTER);
 
         // Create and configure the login page UI components
-        Label pageTitle = new Label("Login");
+        Label pageTitle = new Label(bundle.getString("login")); // Use bundle for page title
         pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Create an HBox for the title and center it
         HBox titleContainer = new HBox(pageTitle);
-        titleContainer.setAlignment(Pos.CENTER);  // Center the title horizontally
+        // Center the title horizontally
+        titleContainer.setAlignment(Pos.CENTER);
 
-        Label usernameLabel = new Label("Username");
+        Label usernameLabel = new Label(bundle.getString("usernameLabel")); // Use bundle for label
         TextField usernameField = new TextField();
 
-        Label passwordLabel = new Label("Password");
+        Label passwordLabel = new Label(bundle.getString("passwordLabel")); // Use bundle for label
         PasswordField passwordField = new PasswordField();
 
         // Handle login button click
-        Button loginButton = new Button("Login");
+        Button loginButton = new Button(bundle.getString("login")); // Use bundle for button text
         loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         loginButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         loginButton.setOnAction(e -> handleLoginAction(usernameField, passwordField, stage));
 
         // Go back to the index page
-        Button indexPageButton = new Button("Go back");
+        Button indexPageButton = new Button(bundle.getString("goBackButton")); // Use bundle for button text
         indexPageButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         indexPageButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
 
-        Label noAccountLabel = new Label("Don't have an account? Sign up instead:");
+        Label noAccountLabel = new Label(bundle.getString("noAccountMessage")); // Use bundle for label text
 
         // Go to the registration page
-        Button registerButton = new Button("Go to Sign Up Page");
-        registerButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
-        registerButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
-        registerButton.setOnAction(e -> stage.setScene(new RegistrationPage(stage).createScene()));
+        Button signUpButton = new Button(bundle.getString("signUp")); // Use bundle for button text
+        signUpButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        signUpButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        signUpButton.setOnAction(e -> stage.setScene(new SignUpPage(stage).createScene()));
 
         // Create a container (HBox) for buttons
         HBox buttonContainer = new HBox(10);
@@ -81,7 +88,7 @@ public class LoginPage extends BasePage {
                 passwordField,
                 buttonContainer,
                 noAccountLabel,
-                registerButton);
+                signUpButton);
     }
 
     private void handleLoginAction(TextField usernameField, PasswordField passwordField, Stage stage) {
@@ -92,14 +99,14 @@ public class LoginPage extends BasePage {
 
         // Basic validation: Check if fields are empty
         if (username.isEmpty() || password.isEmpty()) {
-            errorMessages.append("All fields are required.\n");
+            errorMessages.append(bundle.getString("allFieldsRequired")).append("\n"); // All fields are required.
         } else if (!userController.doesUsernameExist(username)) { // Check if the user exists
-            errorMessages.append("User not found. Please check your username.\n");
+            errorMessages.append(bundle.getString("userDoesNotExist")).append("\n"); // User does not exist.
         } else {
             // Attempt to log in
             User user = userController.loginUser(username, password);
             if (user == null) {
-                errorMessages.append("Invalid password. Please try again.\n");
+                errorMessages.append(bundle.getString("incorrectPassword")).append("\n"); // Incorrect password.
             } else {
                 // Successful login
                 SessionManager.getInstance().setCurrentUser(user); // Start a new session
@@ -112,7 +119,7 @@ public class LoginPage extends BasePage {
         // If there are error messages, show them in an alert
         if (errorMessages.length() > 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Error");
+            alert.setTitle(bundle.getString("loginErrorTitle")); // Use bundle for alert title
             alert.setHeaderText(null);
             alert.setContentText(errorMessages.toString());
             alert.showAndWait();

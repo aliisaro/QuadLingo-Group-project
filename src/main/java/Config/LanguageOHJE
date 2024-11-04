@@ -1,0 +1,31 @@
+
+ESIMERKKI MITEN LOKALISOIDA SIVU:
+
+// Importit tarvitaan
+import Config.LanguageConfig;
+import java.util.ResourceBundle;
+
+public class ExamplePage {
+    private ResourceBundle bundle; // ResourceBundle-instanssi kielitietojen hakemiseen
+
+    public ExamplePage(Stage stage) {
+        // Hae nykyinen kieli LanguageConfig-luokasta ja luo ResourceBundle
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
+
+        // Aseta sivun layout
+        setLayout(stage);
+    }
+
+    private void setLayout(Stage stage) {
+        // Luo Label, jonka teksti saadaan ResourceBundlesta
+        Label headingLabel = new Label(bundle.getString("PageHeading")); // Hakee otsikon bundlesta
+
+        // Luo nappi, jonka teksti saadaan ResourceBundlesta
+        Button backButton = new Button(bundle.getString("backButton")); // Hakee napin tekstin bundlesta
+    }
+}
+
+
+ESIMERKKI RESOURCE BUNDLEN SISÄLTÖ:
+PageHeading = This is the heading
+backButton = Go back

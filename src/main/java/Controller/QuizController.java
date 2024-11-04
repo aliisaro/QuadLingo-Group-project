@@ -12,16 +12,8 @@ public class QuizController {
         this.quizDao = quizDao;
     }
 
-    public List<Quiz> getAllQuizzes() {
-        return quizDao.getAllQuizzes();
-    }
-
-    public List<Question> getQuestionsForQuiz(int quizId) {
-        return quizDao.getQuestionsForQuiz(quizId);
-    }
-
-    public boolean checkAnswer(int questionId, String selectedAnswer) {
-        return quizDao.checkAnswer(questionId, selectedAnswer);
+    public List<Quiz> getAllQuizzes(String language) {
+        return quizDao.getAllQuizzes(language);
     }
 
     public QuizDao getQuizDao() {

@@ -1,5 +1,7 @@
 package View;
 
+import Config.LanguageConfig;
+import java.text.MessageFormat;
 import DAO.ProgressDaoImpl;
 import DAO.UserDaoImpl;
 import javafx.geometry.Insets;
@@ -11,7 +13,9 @@ import javafx.scene.control.ProgressBar;
 
 import Controller.UserController;
 
-public class ProgressPage extends BasePage implements setMarginButton, UpdateProgress, setMarginVBox {
+import java.util.ResourceBundle;
+
+public class ProgressPage extends BasePage implements setMarginButton, UpdateProgress {
 
     private final int maxScore;
     private final int userScore;
@@ -23,6 +27,7 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
     private static final ProgressBar progressBar1 = new ProgressBar();
     private static final ProgressBar progressBar2 = new ProgressBar();
     private static final ProgressBar progressBar3 = new ProgressBar();
+    private ResourceBundle bundle;
 
     //Displays the progress page
     public ProgressPage(Stage stage) {
@@ -30,6 +35,7 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         UserController userController = UserController.getInstance(userDao);
         ProgressDaoImpl progressDao = new ProgressDaoImpl();
         int userID = userController.getCurrentUserId();
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
         // Get the user's score, max score, completed quizzes and all quizzes
         userScore = progressDao.getUserScore(userID);
@@ -40,23 +46,22 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         allFlashcards = progressDao.getFlashcardAmount();
 
         //Button to go to the profile page
-        Button profileButton = new Button("Go to Profile");
+        Button profileButton = new Button(bundle.getString("profileButton"));
         setMargin(profileButton, 10, 10, 10, 5);
         profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
 
         //Button to go back to the homepage
-        Button buttonHome = new Button("Go Home");
+        Button buttonHome = new Button(bundle.getString("homeButton"));
         setMargin(buttonHome, 10, 10, 10, 5);
         buttonHome.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
-        Label progressLabel1 = new Label("Progress Page");
+        Label progressLabel1 = new Label(bundle.getString("progressTitle"));
         progressLabel1.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
-        Label progressLabel2 = new Label("Your score progress:");
-        Label progressLabel3 = new Label("Your quiz progress:");
-        Label progressLabel5 = new Label("Your flashcard progress:");
-        Label progressLabel4 = new Label("You have done " + completedQuizzes + " out of " + allQuizzes + " quizzes.");
-        Label progressLabel6 = new Label("You have mastered " + masteredFlashcards + " out of " + allFlashcards + " flashcards.");
-
+        Label progressLabel2 = new Label(bundle.getString("userScore")); // Your score
+        Label progressLabel3 = new Label(bundle.getString("quizProgress")); // Your quiz progress
+        Label progressLabel5 = new Label(bundle.getString("flashcardProgress")); //Your flashcard progress
+        Label progressLabel4 = new Label(MessageFormat.format(bundle.getString("quizzesCompleted"), completedQuizzes, allQuizzes)); // You have completed {completedQuizzes} out of {allQuizzes} quizzes
+        Label progressLabel6 = new Label(MessageFormat.format(bundle.getString("flashcardsMastered"), masteredFlashcards, allFlashcards)); // You have mastered {masteredFlashcards} out of {allFlashcards} flashcards
         //Styling the progress bars
         progressBar1.setStyle("-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;");
         progressBar1.setPrefWidth(200);
@@ -171,7 +176,6 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         progressBar.setProgress(progressPercentage);
     }
 
-    @Override
     //Set the margin of a VBox
     public void setMarginVbox(VBox vBox, int top, int right, int bottom, int left) {
         VBox.setMargin(vBox, new Insets(top, right, bottom, left));
