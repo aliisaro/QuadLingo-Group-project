@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ResourceBundle;
 import static org.junit.jupiter.api.Assertions.*;
@@ -6,16 +8,22 @@ public class EnglishLocalizationTest {
 
     private ResourceBundle bundle;
 
-    @Test
-    public void testEnglishLocale() {
+    @BeforeEach
+    public void setUp() {
         bundle = ResourceBundle.getBundle("bundle_EN");
+    }
 
+    @Test
+    public void testIndexPage() {
         // Assertions for the index page
         assertEquals("Welcome to QuadLingo", bundle.getString("welcomeMessage"));
         assertEquals("Welcome, ", bundle.getString("welcomeLabel"));
         assertEquals("Your learning journey starts here.", bundle.getString("descriptionMessage"));
         assertEquals("Sign up", bundle.getString("signUp"));
+    }
 
+    @Test
+    public void testLoginPage() {
         // Assertions for the login page
         assertEquals("Username", bundle.getString("usernameLabel"));
         assertEquals("Password", bundle.getString("passwordLabel"));
@@ -25,7 +33,10 @@ public class EnglishLocalizationTest {
         assertEquals("User does not exist.", bundle.getString("userDoesNotExist"));
         assertEquals("Incorrect password.", bundle.getString("incorrectPassword"));
         assertEquals("Login error", bundle.getString("loginErrorTitle"));
+    }
 
+    @Test
+    public void testSignUpPage() {
         // Assertions for the register page
         assertEquals("Email", bundle.getString("emailLabel"));
         assertEquals("Already have an account? Login instead:", bundle.getString("hasAccountLabel"));
@@ -37,7 +48,10 @@ public class EnglishLocalizationTest {
         assertEquals("Password must be at least 8 characters long.", bundle.getString("atLeastEight"));
         assertEquals("Sign up error", bundle.getString("signUpErrorTitle"));
         assertEquals("Sign up failed. Please try again.", bundle.getString("errorContext"));
+    }
 
+    @Test
+    public void testAchievementsPage() {
         // Assertions for the achievements page
         assertEquals("Complete 1 quiz", bundle.getString("quizRequirement1"));
         assertEquals("Complete 5 quizzes", bundle.getString("quizRequirement5"));
@@ -49,7 +63,10 @@ public class EnglishLocalizationTest {
         assertEquals("Home page", bundle.getString("homeButton"));
         assertEquals("Unlocked badges", bundle.getString("unlockedBadges"));
         assertEquals("Locked badges", bundle.getString("lockedBadges"));
+    }
 
+    @Test
+    public void testProgressPage() {
         // Assertions for the progress page
         assertEquals("Progress", bundle.getString("progressTitle"));
         assertEquals("Your score", bundle.getString("userScore"));
@@ -57,13 +74,18 @@ public class EnglishLocalizationTest {
         assertEquals("Your flashcard progress", bundle.getString("flashcardProgress"));
         assertEquals("You have completed {1} of {0} quizzes.", bundle.getString("quizzesCompleted"));
         assertEquals("You've mastered {1} of {0} flashcards.", bundle.getString("flashcardsMastered"));
+    }
 
+    @Test
+    public void testHomepagePage() {
         // Assertions for the homepage
         assertEquals("Quiz Library", bundle.getString("quizLibraryButton"));
         assertEquals("Flashcard Library", bundle.getString("flashcardLibraryButton"));
         assertEquals("Achievements", bundle.getString("achievementsButton"));
         assertEquals("Logout", bundle.getString("logoutButton"));
-
+    }
+    @Test
+    public void testProfilePage() {
         // Assertions for the profile page
         assertEquals("Profile", bundle.getString("profilePageTitle"));
         assertEquals("Username: ", bundle.getString("currentUsernameLabel"));
@@ -80,7 +102,10 @@ public class EnglishLocalizationTest {
         assertEquals("Progress", bundle.getString("progressPageButton"));
         assertEquals("Error", bundle.getString("errorAlertTitle"));
         assertEquals("Success", bundle.getString("successAlertTitle"));
+    }
 
+    @Test
+    public void testFlashcardPage() {
         // Assertions for the flashcard page
         assertEquals("You don't have mastered flashcards yet", bundle.getString("noMastered"));
         assertEquals("Go back to library", bundle.getString("backToFlashLibraryButton"));
@@ -91,12 +116,18 @@ public class EnglishLocalizationTest {
         assertEquals("Next flashcard", bundle.getString("nextFlashcard"));
         assertEquals("Show term", bundle.getString("showTerm"));
         assertEquals("Show translation", bundle.getString("showTranslation"));
+    }
 
+    @Test
+    public void testFlashcardLibraryPage() {
         // Assertions for the flashcard library page
         assertEquals("Flashcards", bundle.getString("flashcardTitle"));
         assertEquals("Unmaster all flashcards", bundle.getString("unmasterAllButton"));
         assertEquals("Master Flashcards", bundle.getString("masteredFlashcardsButton"));
+    }
 
+    @Test
+    public void testQuizPage() {
         // Assertions for the quiz page
         assertEquals("Submit Answer", bundle.getString("submitAnswer"));
         assertEquals("Cancel Quiz", bundle.getString("cancelQuiz"));

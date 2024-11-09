@@ -4,16 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="app now fetches quizzes based on the language code">
-      <change afterPath="$PROJECT_DIR$/src/test/java/ArabicLocalizationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ChineseLocalizationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/EnglishLocalizationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/FrenchLocalizationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="added localization tests for all bundles and added mockito depenency in pom.xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/DAO/QuizDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/QuizDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_FR.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_FR.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ArabicLocalizationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ArabicLocalizationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ChineseLocalizationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ChineseLocalizationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/EnglishLocalizationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/EnglishLocalizationTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,6 +132,15 @@
     </option>
   </component>
   <component name="RunManager">
+    <configuration name="ChineseLocalizationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="QuadLingo" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ChineseLocalizationTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="UserDaoImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
@@ -174,10 +179,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ChineseLocalizationTest" />
         <item itemvalue="JUnit.UserTests.testUpdateUser" />
         <item itemvalue="JUnit.UserTests" />
         <item itemvalue="JUnit.UserDaoImplTest" />
-        <item itemvalue="Docker.Dockerfile" />
         <item itemvalue="Docker.Dockerfile" />
       </list>
     </recent_temporary>
@@ -231,7 +236,7 @@
       <workItem from="1730301426324" duration="1982000" />
       <workItem from="1730536800648" duration="1347000" />
       <workItem from="1730538413498" duration="6044000" />
-      <workItem from="1731157787637" duration="5711000" />
+      <workItem from="1731157787637" duration="9614000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
@@ -393,7 +398,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730538052877</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="added localization tests for all bundles and added mockito depenency in pom.xml">
+      <option name="closed" value="true" />
+      <created>1731163632087</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1731163632087</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -435,7 +448,8 @@
     <MESSAGE value="muutin register ---&gt; signUp" />
     <MESSAGE value="update english bundle + lisäsin successAlertTitlen chinese bundleen" />
     <MESSAGE value="localized quiz library and quiz page" />
-    <option name="LAST_COMMIT_MESSAGE" value="localized quiz library and quiz page" />
+    <MESSAGE value="added localization tests for all bundles and added mockito depenency in pom.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="added localization tests for all bundles and added mockito depenency in pom.xml" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

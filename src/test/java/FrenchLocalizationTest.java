@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ResourceBundle;
 import static org.junit.jupiter.api.Assertions.*;
@@ -6,16 +7,22 @@ public class FrenchLocalizationTest {
 
     private ResourceBundle bundle;
 
-    @Test
-    public void testFrenchLocale() {
+    @BeforeEach
+    public void setUp() {
         bundle = ResourceBundle.getBundle("bundle_FR");
+    }
 
+    @Test
+    public void testIndexPage() {
         // Assertions for the index page
         assertEquals("Bienvenue à QuadLingo", bundle.getString("welcomeMessage"));
         assertEquals("Bienvenue", bundle.getString("welcomeLabel"));
         assertEquals("Votre parcours d'apprentissage commence ici.", bundle.getString("descriptionMessage"));
         assertEquals("Inscrivez-vous", bundle.getString("signUp"));
+    }
 
+    @Test
+    public void testLoginPage() {
         // Assertions for the login page
         assertEquals("Nom d'utilisateur", bundle.getString("usernameLabel"));
         assertEquals("Mot de passe", bundle.getString("passwordLabel"));
@@ -25,7 +32,10 @@ public class FrenchLocalizationTest {
         assertEquals("L'utilisateur n'existe pas.", bundle.getString("userDoesNotExist"));
         assertEquals("Mot de passe incorrect.", bundle.getString("incorrectPassword"));
         assertEquals("Error de connexion", bundle.getString("loginErrorTitle"));
+    }
 
+    @Test
+    public void testSignUpPage() {
         // Assertions for the signup page
         assertEquals("E-mail", bundle.getString("emailLabel"));
         assertEquals("Vous avez un compte ? Connectez-vous plutôt :", bundle.getString("hasAccountLabel"));
@@ -37,7 +47,10 @@ public class FrenchLocalizationTest {
         assertEquals("Mot de passe doit comporter au moins 8 caractères.", bundle.getString("atLeastEight"));
         assertEquals("Error d'inscription", bundle.getString("signUpErrorTitle"));
         assertEquals("Inscription échouée. Veuillez réessayer.", bundle.getString("errorContext"));
+    }
 
+    @Test
+    public void testAchievementsPage() {
         // Assertions for the achievements page
         assertEquals("Compléter un quiz", bundle.getString("quizRequirement1"));
         assertEquals("Compléter 5 quizzes", bundle.getString("quizRequirement5"));
@@ -49,7 +62,10 @@ public class FrenchLocalizationTest {
         assertEquals("Page d'accueil", bundle.getString("homeButton"));
         assertEquals("Badges déverrouillés", bundle.getString("unlockedBadges"));
         assertEquals("Badges verrouillés", bundle.getString("lockedBadges"));
+    }
 
+    @Test
+    public void testProgressPage() {
         // Assertions for the progress page
         assertEquals("Progrès", bundle.getString("progressTitle"));
         assertEquals("Votre score", bundle.getString("userScore"));
@@ -57,13 +73,19 @@ public class FrenchLocalizationTest {
         assertEquals("Votre progression des cartes mémo", bundle.getString("flashcardProgress"));
         assertEquals("Vous avez complété {1} quiz(zes) sur {0}.", bundle.getString("quizzesCompleted"));
         assertEquals("Vous avez complété {1} carte(s) mémo sur {0}.", bundle.getString("flashcardsMastered"));
+    }
 
+    @Test
+    public void testHomepagePage() {
         // Assertions for the homepage
         assertEquals("Bibliothèque de Quiz", bundle.getString("quizLibraryButton"));
         assertEquals("Bibliothèque de Cartes mémo", bundle.getString("flashcardLibraryButton"));
         assertEquals("Réalisations", bundle.getString("achievementsButton"));
         assertEquals("Déconnexion", bundle.getString("logoutButton"));
+    }
 
+    @Test
+    public void testProfilePage() {
         // Assertions for the profile page
         assertEquals("Profil", bundle.getString("profilePageTitle"));
         assertEquals("Nom d'utilisateur :", bundle.getString("currentUsernameLabel"));
@@ -80,7 +102,10 @@ public class FrenchLocalizationTest {
         assertEquals("Progrès", bundle.getString("progressPageButton"));
         assertEquals("Erreur", bundle.getString("errorAlertTitle"));
         assertEquals("Succès", bundle.getString("successAlertTitle"));
+    }
 
+    @Test
+    public void testFlashcardPage() {
         // Assertions for the flashcard page
         assertEquals("Vous ne maîtrisez pas encore les cartes mémo.", bundle.getString("noMastered"));
         assertEquals("Retourner à la bibliothèque", bundle.getString("backToFlashLibraryButton"));
@@ -91,12 +116,18 @@ public class FrenchLocalizationTest {
         assertEquals("Prochaine carte mémo", bundle.getString("nextFlashcard"));
         assertEquals("Afficher le terme", bundle.getString("showTerm"));
         assertEquals("Afficher la traduction", bundle.getString("showTranslation"));
+    }
 
+    @Test
+    public void testFlashcardLibraryPage() {
         // Assertions for the flashcard library page
         assertEquals("Cartes mémo", bundle.getString("flashcardTitle"));
         assertEquals("Démaîtriser tout", bundle.getString("unmasterAllButton"));
         assertEquals("Cartes mémo maîtrisées", bundle.getString("masteredFlashcardsButton"));
+    }
 
+    @Test
+    public void testQuizPage() {
         // Assertions for the quiz page
         assertEquals("Soumettre une réponse", bundle.getString("submitAnswer"));
         assertEquals("Annuler le Quiz", bundle.getString("cancelQuiz"));

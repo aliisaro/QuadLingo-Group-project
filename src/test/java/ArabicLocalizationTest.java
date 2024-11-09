@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ResourceBundle;
 import static org.junit.jupiter.api.Assertions.*;
@@ -6,16 +7,22 @@ public class ArabicLocalizationTest {
 
     private ResourceBundle bundle;
 
-    @Test
-    public void testArabicLocale() {
+    @BeforeEach
+    public void setUp() {
         bundle = ResourceBundle.getBundle("bundle_AR");
+    }
 
+    @Test
+    public void testIndexPage() {
         // Assertions for the index page
         assertEquals("مرحباً بكم في QuadLingo", bundle.getString("welcomeMessage"));
         assertEquals("مرحباً،", bundle.getString("welcomeLabel"));
         assertEquals("رحلة التعلم الخاصة بك تبدأ هنا.", bundle.getString("descriptionMessage"));
         assertEquals("اشتراك", bundle.getString("signUp"));
+    }
 
+    @Test
+    public void testLoginPage() {
         // Assertions for the login page
         assertEquals("اسم المستخدم", bundle.getString("usernameLabel"));
         assertEquals("كلمة المرور", bundle.getString("passwordLabel"));
@@ -25,7 +32,10 @@ public class ArabicLocalizationTest {
         assertEquals("المستخدم غير موجود.", bundle.getString("userDoesNotExist"));
         assertEquals("كلمة المرور غير صحيحة.", bundle.getString("incorrectPassword"));
         assertEquals("خطأ تسجيل الدخول", bundle.getString("loginErrorTitle"));
+    }
 
+    @Test
+    public void testSignUpPage() {
         // Assertions for the register page
         assertEquals("بريد إلكتروني", bundle.getString("emailLabel"));
         assertEquals("هل لديك حساب بالفعل؟ قم بتسجيل الدخول بدلاً من ذلك:", bundle.getString("hasAccountLabel"));
@@ -37,7 +47,10 @@ public class ArabicLocalizationTest {
         assertEquals("يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.", bundle.getString("atLeastEight"));
         assertEquals("خطأ في التسجيل", bundle.getString("signUpErrorTitle"));
         assertEquals("فشل التسجيل. يرجى المحاولة مرة أخرى.", bundle.getString("errorContext"));
+    }
 
+    @Test
+    public void testAchievementsPage() {
         // Assertions for the achievements page
         assertEquals("أكمل اختبار واحد", bundle.getString("quizRequirement1"));
         assertEquals("أكمل 5 اختبارات", bundle.getString("quizRequirement5"));
@@ -49,7 +62,10 @@ public class ArabicLocalizationTest {
         assertEquals("الصفحة الرئيسية", bundle.getString("homeButton"));
         assertEquals("شارات مفتوحة", bundle.getString("unlockedBadges"));
         assertEquals("شارات مقفلة", bundle.getString("lockedBadges"));
+    }
 
+    @Test
+    public void testProgressPage() {
         // Assertions for the progress page
         assertEquals("تقدم", bundle.getString("progressTitle"));
         assertEquals("نتيجتك", bundle.getString("userScore"));
@@ -57,13 +73,19 @@ public class ArabicLocalizationTest {
         assertEquals("تقدم بطاقتك التعليمية", bundle.getString("flashcardProgress"));
         assertEquals("لقد أكملت {1} من {0} اختبارًا.", bundle.getString("quizzesCompleted"));
         assertEquals("لقد أتقنت {1} من {0} بطاقة تعليمية.", bundle.getString("flashcardsMastered"));
+    }
 
+    @Test
+    public void testHomepagePage() {
         // Assertions for the homepage
         assertEquals("مكتبة الاختبارات", bundle.getString("quizLibraryButton"));
         assertEquals("مكتبة البطاقات التعليمية", bundle.getString("flashcardLibraryButton"));
         assertEquals("الإنجازات", bundle.getString("achievementsButton"));
         assertEquals("تسجيل الخروج", bundle.getString("logoutButton"));
+    }
 
+    @Test
+    public void testProfilePage() {
         // Assertions for the profile page
         assertEquals("حساب تعريفي", bundle.getString("profilePageTitle"));
         assertEquals("اسم المستخدم:", bundle.getString("currentUsernameLabel"));
@@ -80,7 +102,10 @@ public class ArabicLocalizationTest {
         assertEquals("تقدم", bundle.getString("progressPageButton"));
         assertEquals("خطأ", bundle.getString("errorAlertTitle"));
         assertEquals("نجاح", bundle.getString("successAlertTitle"));
+    }
 
+    @Test
+    public void testFlashcardPage() {
         // Assertions for the flashcard page
         assertEquals("لم تتقن البطاقات التعليمية بعد", bundle.getString("noMastered"));
         assertEquals("العودة إلى المكتبة", bundle.getString("backToFlashLibraryButton"));
@@ -91,12 +116,18 @@ public class ArabicLocalizationTest {
         assertEquals("البطاقة التعليمية التالية", bundle.getString("nextFlashcard"));
         assertEquals("عرض المصطلح", bundle.getString("showTerm"));
         assertEquals("إظهار الترجمة", bundle.getString("showTranslation"));
+    }
 
+    @Test
+    public void testFlashcardLibraryPage() {
         // Assertions for the flashcard library page
         assertEquals("البطاقات التعليمية", bundle.getString("flashcardTitle"));
         assertEquals("قم بإزالة كافة عناصر التحكم", bundle.getString("unmasterAllButton"));
         assertEquals("البطاقات التعليمية الرئيسية", bundle.getString("masteredFlashcardsButton"));
+    }
 
+    @Test
+    public void testQuizPage() {
         // Assertions for the quiz page
         assertEquals("أرسل الإجابة", bundle.getString("submitAnswer"));
         assertEquals("إلغاء الاختبار", bundle.getString("cancelQuiz"));
