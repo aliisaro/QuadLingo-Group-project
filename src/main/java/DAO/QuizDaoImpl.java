@@ -178,7 +178,6 @@ public class QuizDaoImpl implements QuizDao {
         }
     }
 
-
     @Override
     public void incrementCompletedQuizzes(int userId) {
         String sql = "UPDATE LINGOUSER SET QuizzesCompleted = QuizzesCompleted + 1 WHERE UserID = ?";
@@ -210,5 +209,26 @@ public class QuizDaoImpl implements QuizDao {
             e.printStackTrace();
         }
         return false; // Default to false if an error occurs or no records are found
+    }
+
+    @Override
+    public int getUserScoreForQuiz(int userId, int quizId) {
+        int score = 0;
+        String query = "SELECT Score FROM ISCOMPLETED WHERE UserID = ? AND QuizID = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, quizId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    score = rs.getInt("Score");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return score;
     }
 }

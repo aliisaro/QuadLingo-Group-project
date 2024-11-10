@@ -1,11 +1,10 @@
-import DAO.UserDao;
 import DAO.UserDaoImpl;
 import Model.User;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserTests {
+class UserIntegrationTests {
 
     private UserDaoImpl userDao;
     private final String testEmail = "testuser@example.com";
@@ -109,10 +108,53 @@ class UserTests {
         assertEquals("updatedUser", retrievedUser.getUsername(), "The username should be updated successfully.");
     }
 
+    @Test
+    void testDeleteUserByEmail() {
+        // Attempt to delete a user with the known test email
+        boolean deletionResult = userDao.deleteUserByEmail(testEmail);
+
+        // Assert that the deletion was successful
+        assertTrue(deletionResult, "User should be deleted successfully with valid email.");
+
+        // Try to retrieve the deleted user to ensure they are no longer in the system
+        User deletedUser = userDao.getUserById(userId); // We saved the user's ID earlier
+        assertNull(deletedUser, "Deleted user should not be found in the system.");
+    }
+
+    @Test
+    void testDeleteUserByEmail_UserDoesNotExist() {
+        // Attempt to delete a user with an email that does not exist
+        boolean deletionResult = userDao.deleteUserByEmail("nonexistent@example.com");
+
+        // Assert that the deletion was unsuccessful
+        assertFalse(deletionResult, "Deletion should fail for non-existing user.");
+    }
+
+    @Test
+    void testGetUserById_Success() {
+        // Mocking the retrieval of a user by ID
+        User retrievedUser = userDao.getUserById(userId);
+
+        assertNotNull(retrievedUser, "User should be retrieved successfully.");
+        assertEquals(userId, retrievedUser.getUserId(), "User ID should match.");
+        assertEquals("testUser", retrievedUser.getUsername(), "Username should match.");
+        assertEquals(testEmail, retrievedUser.getEmail(), "Email should match.");
+    }
+
+    @Test
+    void testGetUserById_Failure() {
+        // Simulating the case where no user is found for the given ID
+        User retrievedUser = userDao.getUserById(-1); // Using an invalid ID
+
+        assertNull(retrievedUser, "User should not be found for invalid ID.");
+    }
 
     @AfterEach
     void tearDown() {
-        // Clean up after each test by deleting the user using the known email
-        userDao.deleteUserByEmail(testEmail);
+        // Only attempt to delete the user if they exist in the database
+        User user = userDao.getUserById(userId);
+        if (user != null) {
+            userDao.deleteUserByEmail(testEmail);
+        }
     }
 }

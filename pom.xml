@@ -32,7 +32,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.2.0</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -69,8 +69,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version> <!-- Latest stable version -->
+                <version>3.2.5</version> <!-- Use the latest version -->
                 <configuration>
+                    <useModulePath>false</useModulePath> <!-- Important for JUnit 5 -->
                     <includes>
                         <include>**/Test*.java</include>
                         <include>**/*Test.java</include>
@@ -78,6 +79,7 @@
                     </includes>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
@@ -119,5 +121,29 @@
             <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Mockito core dependency for mocking objects -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.8.1</version> <!-- Use the latest version available -->
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito JUnit Jupiter integration for JUnit 5 -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>4.8.1</version> <!-- Use the latest version available -->
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>4.8.1</version> <!-- Use the latest version -->
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>
