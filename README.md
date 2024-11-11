@@ -27,17 +27,27 @@ Artificial intelligence was used for writing the questions and answers for the q
 
 ****
 
-1. Download and install IntelliJ IDEA.
+1. Download an environment for database handling unless you already have one. We recommend using HeidiSQL for Windows.
+    - [HeidiSQL (Windows)](https://www.heidisql.com/download.php?download=installer)
+   Other options are:
+    - [MariaDB (Windows, Mac, Linux)](https://mariadb.org/download/?t=mariadb&p=mariadb&r=11.5.2&os=windows&cpu=x86_64&pkg=msi&mirror=xtom_tal)
+    - [DataGrip (Windows, Mac, Linux)](https://www.jetbrains.com/datagrip/features/?source=google&medium=cpc&campaign=EMEA_en_WEST_DataGrip_Search_RLSA&term=sql%20database&content=555193249366&gad_source=1&gclid=Cj0KCQiA88a5BhDPARIsAFj595hZXkn2YbwaTcrq-f8E_5OuTMKJviU8mQVWBeXH3rUCOKaPguWJ5nUaAnzhEALw_wcB)
+   
+2. Set up a database for the project. The script is available in the file `QuadLingoDatabase.sql`.
+
+3. Download and install IntelliJ IDEA unless you already have it.
     - [IntelliJ IDEA (Windows)](https://www.jetbrains.com/idea/download/?section=windows)
     - [IntelliJ IDEA (Mac)](https://www.jetbrains.com/idea/download/?section=mac)
     - [IntelliJ IDEA (Linux)](https://www.jetbrains.com/idea/download/?section=linux)
-2. Create a new Java project in IntelliJ IDEA. Use Maven as build system.
-3. Clone Quadlingo from GitHub.
-```bash
-git clone https://github.com/aliisaro/QuadLingo-Group-project.git
-```
-4. Run the class Main.java in the package `Main` to start the application.
-5. Enjoy!
+4. Create a new Java project in IntelliJ IDEA. Use Maven as build system.
+
+5. Clone Quadlingo from GitHub. Use the following command in the terminal or clone directly from Git -> Clone.
+   ```bash
+   git clone https://github.com/aliisaro/QuadLingo-Group-project.git
+   ```
+6. Run the class Main.java in the package `Main` to start the application.
+
+7. Enjoy!
 
 ****
 
