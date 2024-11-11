@@ -28,6 +28,8 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
     private static final ProgressBar progressBar2 = new ProgressBar();
     private static final ProgressBar progressBar3 = new ProgressBar();
     private ResourceBundle bundle;
+    private String languageCode;
+
 
     //Displays the progress page
     public ProgressPage(Stage stage) {
@@ -37,11 +39,14 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         int userID = userController.getCurrentUserId();
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
+        // Retrieve the current language code
+        this.languageCode = LanguageConfig.getInstance().getCurrentLocale().getLanguage();
+
         // Get the user's score, max score, completed quizzes and all quizzes
-        userScore = progressDao.getUserScore(userID);
-        maxScore = progressDao.getMaxScore(userID);
-        completedQuizzes = progressDao.getAllCompletedQuizzes(userID);
-        allQuizzes = progressDao.getQuizAmount();
+        userScore = progressDao.getUserScore(userID, languageCode);
+        maxScore = progressDao.getMaxScore(languageCode);
+        completedQuizzes = progressDao.getAllCompletedQuizzes(userID, languageCode);
+        allQuizzes = progressDao.getQuizAmount(languageCode);
         masteredFlashcards = progressDao.getMasteredFlashcards(userID);
         allFlashcards = progressDao.getFlashcardAmount();
 

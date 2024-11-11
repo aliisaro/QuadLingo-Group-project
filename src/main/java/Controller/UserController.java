@@ -65,10 +65,10 @@ public class UserController {
     // Delete a user by email
     public boolean deleteUserByEmail(String email) {return userDao.deleteUserByEmail(email); }
 
-    public int getQuizzesCompleted(int userId) {
-        System.out.println("Retrieving quizzes completed for user: " + userId);
-        int quizzesCompleted = userDao.getQuizzesCompleted(userId);
-        System.out.println("Quizzes completed: " + quizzesCompleted);
+    public int getQuizzesCompleted(int userId, String language) {
+        System.out.println("Retrieving quizzes completed quizzes for user: " + userId + ". Language " + language);
+        int quizzesCompleted = userDao.getQuizzesCompleted(userId, language );
+        System.out.println("Quizzes completed: " + quizzesCompleted + ". Language " + language);
         return quizzesCompleted;
     }
 

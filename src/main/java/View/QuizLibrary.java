@@ -143,7 +143,7 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
 
     @Override
     public void updateQuizProgress(ProgressBar progressBar) {
-        int completedQuizzes = userController.getQuizzesCompleted(userID);
+        int completedQuizzes = userController.getQuizzesCompleted(userID, languageCode);
         int allQuizzes = quizController.getAllQuizzes(languageCode).size();
         double progress = (double) completedQuizzes / allQuizzes;
         progressBar.setProgress(progress);
@@ -151,8 +151,8 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
 
     @Override
     public void updateScoreProgress(ProgressBar progressBar) {
-        int userScore = progressDao.getUserScore(userID);
-        int maxScore = progressDao.getMaxScore(userID);
+        int userScore = progressDao.getUserScore(userID, languageCode);
+        int maxScore = progressDao.getMaxScore(languageCode);
         double progress = (double) userScore / maxScore;
         progressBar.setProgress(progress);
     }
