@@ -101,7 +101,7 @@ public class Homepage extends BasePage {
         logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
-            stage.setScene(new IndexPage(stage).createScene());
+            stage.setScene(new LoggedOutPage(stage).createScene());
         });
 
         // Create a container (vbox) for the buttons

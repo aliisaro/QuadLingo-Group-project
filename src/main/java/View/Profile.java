@@ -88,8 +88,13 @@ public class Profile extends BasePage {
         saveButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         saveButton.setOnAction(e -> handleSaveAction(usernameTextField, emailTextField, passwordTextField, currentUser));
 
-        // Logout button: clears session and redirects to IndexPage
+        // Go to the Progress page
+        Button buttonProgress = new Button(bundle.getString("progressPageButton"));
+        buttonProgress.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
+        buttonProgress.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        buttonProgress.setOnAction(e -> stage.setScene(new ProgressPage(stage).createScene()));
 
+        // Logout button: clears session and redirects to IndexPage
         normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165";
         hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165";
 
@@ -100,7 +105,7 @@ public class Profile extends BasePage {
         logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
-            stage.setScene(new IndexPage(stage).createScene());
+            stage.setScene(new LoggedOutPage(stage).createScene());
         });
 
         // Back to the homepage
@@ -109,17 +114,12 @@ public class Profile extends BasePage {
         backButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
-        // Go to the Progress page
-        Button buttonProgress = new Button(bundle.getString("progressPageButton"));
-        buttonProgress.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
-        buttonProgress.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
-        buttonProgress.setOnAction(e -> stage.setScene(new ProgressPage(stage).createScene()));
-
         // Add buttons to the first button container
-        buttonContainer1.getChildren().addAll(saveButton, logoutButton);
+        buttonContainer1.getChildren().addAll(saveButton, buttonProgress);
+
 
         // Add buttons to the second button container
-        buttonContainer2.getChildren().addAll(backButton, buttonProgress);
+        buttonContainer2.getChildren().addAll(backButton, logoutButton);
 
         // Allow the buttons to grow with the HBox
         HBox.setHgrow(backButton, Priority.ALWAYS);
