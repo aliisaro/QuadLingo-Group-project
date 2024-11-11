@@ -10,20 +10,20 @@ public class QuadLingoGui extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //Setting the title of the window
+        // Setting the title of the window
         primaryStage.setTitle("QuadLingo");
 
-        //Go to index page where there is login and register buttons
+        // Go to index page where there is login and register buttons
         primaryStage.setScene(new IndexPage(primaryStage).createScene());
 
-        //Setting the size of the window
+        // Setting the size of the window
         primaryStage.setWidth(400);
         primaryStage.setHeight(660);
 
-        //Centering the window
+        // Centering the window
         primaryStage.centerOnScreen();
 
-        //Showing the window
+        // Showing the window
         primaryStage.show();
 
         // Force layout update to ensure scrollbars and other dynamic content are properly displayed
