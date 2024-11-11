@@ -12,20 +12,20 @@ public class FlashcardController {
         this.flashcardDao = flashcardDao;
     }
 
-    public List<Flashcard> getFlashCardsByTopic(String topic, int userId) {
-        return flashcardDao.getFlashcardsByTopic(topic, userId);
+    public List<Flashcard> getFlashCardsByTopic(String topic, int userId, String languageCode) {
+        return flashcardDao.getFlashcardsByTopic(topic, userId, languageCode);
     }
 
-    public List<Flashcard> getTopics() {
-        return flashcardDao.getTopics();
+    public List<Flashcard> getTopics(String languageCode) {
+        return flashcardDao.getTopics(languageCode);
     }
 
     public List<Flashcard> getMasteredFlashCards(int userId) {
         return flashcardDao.getMasteredFlashcardsByUser(userId);
     }
 
-    public List<Flashcard> getAllFlashcards() {
-        return flashcardDao.getAllFlashcards();
+    public List<Flashcard> getAllFlashcards(String languageCode) {
+        return flashcardDao.getAllFlashcards(languageCode);
     }
 
     public FlashcardDao getFlashcardDao() {
