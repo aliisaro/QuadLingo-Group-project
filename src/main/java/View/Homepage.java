@@ -25,6 +25,9 @@ public class Homepage extends BasePage {
     private UserController userController; // UserController object
     private ResourceBundle bundle;
 
+    private String normalButtonStyle;
+    private String hoveredButtonStyle;
+
     public Homepage(Stage stage) {
         // Get the current logged-in user from the session
         User currentUser = SessionManager.getInstance().getCurrentUser();
@@ -87,12 +90,18 @@ public class Homepage extends BasePage {
         profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
 
         // Logout button
+        normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 16px; -fx-padding: 10px;";
+        hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 16px; -fx-padding: 10px;";
+
         Button logoutButton = new Button(bundle.getString("logoutButton"));
-        logoutButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+        logoutButton.setStyle(normalButtonStyle);
+        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(hoveredButtonStyle));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle(normalButtonStyle));
+
         logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
-            stage.setScene(new IndexPage(stage).createScene());
+            stage.setScene(new LoggedOutPage(stage).createScene());
         });
 
         // Create a container (vbox) for the buttons

@@ -82,7 +82,7 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow responsiveness, max width based on window size
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
-            stage.setScene(new IndexPage(stage).createScene());
+            stage.setScene(new LoggedOutPage(stage).createScene());
         });
 
         // Group the buttons in an HBox

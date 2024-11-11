@@ -63,7 +63,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         Button logoutButton = new Button(bundle.getString("logoutButton")); // Logout
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
-            stage.setScene(new IndexPage(stage).createScene());
+            stage.setScene(new LoggedOutPage(stage).createScene());
         });
         logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         logoutButton.setMaxWidth(Double.MAX_VALUE);

@@ -94,7 +94,7 @@ public class QuizPage extends BasePage {
         logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125;");
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
-            stage.setScene(new IndexPage(stage).createScene());
+            stage.setScene(new LoggedOutPage(stage).createScene());
         });
 
         // Group buttons in an HBox for better alignment
