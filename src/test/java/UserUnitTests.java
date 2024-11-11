@@ -159,16 +159,6 @@ class UserUnitTests {
         assertNull(retrievedUser, "User should not be found for invalid ID.");
     }
 
-    @Test
-    void testGetUserById_Failure_UserNotFound() {
-        // Simulating the case where a user with the given ID doesn't exist
-        when(userDao.getUserById(testUserId)).thenReturn(null);
-
-        User retrievedUser = userDao.getUserById(testUserId);
-
-        assertNull(retrievedUser, "User should not be found for invalid ID.");
-    }
-
     @AfterEach
     void tearDown() {
         reset(userDao);  // Reset mocks after each test to ensure they are fresh for the next one
