@@ -22,6 +22,8 @@ import java.util.ResourceBundle;
 public class Profile extends BasePage {
     private UserController userController; // UserController object
     private ResourceBundle bundle;
+    private String normalButtonStyle;
+    private String hoveredButtonStyle;
 
     public Profile(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
@@ -87,8 +89,14 @@ public class Profile extends BasePage {
         saveButton.setOnAction(e -> handleSaveAction(usernameTextField, emailTextField, passwordTextField, currentUser));
 
         // Logout button: clears session and redirects to IndexPage
+
+        normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165";
+        hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165";
+
         Button logoutButton = new Button(bundle.getString("logoutButton"));
-        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
+        logoutButton.setStyle(normalButtonStyle);
+        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(hoveredButtonStyle));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle(normalButtonStyle));
         logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
