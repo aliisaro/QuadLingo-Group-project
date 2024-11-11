@@ -1,7 +1,7 @@
 package View;
 
 import Config.LanguageConfig;
-import Controller.FlashCardController;
+import Controller.FlashcardController;
 import Controller.UserController;
 import DAO.FCImplement;
 import DAO.ProgressDaoImpl;
@@ -9,7 +9,6 @@ import DAO.UserDaoImpl;
 import Database.MariaDbConnection;
 import Main.SessionManager;
 import Model.FlashCard;
-import Model.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -27,7 +26,7 @@ import javafx.scene.layout.VBox;
 public class FlashCardLibrary extends BasePage implements UpdateProgress{
     private final UserController userController = new UserController(new UserDaoImpl());
     private final int userID = userController.getCurrentUserId();
-    private FlashCardController flashCardController;
+    private FlashcardController flashCardController;
     private final ProgressBar progressBar3 = ProgressPage.getProgressBar3();
     private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
     private ResourceBundle bundle;
@@ -43,7 +42,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
 
         // Initialize FlashCardController with database connection
         Connection connection = MariaDbConnection.getConnection();
-        flashCardController = new FlashCardController(new FCImplement(connection));
+        flashCardController = new FlashcardController(new FCImplement(connection));
 
         // Set layout to the stage
         setLayout(stage);

@@ -2,14 +2,13 @@ package Controller;
 
 import DAO.FlashcardDao;
 import Model.FlashCard;
-
 import java.util.List;
 
-public class FlashCardController {
+public class FlashcardController {
 
     private FlashcardDao flashCardDao;
 
-    public FlashCardController(FlashcardDao flashCardDao) {
+    public FlashcardController(FlashcardDao flashCardDao) {
         this.flashCardDao = flashCardDao;
     }
 
