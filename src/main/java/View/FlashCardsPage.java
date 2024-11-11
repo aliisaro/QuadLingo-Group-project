@@ -55,7 +55,7 @@ public class FlashCardsPage extends BasePage {
             }
             isMastered =true;
         } else {
-            this.flashcards = flashCardDao.getFlashcardsByTopic(topic, userID);
+            this.flashcards = flashCardDao.getFlashcardsByTopic(topic, userID, LanguageConfig.getInstance().getCurrentLocale().getLanguage());
             if (this.flashcards.isEmpty()) {
                 Label noFlashcardsLabel = new Label(bundle.getString("masterAllTopic")); // You have mastered all flashcards in this topic. Great job!
                 Button endFlashCardSessionButton = new Button(bundle.getString("backToFlashLibraryButton")); // Go back to library

@@ -17,13 +17,14 @@ public class FCImplement implements FlashcardDao {
     }
 
     @Override
-    public List<Flashcard> getFlashcardsByTopic(String topic, int userId) {
+    public List<Flashcard> getFlashcardsByTopic(String topic, int userId, String languageCode) {
         List<Flashcard> flashCards = new ArrayList<>();
-        String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE Topic = ? AND FlashCardID NOT IN (SELECT FlashCardID FROM ISMASTERED WHERE UserID = ?)";
+        String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE Topic = ? AND language_code2 = ? AND FlashCardID NOT IN (SELECT FlashCardID FROM ISMASTERED WHERE UserID = ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, topic);
-            stmt.setInt(2, userId);
+            stmt.setString(2, languageCode);
+            stmt.setInt(3, userId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     String term = rs.getString("Term");
@@ -39,15 +40,17 @@ public class FCImplement implements FlashcardDao {
     }
 
     @Override
-    public List<Flashcard> getTopics() {
+    public List<Flashcard> getTopics(String languageCode) {
         List<Flashcard> topics = new ArrayList<>();
-        String query = "SELECT DISTINCT Topic FROM FLASHCARD";
+        String query = "SELECT DISTINCT Topic FROM FLASHCARD WHERE language_code2 = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                String topic = rs.getString("Topic");
-                topics.add(new Flashcard(null, null, topic));
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, languageCode);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String topic = rs.getString("Topic");
+                    topics.add(new Flashcard(null, null, topic));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,9 +60,9 @@ public class FCImplement implements FlashcardDao {
     }
 
     @Override
-    public List<Flashcard> getAllFlashcards() {
+    public List<Flashcard> getAllFlashcards(String languageCode) {
         List<Flashcard> flashCards = new ArrayList<>();
-        String query = "SELECT Term, Translation, Topic FROM FLASHCARD";
+        String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE language_code2 = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
@@ -168,4 +171,5 @@ public class FCImplement implements FlashcardDao {
             e.printStackTrace();
         }
     }
+
 }
