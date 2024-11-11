@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="updated ui localization tests">
-      <change afterPath="$PROJECT_DIR$/src/main/java/View/LoggedOutPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/Homepage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Homepage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/View/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/Profile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_EN.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/language_fr_FR.properties" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,8 +193,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+        <option value="jdk-17.0.9-jbr-17.0.9-4caba194b151-51f1b679" />
       </set>
     </attachedChunks>
   </component>
@@ -241,6 +240,7 @@
       <workItem from="1730538413498" duration="6044000" />
       <workItem from="1731157787637" duration="10530000" />
       <workItem from="1731231512057" duration="7405000" />
+      <workItem from="1731321178490" duration="3482000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
@@ -481,6 +481,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/View/Homepage.java</url>
           <line>103</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/View/Profile.java</url>
+          <line>82</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

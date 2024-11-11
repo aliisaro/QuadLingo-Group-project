@@ -28,6 +28,8 @@ public class QuizPage extends BasePage {
     private Label errorLabel;
     private Label feedbackLabel;
     private ResourceBundle bundle;
+    private String normalButtonStyle;
+    private String hoveredButtonStyle;
 
     public QuizPage(QuizDao quizDao, int quizId, Stage stage) {
         this.quizDao = quizDao;
@@ -90,8 +92,13 @@ public class QuizPage extends BasePage {
         });
 
         // Logout button
+        normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125";
+        hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125";
+
         Button logoutButton = new Button(bundle.getString("logoutButton"));
-        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125;");
+        logoutButton.setStyle(normalButtonStyle);
+        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(hoveredButtonStyle));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle(normalButtonStyle));
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
             stage.setScene(new LoggedOutPage(stage).createScene());

@@ -7,21 +7,19 @@ import Main.SessionManager;
 import Model.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Profile extends BasePage {
     private UserController userController; // UserController object
     private ResourceBundle bundle;
+    private ComboBox<String> languageComboBox;
     private String normalButtonStyle;
     private String hoveredButtonStyle;
 
@@ -82,6 +80,23 @@ public class Profile extends BasePage {
         HBox buttonContainer2 = new HBox(10);
         buttonContainer2.setPadding(new Insets(5, 0,5 , 0));
 
+        // Create a container (HBox) for choosing language
+        HBox buttonContainer3 = new HBox(10);
+        buttonContainer3.setPadding(new Insets(5, 0,5 , 0));
+
+        // Language selection ComboBox
+        languageComboBox = new ComboBox<>();
+        languageComboBox.getItems().addAll("English", "French", "Chinese", "Arabic");
+        languageComboBox.setValue(bundle.getString("language.key")); // Current selection
+        System.out.println("selected language" + bundle.getString("language.key"));
+        languageComboBox.setOnAction(e -> switchLanguage(languageComboBox.getValue()));
+
+        // Layout language selector
+        /* VBox buttonContainer = new VBox(10, languageComboBox);
+        buttonContainer.setPadding(new Insets(10, 0, 0, 0));
+        buttonContainer.setAlignment(Pos.CENTER);
+        */
+
         // Save Button to handle saving the profile information
         Button saveButton = new Button(bundle.getString("saveChangesButton"));
         saveButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
@@ -94,7 +109,7 @@ public class Profile extends BasePage {
         buttonProgress.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         buttonProgress.setOnAction(e -> stage.setScene(new ProgressPage(stage).createScene()));
 
-        // Logout button: clears session and redirects to IndexPage
+        // Logout button: clears session and redirects to Logged Out page
         normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165";
         hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165";
 
@@ -121,6 +136,9 @@ public class Profile extends BasePage {
         // Add buttons to the second button container
         buttonContainer2.getChildren().addAll(backButton, logoutButton);
 
+        // Add language options to third container
+        buttonContainer3.getChildren().addAll(languageComboBox);
+
         // Allow the buttons to grow with the HBox
         HBox.setHgrow(backButton, Priority.ALWAYS);
         HBox.setHgrow(logoutButton, Priority.ALWAYS);
@@ -140,7 +158,8 @@ public class Profile extends BasePage {
                 changePasswordLabel,
                 passwordTextField,
                 buttonContainer1,
-                buttonContainer2
+                buttonContainer2,
+                buttonContainer3
         );
     }
 
@@ -217,6 +236,31 @@ public class Profile extends BasePage {
                 System.out.println("Failed to update profile.\n");
             }
         }
+    }
+
+    private void switchLanguage(String language) {
+        Locale locale;
+        switch (language) {
+            case "French":
+                locale = new Locale("fr");
+                break;
+            case "Chinese":
+                locale = new Locale("ch"); // Simplified Chinese
+                break;
+            case "Arabic":
+                locale = new Locale("ar");
+                break;
+            default:
+                locale = Locale.ENGLISH;
+                break;
+        }
+
+        // Update the global locale
+        LanguageConfig.getInstance().setCurrentLocale(locale);
+
+        // Load the ResourceBundle with the selected locale
+        bundle = ResourceBundle.getBundle("bundle", locale);
+        // updateTexts(); // Update UI texts
     }
 
     // Method to refresh the profile page

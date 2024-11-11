@@ -32,6 +32,8 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
     private final int userID = userController.getCurrentUserId();
     private ResourceBundle bundle;
     private String languageCode;
+    private String normalButtonStyle;
+    private String hoveredButtonStyle;
 
     public QuizLibrary(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
@@ -76,9 +78,14 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         backButton.setMaxWidth(Double.MAX_VALUE); // Allow responsiveness, max width based on window size
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
-        // Logout button: clears session and redirects to IndexPage
+        // Logout button: clears session and redirects to LoggedOutPage
+        normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px;";
+        hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px;";
+
         Button logoutButton = new Button(bundle.getString("logoutButton"));
-        logoutButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        logoutButton.setStyle(normalButtonStyle);
+        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(hoveredButtonStyle));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle(normalButtonStyle));
         logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow responsiveness, max width based on window size
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
