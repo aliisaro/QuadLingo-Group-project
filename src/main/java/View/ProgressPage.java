@@ -2,6 +2,7 @@ package View;
 
 import Config.LanguageConfig;
 import java.text.MessageFormat;
+import java.util.ResourceBundle;
 import DAO.ProgressDaoImpl;
 import DAO.UserDaoImpl;
 import javafx.geometry.Insets;
@@ -13,7 +14,6 @@ import javafx.scene.control.ProgressBar;
 
 import Controller.UserController;
 
-import java.util.ResourceBundle;
 
 public class ProgressPage extends BasePage implements setMarginButton, UpdateProgress {
 
@@ -59,7 +59,7 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         progressLabel1.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
         Label progressLabel2 = new Label(bundle.getString("userScore")); // Your score
         Label progressLabel3 = new Label(bundle.getString("quizProgress")); // Your quiz progress
-        Label progressLabel5 = new Label(bundle.getString("flashcardProgress")); //Your flashcard progress
+        Label progressLabel5 = new Label(bundle.getString("flashcardProgress")); // Your flashcard progress
         Label progressLabel4 = new Label(MessageFormat.format(bundle.getString("quizzesCompleted"), completedQuizzes, allQuizzes)); // You have completed {completedQuizzes} out of {allQuizzes} quizzes
         Label progressLabel6 = new Label(MessageFormat.format(bundle.getString("flashcardsMastered"), masteredFlashcards, allFlashcards)); // You have mastered {masteredFlashcards} out of {allFlashcards} flashcards
         //Styling the progress bars
