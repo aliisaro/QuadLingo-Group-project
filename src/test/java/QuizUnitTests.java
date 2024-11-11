@@ -110,4 +110,46 @@ public class QuizUnitTests {
         int anotherQuizId = 999;  // Assuming this quiz ID doesn't exist or hasn't been completed
         assertFalse(quizDaoImpl.hasUserCompletedQuiz(sampleUserId, anotherQuizId), "User should not have completed a different quiz");
     }
+
+    @Test
+    public void testRetrieveAllQuizzes() {
+        List<Quiz> quizzes = quizDaoImpl.getAllQuizzes("en");
+
+        assertNotNull(quizzes, "Quizzes list should not be null.");
+        assertTrue(quizzes.size() > 0, "Quizzes list should contain at least one quiz.");
+        assertEquals("Sample Quiz", quizzes.get(0).getQuizTitle(), "The first quiz title should match the expected title.");
+    }
+
+    @Test
+    public void testIncrementCompletedQuizzesForUser() {
+        // Mock increment completed quizzes method
+        doNothing().when(quizDaoImpl).incrementCompletedQuizzes(sampleUserId);
+
+        quizDaoImpl.incrementCompletedQuizzes(sampleUserId);
+
+        // Verify if incrementCompletedQuizzes was called
+        verify(quizDaoImpl, times(1)).incrementCompletedQuizzes(sampleUserId);
+    }
+
+    @Test
+    public void testHasUserCompletedSpecificQuiz() {
+        // Check if the user has completed a specific quiz
+        boolean hasCompleted = quizDaoImpl.hasUserCompletedQuiz(sampleUserId, 1);
+
+        assertTrue(hasCompleted, "User should have completed the specified quiz.");
+
+        // Test for a quiz that hasn't been completed
+        int anotherQuizId = 999;
+        when(quizDaoImpl.hasUserCompletedQuiz(sampleUserId, anotherQuizId)).thenReturn(false);
+        assertFalse(quizDaoImpl.hasUserCompletedQuiz(sampleUserId, anotherQuizId), "User should not have completed a different quiz.");
+    }
+
+    @Test
+    public void testRetrieveUserScoreForQuiz() {
+        int expectedScore = 5;
+        int actualScore = quizDaoImpl.getUserScoreForQuiz(sampleUserId, 1);
+
+        assertEquals(expectedScore, actualScore, "The retrieved score should match the expected score.");
+    }
+
 }
