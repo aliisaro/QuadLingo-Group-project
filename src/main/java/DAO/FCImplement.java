@@ -1,6 +1,6 @@
 package DAO;
 
-import Model.FlashCard;
+import Model.Flashcard;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,8 +17,8 @@ public class FCImplement implements FlashcardDao {
     }
 
     @Override
-    public List<FlashCard> getFlashcardsByTopic(String topic, int userId) {
-        List<FlashCard> flashCards = new ArrayList<>();
+    public List<Flashcard> getFlashcardsByTopic(String topic, int userId) {
+        List<Flashcard> flashCards = new ArrayList<>();
         String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE Topic = ? AND FlashCardID NOT IN (SELECT FlashCardID FROM ISMASTERED WHERE UserID = ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -28,7 +28,7 @@ public class FCImplement implements FlashcardDao {
                 while (rs.next()) {
                     String term = rs.getString("Term");
                     String translation = rs.getString("Translation");
-                    flashCards.add(new FlashCard(term, translation, topic));
+                    flashCards.add(new Flashcard(term, translation, topic));
                 }
             }
         } catch (SQLException e) {
@@ -39,15 +39,15 @@ public class FCImplement implements FlashcardDao {
     }
 
     @Override
-    public List<FlashCard> getTopics() {
-        List<FlashCard> topics = new ArrayList<>();
+    public List<Flashcard> getTopics() {
+        List<Flashcard> topics = new ArrayList<>();
         String query = "SELECT DISTINCT Topic FROM FLASHCARD";
 
         try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 String topic = rs.getString("Topic");
-                topics.add(new FlashCard(null, null, topic));
+                topics.add(new Flashcard(null, null, topic));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,8 +57,8 @@ public class FCImplement implements FlashcardDao {
     }
 
     @Override
-    public List<FlashCard> getAllFlashcards() {
-        List<FlashCard> flashCards = new ArrayList<>();
+    public List<Flashcard> getAllFlashcards() {
+        List<Flashcard> flashCards = new ArrayList<>();
         String query = "SELECT Term, Translation, Topic FROM FLASHCARD";
 
         try (PreparedStatement stmt = connection.prepareStatement(query);
@@ -67,7 +67,7 @@ public class FCImplement implements FlashcardDao {
                 String term = rs.getString("Term");
                 String translation = rs.getString("Translation");
                 String topic = rs.getString("Topic");
-                flashCards.add(new FlashCard(term, translation, topic));
+                flashCards.add(new Flashcard(term, translation, topic));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -102,8 +102,8 @@ public class FCImplement implements FlashcardDao {
     }
 
     @Override
-    public List<FlashCard> getMasteredFlashcardsByUser(int userId) {
-        List<FlashCard> flashCards = new ArrayList<>();
+    public List<Flashcard> getMasteredFlashcardsByUser(int userId) {
+        List<Flashcard> flashCards = new ArrayList<>();
         String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE FlashCardID IN (SELECT FlashCardID FROM ISMASTERED WHERE UserID = ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -113,7 +113,7 @@ public class FCImplement implements FlashcardDao {
                     String term = rs.getString("Term");
                     String translation = rs.getString("Translation");
                     String topic = rs.getString("Topic");
-                    flashCards.add(new FlashCard(term, translation, topic));
+                    flashCards.add(new Flashcard(term, translation, topic));
                 }
             }
         } catch (SQLException e) {

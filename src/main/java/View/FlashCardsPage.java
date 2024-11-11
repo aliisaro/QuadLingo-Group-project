@@ -5,7 +5,7 @@ import Controller.UserController;
 import DAO.FlashcardDao;
 import DAO.UserDaoImpl;
 import Main.SessionManager;
-import Model.FlashCard;
+import Model.Flashcard;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 public class FlashCardsPage extends BasePage {
     private final FlashcardDao flashCardDao;
     private final UserController userController;
-    private List<FlashCard> flashcards;
+    private List<Flashcard> flashcards;
     private Label termLabel;
     private int currentFlashCardIndex = 0;
     private int userID;

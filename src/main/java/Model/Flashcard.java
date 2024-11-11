@@ -1,6 +1,6 @@
 package Model;
 
-public class FlashCard {
+public class Flashcard {
 
     public String term;
 
@@ -8,7 +8,7 @@ public class FlashCard {
 
     public String topic;
 
-    public FlashCard(String term, String translation, String topic) {
+    public Flashcard(String term, String translation, String topic) {
         this.term = term;
         this.translation = translation;
         this.topic = topic;

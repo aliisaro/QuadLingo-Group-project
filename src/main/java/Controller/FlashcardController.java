@@ -1,38 +1,38 @@
 package Controller;
 
 import DAO.FlashcardDao;
-import Model.FlashCard;
+import Model.Flashcard;
 import java.util.List;
 
 public class FlashcardController {
 
-    private FlashcardDao flashCardDao;
+    private FlashcardDao flashcardDao;
 
-    public FlashcardController(FlashcardDao flashCardDao) {
-        this.flashCardDao = flashCardDao;
+    public FlashcardController(FlashcardDao flashcardDao) {
+        this.flashcardDao = flashcardDao;
     }
 
-    public List<FlashCard> getFlashCardsByTopic(String topic, int userId) {
-        return flashCardDao.getFlashcardsByTopic(topic, userId);
+    public List<Flashcard> getFlashCardsByTopic(String topic, int userId) {
+        return flashcardDao.getFlashcardsByTopic(topic, userId);
     }
 
-    public List<FlashCard> getTopics() {
-        return flashCardDao.getTopics();
+    public List<Flashcard> getTopics() {
+        return flashcardDao.getTopics();
     }
 
-    public List<FlashCard> getMasteredFlashCards(int userId) {
-        return flashCardDao.getMasteredFlashcardsByUser(userId);
+    public List<Flashcard> getMasteredFlashCards(int userId) {
+        return flashcardDao.getMasteredFlashcardsByUser(userId);
     }
 
-    public List<FlashCard> getAllFlashCards() {
-        return flashCardDao.getAllFlashcards();
+    public List<Flashcard> getAllFlashcards() {
+        return flashcardDao.getAllFlashcards();
     }
 
-    public FlashcardDao getFlashCardDao() {
-        return flashCardDao;
+    public FlashcardDao getFlashcardDao() {
+        return flashcardDao;
     }
 
     public void unmasterAllFlashcards(int userId) {
-        flashCardDao.unmasterAllFlashcards(userId);
+        flashcardDao.unmasterAllFlashcards(userId);
     }
 }

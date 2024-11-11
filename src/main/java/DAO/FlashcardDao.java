@@ -1,16 +1,16 @@
 package DAO;
 
-import Model.FlashCard;
+import Model.Flashcard;
 
 import java.util.List;
 
 public interface FlashcardDao {
-    List<FlashCard> getFlashcardsByTopic(String topic, int userId);
-    List<FlashCard> getTopics();
-    List<FlashCard> getAllFlashcards();
+    List<Flashcard> getFlashcardsByTopic(String topic, int userId);
+    List<Flashcard> getTopics();
+    List<Flashcard> getAllFlashcards();
     void masterFlashcard(int flashCardId, int userId);
     void unmasterFlashcard(int flashCardId, int userId);
-    List<FlashCard> getMasteredFlashcardsByUser(int userId);
+    List<Flashcard> getMasteredFlashcardsByUser(int userId);
     int getCurrentFlashcardId(String term);
     boolean isFlashcardMastered(int flashCardId, int userId);
     void unmasterAllFlashcards(int userId);

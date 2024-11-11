@@ -8,7 +8,7 @@ import DAO.ProgressDaoImpl;
 import DAO.UserDaoImpl;
 import Database.MariaDbConnection;
 import Main.SessionManager;
-import Model.FlashCard;
+import Model.Flashcard;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -90,7 +90,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         HBox.setHgrow(unmasterAllButton, javafx.scene.layout.Priority.ALWAYS);
 
         // Fetch FlashCard topics
-        List<FlashCard> topics = flashCardController.getTopics();
+        List<Flashcard> topics = flashCardController.getTopics();
 
         // Create a VBox to hold the topics
         VBox topicBox = new VBox();
@@ -98,7 +98,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         topicBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 10px; -fx-spacing: 10px;");
 
         // Add each topic to the VBox
-        for (FlashCard topic : topics) {
+        for (Flashcard topic : topics) {
             Button topicButton = new Button(topic.getTopic());
             topicButton.setMaxWidth(350);
             topicButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
@@ -107,7 +107,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
             HBox.setHgrow(topicButton, javafx.scene.layout.Priority.ALWAYS);
 
             topicButton.setOnAction(e -> {
-                FlashCardsPage flashCardsPage = new FlashCardsPage(flashCardController.getFlashCardDao(), topic.getTopic(), stage);
+                FlashCardsPage flashCardsPage = new FlashCardsPage(flashCardController.getFlashcardDao(), topic.getTopic(), stage);
                 stage.setScene(flashCardsPage.createScene());
             });
             topicBox.getChildren().add(topicButton);
@@ -120,7 +120,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         masteredFlashcardsButton.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(masteredFlashcardsButton, javafx.scene.layout.Priority.ALWAYS);
         masteredFlashcardsButton.setOnAction(e -> {
-            FlashCardsPage flashCardsPage = new FlashCardsPage(flashCardController.getFlashCardDao(), "Mastered Flashcards", stage);
+            FlashCardsPage flashCardsPage = new FlashCardsPage(flashCardController.getFlashcardDao(), "Mastered Flashcards", stage);
             stage.setScene(flashCardsPage.createScene());
         });
         topicBox.getChildren().add(masteredFlashcardsButton);
