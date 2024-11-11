@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="Small update to english bundle and test" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="Small update to user unit test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -129,7 +129,7 @@
       <command value="mvn clean package " />
     </option>
   </component>
-  <component name="RunManager" selected="Docker.Dockerfile">
+  <component name="RunManager">
     <configuration name="ChineseLocalizationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="QuadLingo" />
       <option name="PACKAGE_NAME" value="" />
@@ -188,7 +188,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.9-jbr-17.0.9-4caba194b151-51f1b679" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
       </set>
     </attachedChunks>
   </component>
@@ -236,6 +237,7 @@
       <workItem from="1731157787637" duration="10530000" />
       <workItem from="1731231512057" duration="7405000" />
       <workItem from="1731321178490" duration="6551000" />
+      <workItem from="1731361425054" duration="486000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
@@ -429,7 +431,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731360196474</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Small update to user unit test">
+      <option name="closed" value="true" />
+      <created>1731361901215</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1731361901215</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -448,7 +458,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Nyt pitäis toimii login kunnolla" />
     <MESSAGE value="login pitäsi toimia nyt" />
     <MESSAGE value="createOverallProgress method commented" />
     <MESSAGE value="lisäsin updateUser että profiilissa voi käyttäjä päivittää omia tietojaan, mutta sähköpostin päivittäminen ei vielä toimi. Lisäsin kans email validation Registration sivulle." />
@@ -473,7 +482,8 @@
     <MESSAGE value="updated ui localization tests" />
     <MESSAGE value="Päivitin quizien progress logiikkaa" />
     <MESSAGE value="Small update to english bundle and test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Small update to english bundle and test" />
+    <MESSAGE value="Small update to user unit test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small update to user unit test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

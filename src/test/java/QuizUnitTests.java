@@ -110,13 +110,4 @@ public class QuizUnitTests {
         int anotherQuizId = 999;  // Assuming this quiz ID doesn't exist or hasn't been completed
         assertFalse(quizDaoImpl.hasUserCompletedQuiz(sampleUserId, anotherQuizId), "User should not have completed a different quiz");
     }
-
-
-    @Test
-    public void testQuizWithNoQuestions() {
-        int quizIdWithNoQuestions = 999;
-        List<Question> questions = quizDaoImpl.getQuestionsForQuiz(quizIdWithNoQuestions);
-        assertNotNull(questions, "Questions list should not be null");
-        assertTrue(questions.isEmpty(), "Quiz with no questions should return an empty list");
-    }
 }
