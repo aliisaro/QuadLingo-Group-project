@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="updated ui localization tests">
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/QuizLibrary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/QuizLibrary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/QuizPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/QuizPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_AR.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_AR.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
