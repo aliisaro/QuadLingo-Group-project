@@ -1,16 +1,12 @@
-// QuadLingoQui.java
 package View;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.application.Application;
 
-
-
-
-//This is Qui class
-//It handles the launching of the program and switching between pages
-public class QuadLingoQui extends Application{
+// This is GUI class
+// It handles the launching of the program and switching between pages
+public class QuadLingoGui extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {

@@ -2,13 +2,13 @@ package Main;
 
 import Controller.UserController;
 import DAO.UserDaoImpl;
-import View.QuadLingoQui;
+import View.QuadLingoGui;
 
 // This launches the whole program
 public class Main {
     public static void main(String[] args) throws Exception {
         UserDaoImpl userDao = new UserDaoImpl();
         UserController.getInstance(userDao);
-        QuadLingoQui.launch(QuadLingoQui.class, args);
+        QuadLingoGui.launch(QuadLingoGui.class, args);
     }
 }
