@@ -2,7 +2,7 @@ package View;
 
 import Config.LanguageConfig;
 import Controller.UserController;
-import DAO.FlashCardDao;
+import DAO.FlashcardDao;
 import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.FlashCard;
@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 
 //Page for Flash Cards
 public class FlashCardsPage extends BasePage {
-    private final FlashCardDao flashCardDao;
+    private final FlashcardDao flashCardDao;
     private final UserController userController;
     private List<FlashCard> flashcards;
     private Label termLabel;
@@ -35,7 +35,7 @@ public class FlashCardsPage extends BasePage {
     private VBox flashcardContainer;
     private final ResourceBundle bundle;
 
-    public FlashCardsPage(FlashCardDao flashCardDao, String topic, Stage stage) {
+    public FlashCardsPage(FlashcardDao flashCardDao, String topic, Stage stage) {
         this.flashCardDao = flashCardDao;
         this.userController = new UserController(new UserDaoImpl());
         this.userID = userController.getCurrentUserId();
@@ -43,7 +43,7 @@ public class FlashCardsPage extends BasePage {
 
         // Get the flashcards based on the topic
         if (topic.equals("Mastered Flashcards")) {
-            this.flashcards = flashCardDao.getMasteredFlashCardsByUser(userID);
+            this.flashcards = flashCardDao.getMasteredFlashcardsByUser(userID);
             if (this.flashcards.isEmpty()) {
                 Label noMasteredFlashcardsLabel = new Label(bundle.getString("noMastered")); // You don't have mastered flashcards yet
                 Button endFlashCardSessionButton = new Button(bundle.getString("backToFlashLibraryButton")); // Go back to library
@@ -55,7 +55,7 @@ public class FlashCardsPage extends BasePage {
             }
             isMastered =true;
         } else {
-            this.flashcards = flashCardDao.getFlashCardsByTopic(topic, userID);
+            this.flashcards = flashCardDao.getFlashcardsByTopic(topic, userID);
             if (this.flashcards.isEmpty()) {
                 Label noFlashcardsLabel = new Label(bundle.getString("masterAllTopic")); // You have mastered all flashcards in this topic. Great job!
                 Button endFlashCardSessionButton = new Button(bundle.getString("backToFlashLibraryButton")); // Go back to library
@@ -148,8 +148,8 @@ public class FlashCardsPage extends BasePage {
         }
 
         // Check if the next flashcard is mastered
-        currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
-        isMastered = flashCardDao.isFlashCardMastered(currentFlashCardId, userID);
+        currentFlashCardId = flashCardDao.getCurrentFlashcardId(flashcards.get(currentFlashCardIndex).getTerm());
+        isMastered = flashCardDao.isFlashcardMastered(currentFlashCardId, userID);
 
         // Update the button state based on the mastered status
         if (isMastered) {
@@ -190,20 +190,20 @@ public class FlashCardsPage extends BasePage {
         if (isMastered) {
             // Unmark as mastered
             isMastered = false;
-            currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
-            flashCardDao.unmasterFlashCard(currentFlashCardId, userID);
+            currentFlashCardId = flashCardDao.getCurrentFlashcardId(flashcards.get(currentFlashCardIndex).getTerm());
+            flashCardDao.unmasterFlashcard(currentFlashCardId, userID);
             markMasteredButton.setText(bundle.getString("masterThis")); // Master this
         } else {
             // Mark as mastered
             isMastered = true;
-            currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
-            flashCardDao.masterFlashCard(currentFlashCardId, userID);
+            currentFlashCardId = flashCardDao.getCurrentFlashcardId(flashcards.get(currentFlashCardIndex).getTerm());
+            flashCardDao.masterFlashcard(currentFlashCardId, userID);
             markMasteredButton.setText(bundle.getString("unmasterThis")); // Unmaster this
         }
 
         // Refresh the list of flashcards
         if (flashcards.get(currentFlashCardIndex).getTopic().equals("Mastered Flashcards")) {
-            flashcards = flashCardDao.getMasteredFlashCardsByUser(userID);
+            flashcards = flashCardDao.getMasteredFlashcardsByUser(userID);
             if (flashcards.isEmpty()) {
                 Label noMasteredFlashcardsLabel = new Label(bundle.getString("noMastered")); // You don't have mastered flashcards yet
                 this.getChildren().clear();
@@ -221,8 +221,8 @@ public class FlashCardsPage extends BasePage {
         currentFlashCardIndex = 0;
 
         if (isMastered) {
-            currentFlashCardId = flashCardDao.getCurrentFlashCardId(flashcards.get(currentFlashCardIndex).getTerm());
-            flashCardDao.masterFlashCard(currentFlashCardId, userID);
+            currentFlashCardId = flashCardDao.getCurrentFlashcardId(flashcards.get(currentFlashCardIndex).getTerm());
+            flashCardDao.masterFlashcard(currentFlashCardId, userID);
         }
 
         // Redirect to the FlashCardLibrary page

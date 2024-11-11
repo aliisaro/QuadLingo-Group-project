@@ -9,17 +9,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FCImplement implements FlashCardDao {
-
+public class FCImplement implements FlashcardDao {
     private Connection connection;
-
 
     public FCImplement(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public List<FlashCard> getFlashCardsByTopic(String topic, int userId) {
+    public List<FlashCard> getFlashcardsByTopic(String topic, int userId) {
         List<FlashCard> flashCards = new ArrayList<>();
         String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE Topic = ? AND FlashCardID NOT IN (SELECT FlashCardID FROM ISMASTERED WHERE UserID = ?)";
 
@@ -59,7 +57,7 @@ public class FCImplement implements FlashCardDao {
     }
 
     @Override
-    public List<FlashCard> getAllFlashCards() {
+    public List<FlashCard> getAllFlashcards() {
         List<FlashCard> flashCards = new ArrayList<>();
         String query = "SELECT Term, Translation, Topic FROM FLASHCARD";
 
@@ -78,7 +76,7 @@ public class FCImplement implements FlashCardDao {
     }
 
     @Override
-    public void masterFlashCard(int flashCardId, int userId) {
+    public void masterFlashcard(int flashCardId, int userId) {
         String query = "INSERT INTO ISMASTERED (FlashCardID, UserID) VALUES (?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -91,7 +89,7 @@ public class FCImplement implements FlashCardDao {
     }
 
     @Override
-    public void unmasterFlashCard(int flashCardId, int userId) {
+    public void unmasterFlashcard(int flashCardId, int userId) {
         String query = "DELETE FROM ISMASTERED WHERE FlashCardID = ? AND UserID = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -104,7 +102,7 @@ public class FCImplement implements FlashCardDao {
     }
 
     @Override
-    public List<FlashCard> getMasteredFlashCardsByUser(int userId) {
+    public List<FlashCard> getMasteredFlashcardsByUser(int userId) {
         List<FlashCard> flashCards = new ArrayList<>();
         String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE FlashCardID IN (SELECT FlashCardID FROM ISMASTERED WHERE UserID = ?)";
 
@@ -126,7 +124,7 @@ public class FCImplement implements FlashCardDao {
     }
 
     @Override
-    public int getCurrentFlashCardId(String term) {
+    public int getCurrentFlashcardId(String term) {
         int flashCardId = 0;
         String query = "SELECT FlashCardID FROM FLASHCARD WHERE Term = ?";
 
@@ -145,7 +143,7 @@ public class FCImplement implements FlashCardDao {
     }
 
     @Override
-    public boolean isFlashCardMastered(int flashCardId, int userId) {
+    public boolean isFlashcardMastered(int flashCardId, int userId) {
         String query = "SELECT * FROM ISMASTERED WHERE FlashCardID = ? AND UserID = ?";
         boolean isMastered = false;
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -161,7 +159,7 @@ public class FCImplement implements FlashCardDao {
     }
 
     @Override
-    public void unmasterAllFlashCards(int userId) {
+    public void unmasterAllFlashcards(int userId) {
         String query = "DELETE FROM ISMASTERED WHERE UserID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, userId);
