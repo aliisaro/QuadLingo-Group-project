@@ -196,8 +196,10 @@ public class QuizPage extends BasePage {
         // Always update the score for the quiz
         quizDao.recordQuizCompletion(userId, quizId, score); // Save score to the database
 
-        // Increment completed quizzes count if necessary
-        quizDao.incrementCompletedQuizzes(userId, quizId); // This method now handles the check
+        // Increment completed quizzes count if the user has not already completed the quiz
+        if (!quizDao.hasUserCompletedQuiz(userId, quizId)) {
+            quizDao.incrementCompletedQuizzes(userId); // Increment quiz count only if the user has not taken the quiz
+        }
 
         // Add score labels to the layout
         this.getChildren().addAll(scoreLabel, resultLabel);
@@ -213,6 +215,7 @@ public class QuizPage extends BasePage {
         // Add the back button to the layout
         this.getChildren().add(backButton);
     }
+
 
     private void saveScore(int userId, int quizId, int score) {
         quizDao.recordQuizCompletion(userId, quizId, score); // Call the method to record the quiz completion

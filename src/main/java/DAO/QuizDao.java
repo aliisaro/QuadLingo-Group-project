@@ -9,8 +9,7 @@ public interface QuizDao {
     List<Question> getQuestionsForQuiz(int quizId);
     boolean checkAnswer(int questionId, String selectedAnswer);
     void recordQuizCompletion(int userId, int quizId, int score);
-    void incrementCompletedQuizzes(int userId, int quizId);
+    void incrementCompletedQuizzes(int userId);
     boolean hasUserCompletedQuiz(int userId, int quizId);
     int getUserScoreForQuiz(int quizId, int userId);
-    void removeQuizCompletion(int userId, int quizId);
 }

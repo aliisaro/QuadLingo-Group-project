@@ -178,30 +178,16 @@ public class QuizDaoImpl implements QuizDao {
         }
     }
 
-    public void incrementCompletedQuizzes(int userId, int quizId) {
-        String checkCompletionSql = "SELECT COUNT(*) FROM ISCOMPLETED WHERE UserID = ? AND QuizID = ?";
+    public void incrementCompletedQuizzes(int userId) {
         String incrementSql = "UPDATE LINGOUSER SET QuizzesCompleted = QuizzesCompleted + 1 WHERE UserID = ?";
-
-        try (PreparedStatement checkStatement = connection.prepareStatement(checkCompletionSql);
-             PreparedStatement incrementStatement = connection.prepareStatement(incrementSql)) {
-
-            // Step 1: Check if the quiz is already completed
-            checkStatement.setInt(1, userId);
-            checkStatement.setInt(2, quizId);
-            ResultSet resultSet = checkStatement.executeQuery();
-            resultSet.next();
-            int completionCount = resultSet.getInt(1);
-
-            if (completionCount == 0) {
-                // Step 2: Increment only if the quiz has not been completed
-                incrementStatement.setInt(1, userId);
-                incrementStatement.executeUpdate();
-            }
-
+        try (PreparedStatement incrementStatement = connection.prepareStatement(incrementSql)) {
+            incrementStatement.setInt(1, userId);
+            incrementStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(); // Handle exceptions as needed
         }
     }
+
 
 
     @Override
