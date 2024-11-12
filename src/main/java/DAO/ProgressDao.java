@@ -10,7 +10,7 @@ public interface ProgressDao {
 
     int getMaxScore(String language);
 
-    int getMasteredFlashcards(int user);
+    int getMasteredFlashcards(int user, String language);
 
-    int getFlashcardAmount();
+    int getFlashcardAmount(String language);
 }

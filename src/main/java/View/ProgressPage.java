@@ -47,8 +47,8 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
         maxScore = progressDao.getMaxScore(languageCode);
         completedQuizzes = progressDao.getAllCompletedQuizzes(userID, languageCode);
         allQuizzes = progressDao.getQuizAmount(languageCode);
-        masteredFlashcards = progressDao.getMasteredFlashcards(userID);
-        allFlashcards = progressDao.getFlashcardAmount();
+        masteredFlashcards = progressDao.getMasteredFlashcards(userID, languageCode);
+        allFlashcards = progressDao.getFlashcardAmount(languageCode);
 
         //Button to go to the profile page
         Button profileButton = new Button(bundle.getString("profileButton"));

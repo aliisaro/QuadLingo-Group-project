@@ -107,13 +107,16 @@ public class ProgressDaoImpl implements ProgressDao {
 
 
     @Override
-    public int getMasteredFlashcards(int user) {
+    public int getMasteredFlashcards(int user, String language) {
         int totalMastered = 0;
 
         try (Connection connection = MariaDbConnection.getConnection()) {
-            String query = "SELECT COUNT(*) AS TotalMastered FROM ISMASTERED WHERE UserID = ?";
+            String query = "SELECT COUNT(*) AS TotalMastered FROM ISMASTERED " +
+                    "JOIN FLASHCARD ON ISMASTERED.FlashcardID = FLASHCARD.FlashcardID " +
+                    "WHERE ISMASTERED.UserID = ? AND FLASHCARD.language_code2 = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, user);
+            statement.setString(2, language);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -129,12 +132,13 @@ public class ProgressDaoImpl implements ProgressDao {
     }
 
     @Override
-    public int getFlashcardAmount() {
+    public int getFlashcardAmount(String language) {
         int totalFlashcards = 0;
 
         try (Connection connection = MariaDbConnection.getConnection()) {
-            String query = "SELECT COUNT(*) AS TotalFlashcards FROM FLASHCARD";
+            String query = "SELECT COUNT(*) AS TotalFlashcards FROM FLASHCARD WHERE language_code2 = ?";
             PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, language);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -148,4 +152,5 @@ public class ProgressDaoImpl implements ProgressDao {
 
         return totalFlashcards;
     }
+
 }

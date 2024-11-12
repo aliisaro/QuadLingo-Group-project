@@ -96,7 +96,7 @@ public class AchiePage extends BasePage implements setMarginButton {
             VBox badgeContainer = new VBox(5, imageView, description);
 
             int quizzesCompleted = userController.getQuizzesCompleted(userID, languageCode);
-            int flashcardsMastered = userController.getFlashcardsMastered(userID);
+            int flashcardsMastered = userController.getFlashcardsMastered(userID, languageCode);
             int badgeThreshold = badge.getThreshold();
             String checker = badge.getChecker();
 

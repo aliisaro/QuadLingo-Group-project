@@ -30,9 +30,13 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
     private final ProgressBar progressBar3 = ProgressPage.getProgressBar3();
     private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
     private ResourceBundle bundle;
+    private String languageCode;
 
     public FlashCardLibrary(Stage stage) {
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
+
+        // Retrieve the current language code
+        this.languageCode = LanguageConfig.getInstance().getCurrentLocale().getLanguage();
 
         // If user is not logged in, redirect to index page
         if (!SessionManager.getInstance().isLoggedIn()) {
@@ -143,8 +147,8 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
 
     @Override
     public void updateFlashcardProgress(ProgressBar progressBar) {
-        int masteredFlashcards = progressDao.getMasteredFlashcards(userID);
-        int allFlashcards = progressDao.getFlashcardAmount();
+        int masteredFlashcards = progressDao.getMasteredFlashcards(userID, languageCode);
+        int allFlashcards = progressDao.getFlashcardAmount(languageCode);
         double progress = (double) masteredFlashcards / allFlashcards;
         progressBar.setProgress(progress);
     }

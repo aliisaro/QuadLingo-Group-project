@@ -72,9 +72,9 @@ public class UserController {
         return quizzesCompleted;
     }
 
-    public int getFlashcardsMastered(int userId) {
+    public int getFlashcardsMastered(int userId, String language) {
         System.out.println("Retrieving flashcards mastered for user: " + userId);
-        int flashcardsMastered = userDao.getFlashcardsMastered(userId);
+        int flashcardsMastered = userDao.getFlashcardsMastered(userId, language);
         System.out.println("Flashcards mastered: " + flashcardsMastered);
         return flashcardsMastered;
     }

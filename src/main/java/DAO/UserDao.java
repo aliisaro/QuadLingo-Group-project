@@ -11,7 +11,7 @@ public interface UserDao {
     boolean doesUsernameExist(String username);
     boolean deleteUserByEmail(String email);
     int getQuizzesCompleted(int userId, String language);
-    int getFlashcardsMastered(int userId);
+    int getFlashcardsMastered(int userId, String language);
     String getEmail();
     int getCurrentUserId();
 }
