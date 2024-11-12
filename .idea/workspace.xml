@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="updated progress methods related to flashcards">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/UserUnitTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserUnitTests.java" afterDir="false" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="update user unit tests">
+      <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_AR.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_AR.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -502,7 +501,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731412241828</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="update user unit tests">
+      <option name="closed" value="true" />
+      <created>1731413053817</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1731413053817</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -521,7 +528,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Edited UI of QuizLibrary, QuizPage and profile page" />
     <MESSAGE value="updated login, register, profile and quiz page" />
     <MESSAGE value="updated index page" />
     <MESSAGE value="fixed UI problem" />
@@ -546,7 +552,8 @@
     <MESSAGE value="update" />
     <MESSAGE value="updated bundles and logges out page" />
     <MESSAGE value="updated progress methods related to flashcards" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated progress methods related to flashcards" />
+    <MESSAGE value="update user unit tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="update user unit tests" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
