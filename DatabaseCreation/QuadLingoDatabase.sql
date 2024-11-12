@@ -216,7 +216,11 @@ INSERT INTO `FLASHCARD` (`FlashcardID`, `Term`, `Translation`, `Topic`, `languag
 	(34, '车', 'Auto', '生活', 'ch'),
 	(35, '家', 'Koti', '生活', 'ch'),
 	(36, '孩子们', 'Lapset', '生活', 'ch'),
-	(37, '浴室', 'Kylpyhuone', '生活', 'ch');
+	(37, '浴室', 'Kylpyhuone', '生活', 'ch'),
+    (38,'La voiture', 'Auto', 'La vie', 'fr'),
+    (39, 'La maison', 'Koti', 'La vie', 'fr'),
+    (40, 'Les enfants', 'Lapset', 'La vie', 'fr'),
+    (41, 'Les toilettes', 'Kylpyhuone', 'La vie', 'fr');
 
 -- Dumping structure for taulu QuadLingo.ISCOMPLETED
 DROP TABLE IF EXISTS `ISCOMPLETED`;
