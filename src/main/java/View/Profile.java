@@ -22,7 +22,6 @@ public class Profile extends BasePage {
     private ComboBox<String> languageComboBox;
     private String normalButtonStyle;
     private String hoveredButtonStyle;
-
     private Label pageTitle;
     private Label usernameLabel;
     private Label emailLabel;
@@ -285,9 +284,11 @@ public class Profile extends BasePage {
     }
 
     private void updateTexts() {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+
         pageTitle.setText(bundle.getString("profilePageTitle"));
-        usernameLabel.setText(bundle.getString("currentUsernameLabel"));
-        emailLabel.setText(bundle.getString("currentEmailLabel"));
+        usernameLabel.setText(bundle.getString("currentUsernameLabel") + currentUser.getUsername());
+        emailLabel.setText(bundle.getString("currentEmailLabel")+ currentUser.getEmail());
         passwordLabel.setText(bundle.getString("currentPasswordLabel"));
         changeUsernameLabel.setText(bundle.getString("changeUsernameLabel"));
         changeEmailLabel.setText(bundle.getString("changeEmailLabel"));
