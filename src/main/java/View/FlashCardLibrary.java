@@ -90,12 +90,12 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         HBox.setHgrow(unmasterAllButton, javafx.scene.layout.Priority.ALWAYS);
 
         // Fetch FlashCard topics
-        List<Flashcard> topics = flashCardController.getTopics( LanguageConfig.getInstance().getCurrentLocale().getLanguage());
+        List<Flashcard> topics = flashCardController.getTopics(LanguageConfig.getInstance().getCurrentLocale().getLanguage());
 
         // Create a VBox to hold the topics
         VBox topicBox = new VBox();
         topicBox.setPadding(new Insets(10));
-        topicBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 10px; -fx-spacing: 10px;");
+        topicBox.setStyle("-fx-background-color: #D6E3F8; -fx-padding: 10px; -fx-spacing: 10px;");
 
         // Add each topic to the VBox
         for (Flashcard topic : topics) {
