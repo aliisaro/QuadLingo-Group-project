@@ -20,20 +20,11 @@ public class Profile extends BasePage {
     private UserController userController; // UserController object
     private ResourceBundle bundle;
     private ComboBox<String> languageComboBox;
-    private String normalButtonStyle;
-    private String hoveredButtonStyle;
-    private Label pageTitle;
-    private Label usernameLabel;
-    private Label emailLabel;
-    private Label passwordLabel;
-    private Label changeUsernameLabel;
-    private Label changeEmailLabel;
-    private Label changePasswordLabel;
-    private Button saveButton;
-    private Button buttonProgress;
-    private Button backButton;
-    private Button logoutButton;
-    private Label changeLanguage;
+    private String normalButtonStyle, hoveredButtonStyle;
+    private Label pageTitle, usernameLabel, emailLabel, passwordLabel;
+    private Label changeUsernameLabel, changeEmailLabel, changePasswordLabel, changeLanguage;
+    private Button saveButton, buttonProgress, backButton, logoutButton;
+
 
     public Profile(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
