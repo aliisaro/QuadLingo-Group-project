@@ -178,16 +178,31 @@ public class QuizDaoImpl implements QuizDao {
         }
     }
 
-    @Override
-    public void incrementCompletedQuizzes(int userId) {
-        String sql = "UPDATE LINGOUSER SET QuizzesCompleted = QuizzesCompleted + 1 WHERE UserID = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, userId);
-            preparedStatement.executeUpdate();
+    public void incrementCompletedQuizzes(int userId, int quizId) {
+        String checkCompletionSql = "SELECT COUNT(*) FROM ISCOMPLETED WHERE UserID = ? AND QuizID = ?";
+        String incrementSql = "UPDATE LINGOUSER SET QuizzesCompleted = QuizzesCompleted + 1 WHERE UserID = ?";
+
+        try (PreparedStatement checkStatement = connection.prepareStatement(checkCompletionSql);
+             PreparedStatement incrementStatement = connection.prepareStatement(incrementSql)) {
+
+            // Step 1: Check if the quiz is already completed
+            checkStatement.setInt(1, userId);
+            checkStatement.setInt(2, quizId);
+            ResultSet resultSet = checkStatement.executeQuery();
+            resultSet.next();
+            int completionCount = resultSet.getInt(1);
+
+            if (completionCount == 0) {
+                // Step 2: Increment only if the quiz has not been completed
+                incrementStatement.setInt(1, userId);
+                incrementStatement.executeUpdate();
+            }
+
         } catch (SQLException e) {
             e.printStackTrace(); // Handle exceptions as needed
         }
     }
+
 
     @Override
     public boolean hasUserCompletedQuiz(int userId, int quizId) {
@@ -231,4 +246,16 @@ public class QuizDaoImpl implements QuizDao {
 
         return score;
     }
+
+    public void removeQuizCompletion(int userId, int quizId) {
+        String sql = "DELETE FROM ISCOMPLETED WHERE UserID = ? AND QuizID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, quizId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception as needed
+        }
+    }
+
 }

@@ -288,7 +288,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 quizzesCompleted = resultSet.getInt("QuizzesCompleted");
-                System.out.println("QuizzesCompleted retrieved: " + quizzesCompleted);
+                System.out.println("QuizzesCompleted retrieved: " + quizzesCompleted + "Language: " + language);
             } else {
                 System.out.println("No completed quizzes found for user ID: " + userId + " and language: " + language);
             }
