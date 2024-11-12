@@ -1,0 +1,449 @@
+Index: DatabaseCreation/QuadLingoDatabase.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/DatabaseCreation/QuadLingoDatabase.sql b/DatabaseCreation/QuadLingoDatabase.sql
+new file mode 100644
+--- /dev/null	(date 1731328149717)
++++ b/DatabaseCreation/QuadLingoDatabase.sql	(date 1731328149717)
+@@ -0,0 +1,393 @@
++/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
++/*!40101 SET NAMES utf8 */;
++/*!50503 SET NAMES utf8mb4 */;
++/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
++/*!40103 SET TIME_ZONE='+00:00' */;
++/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
++/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
++/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
++
++
++-- Dumping database structure for QuadLingo
++DROP DATABASE IF EXISTS `QuadLingo`;
++CREATE DATABASE IF NOT EXISTS `QuadLingo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
++USE `QuadLingo`;
++
++-- Dumping structure for taulu QuadLingo.ANSWER
++DROP TABLE IF EXISTS `ANSWER`;
++CREATE TABLE IF NOT EXISTS `ANSWER` (
++  `AnswerID` int(11) NOT NULL AUTO_INCREMENT,
++  `Answer` varchar(50) NOT NULL,
++  PRIMARY KEY (`AnswerID`)
++) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
++
++-- Dumping data for table QuadLingo.ANSWER: ~50 rows (suunnilleen)
++INSERT INTO `ANSWER` (`AnswerID`, `Answer`) VALUES
++	(1, 'Hei'),
++	(2, 'Kiitos'),
++	(3, 'Anteeksi'),
++	(4, 'Kyllä'),
++	(5, 'Ei'),
++	(6, 'Yksi'),
++	(7, 'Kaksi'),
++	(8, 'Kolme'),
++	(9, 'Neljä'),
++	(10, 'Viisi'),
++	(11, 'Punainen'),
++	(12, 'Sininen'),
++	(13, 'Vihreä'),
++	(14, 'Keltainen'),
++	(15, 'Musta'),
++	(16, 'Hyvää huomenta'),
++	(17, 'Hyvää yötä'),
++	(18, 'Nähdään myöhemmin'),
++	(19, 'Näkemiin'),
++	(20, 'Hyvää päivänjatkoa'),
++	(21, 'Leipä'),
++	(22, 'Maito'),
++	(23, 'Omena'),
++	(24, 'Juusto'),
++	(25, 'Vesi'),
++	(26, 'Lentokenttä'),
++	(27, 'Passi'),
++	(28, 'Lippu'),
++	(29, 'Juna-asema'),
++	(30, 'Turvatarkastus'),
++	(31, 'Rakastan sinua'),
++	(32, 'Anteeksi'),
++	(33, 'Olen pahoillani'),
++	(34, 'Onnittelut'),
++	(35, 'Hyvää syntymäpäivää'),
++	(36, 'Minä'),
++	(37, 'Sinä'),
++	(38, 'Hän'),
++	(39, 'Me'),
++	(40, 'He'),
++	(41, 'Maanantai'),
++	(42, 'Kesäkuu'),
++	(43, 'Joulukuu'),
++	(44, 'Keskiviikko'),
++	(45, 'Syyskuu'),
++	(46, 'Syödä'),
++	(47, 'Juoda'),
++	(48, 'Mennä'),
++	(49, 'Tulla'),
++	(50, 'Nähdä');
++
++-- Dumping structure for taulu QuadLingo.BADGE
++DROP TABLE IF EXISTS `BADGE`;
++CREATE TABLE IF NOT EXISTS `BADGE` (
++  `BadgeID` int(11) NOT NULL AUTO_INCREMENT,
++  `BadgeTitle` varchar(200) NOT NULL,
++  `QuizzesRequired` int(11) DEFAULT NULL,
++  PRIMARY KEY (`BadgeID`)
++) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
++
++-- Dumping data for table QuadLingo.BADGE: ~0 rows (suunnilleen)
++
++-- Dumping structure for taulu QuadLingo.CORRECTANSWER
++DROP TABLE IF EXISTS `CORRECTANSWER`;
++CREATE TABLE IF NOT EXISTS `CORRECTANSWER` (
++  `QuestionID` int(11) NOT NULL,
++  `AnswerID` int(11) NOT NULL,
++  KEY `QuestionID` (`QuestionID`),
++  KEY `AnswerID` (`AnswerID`),
++  CONSTRAINT `CORRECTANSWER_ibfk_1` FOREIGN KEY (`QuestionID`) REFERENCES `QUESTION` (`QuestionID`),
++  CONSTRAINT `CORRECTANSWER_ibfk_2` FOREIGN KEY (`AnswerID`) REFERENCES `ANSWER` (`AnswerID`)
++) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
++
++-- Dumping data for table QuadLingo.CORRECTANSWER: ~55 rows (suunnilleen)
++INSERT INTO `CORRECTANSWER` (`QuestionID`, `AnswerID`) VALUES
++	(1, 1),
++	(2, 2),
++	(3, 3),
++	(4, 4),
++	(5, 5),
++	(6, 6),
++	(7, 7),
++	(8, 8),
++	(9, 9),
++	(10, 10),
++	(11, 11),
++	(12, 12),
++	(13, 13),
++	(14, 14),
++	(15, 15),
++	(16, 16),
++	(17, 17),
++	(18, 18),
++	(19, 19),
++	(20, 20),
++	(21, 21),
++	(22, 22),
++	(23, 23),
++	(24, 24),
++	(25, 25),
++	(26, 26),
++	(27, 27),
++	(28, 28),
++	(29, 29),
++	(30, 30),
++	(31, 31),
++	(32, 32),
++	(33, 33),
++	(34, 34),
++	(35, 35),
++	(36, 36),
++	(37, 37),
++	(38, 38),
++	(39, 39),
++	(40, 40),
++	(41, 41),
++	(42, 42),
++	(43, 43),
++	(44, 44),
++	(45, 45),
++	(46, 46),
++	(47, 47),
++	(48, 48),
++	(49, 49),
++	(50, 50),
++	(51, 1),
++	(52, 2),
++	(53, 3),
++	(54, 4),
++	(55, 5);
++
++-- Dumping structure for taulu QuadLingo.EARNED
++DROP TABLE IF EXISTS `EARNED`;
++CREATE TABLE IF NOT EXISTS `EARNED` (
++  `BadgeID` int(11) NOT NULL,
++  `UserID` int(11) NOT NULL,
++  KEY `BadgeID` (`BadgeID`),
++  KEY `UserID` (`UserID`),
++  CONSTRAINT `EARNED_ibfk_1` FOREIGN KEY (`BadgeID`) REFERENCES `BADGE` (`BadgeID`),
++  CONSTRAINT `EARNED_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `LINGOUSER` (`UserID`)
++) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
++
++-- Dumping data for table QuadLingo.EARNED: ~0 rows (suunnilleen)
++
++-- Dumping structure for taulu QuadLingo.FLASHCARD
++DROP TABLE IF EXISTS `FLASHCARD`;
++CREATE TABLE IF NOT EXISTS `FLASHCARD` (
++  `FlashcardID` int(11) NOT NULL AUTO_INCREMENT,
++  `Term` varchar(200) NOT NULL,
++  `Translation` varchar(200) NOT NULL,
++  `Topic` varchar(200) NOT NULL,
++  `language_code2` varchar(50) NOT NULL,
++  PRIMARY KEY (`FlashcardID`)
++) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
++
++-- Dumping data for table QuadLingo.FLASHCARD: ~37 rows (suunnilleen)
++INSERT INTO `FLASHCARD` (`FlashcardID`, `Term`, `Translation`, `Topic`, `language_code2`) VALUES
++	(1, 'Dog', 'Koira', 'Animals', 'en'),
++	(2, 'Cat', 'Kissa', 'Animals', 'en'),
++	(3, 'Car', 'Auto', 'Life', 'en'),
++	(4, 'Home', 'Koti', 'Life', 'en'),
++	(5, 'Children', 'Lapsia', 'Life', 'en'),
++	(6, 'Bathroom', 'Kylpyhuone', 'Life', 'en'),
++	(7, 'Pilot', 'Lentäjä', 'Travel', 'en'),
++	(8, 'Hotel', 'Hotelli', 'Travel', 'en'),
++	(9, 'Travel', 'Matkustaa', 'Travel', 'en'),
++	(10, 'Passport', 'Passi', 'Travel', 'en'),
++	(11, 'Apple', 'Omena', 'Food', 'en'),
++	(12, 'Bread', 'Leipä', 'Food', 'en'),
++	(13, 'Milk', 'Maito', 'Food', 'en'),
++	(14, 'Vegetable', 'Vihannes', 'Food', 'en'),
++	(15, 'Meat', 'Liha', 'Food', 'en'),
++	(16, 'Tree', 'Puu', 'Nature', 'en'),
++	(17, 'Lake', 'Järvi', 'Nature', 'en'),
++	(18, 'Mountain', 'Vuori', 'Nature', 'en'),
++	(19, 'Sea', 'Meri', 'Nature', 'en'),
++	(20, 'Iloinen', 'Hilpeä', 'Synonyms for adjectives', 'en'),
++	(21, 'Surullinen', 'Alakuloinen', 'Synonyms for adjectives', 'en'),
++	(22, 'Nopea', 'Ripeä', 'Synonyms for adjectives', 'en'),
++	(23, 'Vihainen', 'Kiukkuinen', 'Synonyms for adjectives', 'en'),
++	(24, 'Iso', 'Suuri', 'Synonyms for adjectives', 'en'),
++	(25, 'Näkemiin', 'Goodbye', 'Communication', 'en'),
++	(26, 'Kiva tavata', 'Nice to meet you', 'Communication', 'en'),
++	(27, 'Mitä kuuluu?', 'How are you?', 'Communication', 'en'),
++	(28, 'Nähdään myöhemmin', 'See you later', 'Communication', 'en'),
++	(29, 'Break a leg', 'Onnea', 'Idioms', 'en'),
++	(30, 'Burn the midnight oil', 'Opiskella myöhään', 'Idioms', 'en'),
++	(31, 'Piece of cake', 'Erittäin helppoa', 'Idioms', 'en'),
++	(32, 'Hit the nail on the head', 'Tarkka', 'Idioms', 'en'),
++	(33, 'Let the cat out of the bag', 'Paljastaa salaisuus', 'Idioms', 'en'),
++	(34, '车', 'Auto', '生活', 'ch'),
++	(35, '家', 'Koti', '生活', 'ch'),
++	(36, '孩子们', 'Lapset', '生活', 'ch'),
++	(37, '浴室', 'Kylpyhuone', '生活', 'ch');
++
++-- Dumping structure for taulu QuadLingo.ISCOMPLETED
++DROP TABLE IF EXISTS `ISCOMPLETED`;
++CREATE TABLE IF NOT EXISTS `ISCOMPLETED` (
++  `UserID` int(11) NOT NULL,
++  `QuizID` int(11) NOT NULL,
++  `Score` int(11) DEFAULT NULL,
++  KEY `UserID` (`UserID`),
++  KEY `QuizID` (`QuizID`),
++  CONSTRAINT `ISCOMPLETED_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `LINGOUSER` (`UserID`),
++  CONSTRAINT `ISCOMPLETED_ibfk_2` FOREIGN KEY (`QuizID`) REFERENCES `QUIZ` (`QuizID`)
++) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
++
++-- Dumping data for table QuadLingo.ISCOMPLETED: ~25 rows (suunnilleen)
++INSERT INTO `ISCOMPLETED` (`UserID`, `QuizID`, `Score`) VALUES
++	(1, 1, 5),
++	(1, 2, 5),
++	(1, 3, 5),
++	(1, 4, 5),
++	(1, 5, 5),
++	(1, 6, 5),
++	(1, 7, 5),
++	(1, 8, 5),
++	(1, 9, 5),
++	(1, 10, 5),
++	(15, 1, 5),
++	(2, 7, 4),
++	(2, 5, 2),
++	(940, 3, 5),
++	(940, 1, 5),
++	(940, 8, 5),
++	(940, 6, 5),
++	(15, 2, 5),
++	(15, 3, 5),
++	(989, 7, 3),
++	(989, 1, 1),
++	(1073, 1, 4),
++	(1073, 2, 4),
++	(1073, 3, 3),
++	(1073, 5, 5);
++
++-- Dumping structure for taulu QuadLingo.ISMASTERED
++DROP TABLE IF EXISTS `ISMASTERED`;
++CREATE TABLE IF NOT EXISTS `ISMASTERED` (
++  `UserID` int(11) NOT NULL,
++  `FlashcardID` int(11) NOT NULL,
++  KEY `UserID` (`UserID`),
++  KEY `FlashcardID` (`FlashcardID`),
++  CONSTRAINT `ISMASTERED_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `LINGOUSER` (`UserID`),
++  CONSTRAINT `ISMASTERED_ibfk_2` FOREIGN KEY (`FlashcardID`) REFERENCES `FLASHCARD` (`FlashcardID`)
++) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
++
++-- Dumping data for table QuadLingo.ISMASTERED: ~9 rows (suunnilleen)
++INSERT INTO `ISMASTERED` (`UserID`, `FlashcardID`) VALUES
++	(15, 1),
++	(15, 1),
++	(990, 3),
++	(990, 3),
++	(990, 3),
++	(2, 1),
++	(2, 2),
++	(2, 1),
++	(2, 1);
++
++-- Dumping structure for taulu QuadLingo.LINGOUSER
++DROP TABLE IF EXISTS `LINGOUSER`;
++CREATE TABLE IF NOT EXISTS `LINGOUSER` (
++  `UserID` int(11) NOT NULL AUTO_INCREMENT,
++  `Email` varchar(50) NOT NULL,
++  `Username` varchar(50) DEFAULT NULL,
++  `UserPassword` varchar(60) NOT NULL,
++  `QuizzesCompleted` int(11) DEFAULT 0,
++  PRIMARY KEY (`UserID`),
++  UNIQUE KEY `unique_email` (`Email`)
++) ENGINE=InnoDB AUTO_INCREMENT=1074 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
++
++-- Dumping structure for taulu QuadLingo.QUESTION
++DROP TABLE IF EXISTS `QUESTION`;
++CREATE TABLE IF NOT EXISTS `QUESTION` (
++  `QuestionID` int(11) NOT NULL AUTO_INCREMENT,
++  `Question` varchar(200) NOT NULL,
++  `QuizID` int(11) NOT NULL,
++  PRIMARY KEY (`QuestionID`),
++  KEY `QuizID` (`QuizID`),
++  CONSTRAINT `QUESTION_ibfk_1` FOREIGN KEY (`QuizID`) REFERENCES `QUIZ` (`QuizID`)
++) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
++
++-- Dumping data for table QuadLingo.QUESTION: ~55 rows (suunnilleen)
++INSERT INTO `QUESTION` (`QuestionID`, `Question`, `QuizID`) VALUES
++	(1, 'What is the Finnish word for "hello"?', 1),
++	(2, 'What is the Finnish word for "thank you"?', 1),
++	(3, 'What is the Finnish word for "sorry"?', 1),
++	(4, 'What is the Finnish word for "yes"?', 1),
++	(5, 'What is the Finnish word for "no"?', 1),
++	(6, 'What is the Finnish word for the number "one"?', 2),
++	(7, 'What is the Finnish word for the number "two"?', 2),
++	(8, 'What is the Finnish word for the number "three"?', 2),
++	(9, 'What is the Finnish word for the number "four"?', 2),
++	(10, 'What is the Finnish word for the number "five"?', 2),
++	(11, 'What is the Finnish word for the color "red"?', 3),
++	(12, 'What is the Finnish word for the color "blue"?', 3),
++	(13, 'What is the Finnish word for the color "green"?', 3),
++	(14, 'What is the Finnish word for the color "yellow"?', 3),
++	(15, 'What is the Finnish word for the color "black"?', 3),
++	(16, 'How do you say "Good morning" in Finnish?', 4),
++	(17, 'How do you say "Good night" in Finnish?', 4),
++	(18, 'How do you say "See you later" in Finnish?', 4),
++	(19, 'How do you say "Goodbye" in Finnish?', 4),
++	(20, 'How do you say "Have a nice day" in Finnish?', 4),
++	(21, 'What is the Finnish word for "bread"?', 5),
++	(22, 'What is the Finnish word for "milk"?', 5),
++	(23, 'What is the Finnish word for "apple"?', 5),
++	(24, 'What is the Finnish word for "cheese"?', 5),
++	(25, 'What is the Finnish word for "water"?', 5),
++	(26, 'What is the Finnish word for "airport"?', 6),
++	(27, 'What is the Finnish word for "passport"?', 6),
++	(28, 'What is the Finnish word for "ticket"?', 6),
++	(29, 'What is the Finnish word for "train station"?', 6),
++	(30, 'What is the Finnish word for "security check"?', 6),
++	(31, 'How do you say "I love you" in Finnish?', 7),
++	(32, 'How do you say "Excuse me" in Finnish?', 7),
++	(33, 'How do you say "I\'m sorry" in Finnish?', 7),
++	(34, 'How do you say "Congratulations" in Finnish?', 7),
++	(35, 'How do you say "Happy Birthday" in Finnish?', 7),
++	(36, 'What is the Finnish word for "I"?', 8),
++	(37, 'What is the Finnish word for "you" (singular informal)?', 8),
++	(38, 'What is the Finnish word for "he/she"?', 8),
++	(39, 'What is the Finnish word for "we"?', 8),
++	(40, 'What is the Finnish word for "they"?', 8),
++	(41, 'What is the Finnish word for "Monday"?', 9),
++	(42, 'What is the Finnish word for "June"?', 9),
++	(43, 'What is the Finnish word for "December"?', 9),
++	(44, 'What is the Finnish word for "Wednesday"?', 9),
++	(45, 'What is the Finnish word for "September"?', 9),
++	(46, 'What is the Finnish word for "to eat"?', 10),
++	(47, 'What is the Finnish word for "to drink"?', 10),
++	(48, 'What is the Finnish word for "to go"?', 10),
++	(49, 'What is the Finnish word for "to come"?', 10),
++	(50, 'What is the Finnish word for "to see"?', 10),
++	(51, '芬兰语中的“你好”是哪个单词？', 11),
++	(52, '芬兰语中的“谢谢”怎么说？', 11),
++	(53, '芬兰语中的“请”是哪个单词？', 11),
++	(54, '芬兰语中的“是”是哪个单词？', 11),
++	(55, '芬兰语中的“不”是哪个单词？', 11);
++
++-- Dumping structure for taulu QuadLingo.QUIZ
++DROP TABLE IF EXISTS `QUIZ`;
++CREATE TABLE IF NOT EXISTS `QUIZ` (
++  `QuizID` int(11) NOT NULL AUTO_INCREMENT,
++  `QuizTitle` varchar(200) NOT NULL,
++  `QuizScore` int(11) NOT NULL,
++  `language_code` varchar(2) NOT NULL DEFAULT 'en',
++  PRIMARY KEY (`QuizID`)
++) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
++
++-- Dumping data for table QuadLingo.QUIZ: ~11 rows (suunnilleen)
++INSERT INTO `QUIZ` (`QuizID`, `QuizTitle`, `QuizScore`, `language_code`) VALUES
++	(1, 'Basic Finnish Vocabulary', 5, 'en'),
++	(2, 'Finnish Numbers', 5, 'en'),
++	(3, 'Finnish Colors', 5, 'en'),
++	(4, 'Finnish Greetings and Farewells', 5, 'en'),
++	(5, 'Finnish Food Vocabulary', 5, 'en'),
++	(6, 'Finnish Travel Vocabulary', 5, 'en'),
++	(7, 'Finnish Phrases', 5, 'en'),
++	(8, 'Finnish Grammar Basics', 5, 'en'),
++	(9, 'Finnish Days and Months', 5, 'en'),
++	(10, 'Finnish Common Verbs', 5, 'en'),
++	(11, '基础芬兰语词汇', 5, 'ch');
++
++/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
++/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
++/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
++/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
++/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><h2>ICT engineering project: QuadLingo </h2>\r\n\r\n****\r\n<h3>Project Description</h3>\r\n\r\n****\r\n**Quadlingo** is a fullstack app for learning languages. It is programmed using Java, JavaFX and CSS.\r\n\r\nThe app is designed to help English, French, Chinese and Arabian speakers learn the basics of Finnish. The app has a variety of features such as: user profile and progress, flashcards, quizzes and achievements.\r\nWith the help of these features, the user can learn Finnish in a fun and interactive way.\r\n\r\n****\r\n\r\n<h3>Technology utilized</h3>\r\n\r\n****\r\n\r\nFor coding the projects Frontend and Backend we used Java, JavaFX and CSS. The whole project was made using IntelliJ IDEA.\r\nSince the project is a group project, we used GitHub for version control and Trello for project management. The prototype was made on Figma.\r\nWe also used Google Docs for project Sprint documentation and Google Sheets for tracking work hours.\r\n\r\nArtificial intelligence was used for writing the questions and answers for the quizzes. For writing the code of some of the functionalities in this project, we used ChatGpt and Copilot.\r\n\r\n****\r\n\r\n<h3>Installation</h3>\r\n\r\n****\r\n\r\n1. Download and install IntelliJ IDEA.\r\n    - [IntelliJ IDEA (Windows)](https://www.jetbrains.com/idea/download/?section=windows)\r\n    - [IntelliJ IDEA (Mac)](https://www.jetbrains.com/idea/download/?section=mac)\r\n    - [IntelliJ IDEA (Linux)](https://www.jetbrains.com/idea/download/?section=linux)\r\n2. Create a new Java project in IntelliJ IDEA. Use Maven as build system.\r\n3. Clone Quadlingo from GitHub.\r\n```bash\r\ngit clone https://github.com/aliisaro/QuadLingo-Group-project.git\r\n```\r\n4. Run the class Main.java in the package `Main` to start the application.\r\n5. Enjoy!\r\n\r\n****\r\n\r\n<h3>Usage</h3>\r\n\r\n****\r\n1. Choose your language.\r\n2. Register a new user if you don't have one.\r\n3. Log in with the new user.\r\n4. Start learning Finnish by practicing with flashcards and doing quizzes.\r\n5. Check your progress and achievements.\r\n6. Log out when you are done.\r\n\r\n****\r\n\r\n<h3>Links:</h3>\r\n\r\n****\r\n\r\n- [Trello](https://trello.com/b/0ghzAMVd/sep1r3quadlingo)\r\n- [Figma](https://www.figma.com/board/Zf2zcEdCqcuYQXKmy4bkty/QuadLingo-Prototype?node-id=0-1&node-type=CANVAS&t=XiQJ9bqYCNB3P3xh-0)\r\n- [Project plan](https://docs.google.com/document/d/1-s1jKAn0swS53RCD-dMNoprozXF89F-k9JRBz1wD6L0/edit)\r\n- [Work hours](https://docs.google.com/spreadsheets/d/10PlqGo4965hiHXeSnTN6XlKYykul5-xdi_aEbyekmFA/edit?gid=0#gid=0)\r\n\r\n****\r\n<h3>Database design</h3>\r\n\r\n![ER-diagram](docs/diagrams/ER-diagram.png)\r\n\r\n![Relational Schema](docs/diagrams/Schema.png)\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/README.md b/README.md
+--- a/README.md	(revision f63d5fad21400604c7cffe5ee541f426b5ac36f8)
++++ b/README.md	(date 1731328149718)
+@@ -27,17 +27,27 @@
+ 
+ ****
+ 
+-1. Download and install IntelliJ IDEA.
++1. Download an environment for database handling unless you already have one. We recommend using HeidiSQL for Windows.
++    - [HeidiSQL (Windows)](https://www.heidisql.com/download.php?download=installer)
++   Other options are:
++    - [MariaDB (Windows, Mac, Linux)](https://mariadb.org/download/?t=mariadb&p=mariadb&r=11.5.2&os=windows&cpu=x86_64&pkg=msi&mirror=xtom_tal)
++    - [DataGrip (Windows, Mac, Linux)](https://www.jetbrains.com/datagrip/features/?source=google&medium=cpc&campaign=EMEA_en_WEST_DataGrip_Search_RLSA&term=sql%20database&content=555193249366&gad_source=1&gclid=Cj0KCQiA88a5BhDPARIsAFj595hZXkn2YbwaTcrq-f8E_5OuTMKJviU8mQVWBeXH3rUCOKaPguWJ5nUaAnzhEALw_wcB)
++   
++2. Set up a database for the project. The script is available in the file `QuadLingoDatabase.sql`.
++
++3. Download and install IntelliJ IDEA unless you already have it.
+     - [IntelliJ IDEA (Windows)](https://www.jetbrains.com/idea/download/?section=windows)
+     - [IntelliJ IDEA (Mac)](https://www.jetbrains.com/idea/download/?section=mac)
+     - [IntelliJ IDEA (Linux)](https://www.jetbrains.com/idea/download/?section=linux)
+-2. Create a new Java project in IntelliJ IDEA. Use Maven as build system.
+-3. Clone Quadlingo from GitHub.
+-```bash
+-git clone https://github.com/aliisaro/QuadLingo-Group-project.git
+-```
+-4. Run the class Main.java in the package `Main` to start the application.
+-5. Enjoy!
++4. Create a new Java project in IntelliJ IDEA. Use Maven as build system.
++
++5. Clone Quadlingo from GitHub. Use the following command in the terminal or clone directly from Git -> Clone.
++   ```bash
++   git clone https://github.com/aliisaro/QuadLingo-Group-project.git
++   ```
++6. Run the class Main.java in the package `Main` to start the application.
++
++7. Enjoy!
+ 
+ ****
+ 

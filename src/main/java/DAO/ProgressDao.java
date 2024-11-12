@@ -2,13 +2,13 @@ package DAO;
 
 public interface ProgressDao {
 
-    int getUserScore(int user);
+    int getUserScore(int user, String language);
 
-    int getAllCompletedQuizzes(int user);
+    int getAllCompletedQuizzes(int user, String language);
 
-    int getQuizAmount();
+    int getQuizAmount(String language);
 
-    int getMaxScore(int user);
+    int getMaxScore(String language);
 
     int getMasteredFlashcards(int user);
 

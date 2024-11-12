@@ -22,6 +22,18 @@ public class Profile extends BasePage {
     private ComboBox<String> languageComboBox;
     private String normalButtonStyle;
     private String hoveredButtonStyle;
+    private Label pageTitle;
+    private Label usernameLabel;
+    private Label emailLabel;
+    private Label passwordLabel;
+    private Label changeUsernameLabel;
+    private Label changeEmailLabel;
+    private Label changePasswordLabel;
+    private Button saveButton;
+    private Button buttonProgress;
+    private Button backButton;
+    private Button logoutButton;
+    private Label changeLanguage;
 
     public Profile(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
@@ -48,7 +60,7 @@ public class Profile extends BasePage {
         this.setPadding(new Insets(10));
 
         // Page title
-        Label pageTitle = new Label(bundle.getString("profilePageTitle"));
+        pageTitle = new Label(bundle.getString("profilePageTitle"));
         pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Create an HBox for the title and center it
@@ -56,20 +68,20 @@ public class Profile extends BasePage {
         titleContainer.setAlignment(Pos.CENTER);  // Center the title horizontally
 
         // Display current user's username, email, and password
-        Label usernameLabel = new Label(bundle.getString("currentUsernameLabel") + currentUser.getUsername());
-        Label emailLabel = new Label(bundle.getString("currentEmailLabel")+ currentUser.getEmail());
-        Label passwordLabel = new Label(bundle.getString("currentPasswordLabel"));
+        usernameLabel = new Label(bundle.getString("currentUsernameLabel") + currentUser.getUsername());
+        emailLabel = new Label(bundle.getString("currentEmailLabel")+ currentUser.getEmail());
+        passwordLabel = new Label(bundle.getString("currentPasswordLabel"));
 
         // Change username field
-        Label changeUsernameLabel = new Label(bundle.getString("changeUsernameLabel"));
+        changeUsernameLabel = new Label(bundle.getString("changeUsernameLabel"));
         TextField usernameTextField = new TextField();
 
         // Change email field
-        Label changeEmailLabel = new Label(bundle.getString("changeEmailLabel"));
+        changeEmailLabel = new Label(bundle.getString("changeEmailLabel"));
         TextField emailTextField = new TextField();
 
         // Change password field
-        Label changePasswordLabel = new Label(bundle.getString("changePasswordLabel"));
+        changePasswordLabel = new Label(bundle.getString("changePasswordLabel"));
         PasswordField passwordTextField = new PasswordField();
 
         // Create a container (HBox) for save and logout buttons
@@ -85,26 +97,21 @@ public class Profile extends BasePage {
         buttonContainer3.setPadding(new Insets(5, 0,5 , 0));
 
         // Language selection ComboBox
+        changeLanguage = new Label(bundle.getString("changeLanguageLabel") + "\n");
         languageComboBox = new ComboBox<>();
         languageComboBox.getItems().addAll("English", "French", "Chinese", "Arabic");
         languageComboBox.setValue(bundle.getString("language.key")); // Current selection
-        System.out.println("selected language" + bundle.getString("language.key"));
+        System.out.println("selected language: " + bundle.getString("language.key"));
         languageComboBox.setOnAction(e -> switchLanguage(languageComboBox.getValue()));
 
-        // Layout language selector
-        /* VBox buttonContainer = new VBox(10, languageComboBox);
-        buttonContainer.setPadding(new Insets(10, 0, 0, 0));
-        buttonContainer.setAlignment(Pos.CENTER);
-        */
-
         // Save Button to handle saving the profile information
-        Button saveButton = new Button(bundle.getString("saveChangesButton"));
+        saveButton = new Button(bundle.getString("saveChangesButton"));
         saveButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
         saveButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         saveButton.setOnAction(e -> handleSaveAction(usernameTextField, emailTextField, passwordTextField, currentUser));
 
         // Go to the Progress page
-        Button buttonProgress = new Button(bundle.getString("progressPageButton"));
+        buttonProgress = new Button(bundle.getString("progressPageButton"));
         buttonProgress.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
         buttonProgress.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         buttonProgress.setOnAction(e -> stage.setScene(new ProgressPage(stage).createScene()));
@@ -113,7 +120,7 @@ public class Profile extends BasePage {
         normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165";
         hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165";
 
-        Button logoutButton = new Button(bundle.getString("logoutButton"));
+        logoutButton = new Button(bundle.getString("logoutButton"));
         logoutButton.setStyle(normalButtonStyle);
         logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(hoveredButtonStyle));
         logoutButton.setOnMouseExited(e -> logoutButton.setStyle(normalButtonStyle));
@@ -124,14 +131,13 @@ public class Profile extends BasePage {
         });
 
         // Back to the homepage
-        Button backButton = new Button(bundle.getString("backToHomeButton"));
+        backButton = new Button(bundle.getString("backToHomeButton"));
         backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;-fx-pref-width: 165");
         backButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
         // Add buttons to the first button container
         buttonContainer1.getChildren().addAll(saveButton, buttonProgress);
-
 
         // Add buttons to the second button container
         buttonContainer2.getChildren().addAll(backButton, logoutButton);
@@ -159,7 +165,8 @@ public class Profile extends BasePage {
                 passwordTextField,
                 buttonContainer1,
                 buttonContainer2,
-                buttonContainer3
+                changeLanguage,
+                languageComboBox
         );
     }
 
@@ -260,7 +267,7 @@ public class Profile extends BasePage {
 
         // Load the ResourceBundle with the selected locale
         bundle = ResourceBundle.getBundle("bundle", locale);
-        // updateTexts(); // Update UI texts
+        updateTexts(); // Update UI texts
     }
 
     // Method to refresh the profile page
@@ -276,5 +283,30 @@ public class Profile extends BasePage {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void updateTexts() {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+
+        pageTitle.setText(bundle.getString("profilePageTitle"));
+        usernameLabel.setText(bundle.getString("currentUsernameLabel") + currentUser.getUsername());
+        emailLabel.setText(bundle.getString("currentEmailLabel")+ currentUser.getEmail());
+        passwordLabel.setText(bundle.getString("currentPasswordLabel"));
+        changeUsernameLabel.setText(bundle.getString("changeUsernameLabel"));
+        changeEmailLabel.setText(bundle.getString("changeEmailLabel"));
+        changePasswordLabel.setText(bundle.getString("changePasswordLabel"));
+        saveButton.setText(bundle.getString("saveChangesButton"));
+        backButton.setText(bundle.getString("backToHomeButton"));
+        buttonProgress.setText(bundle.getString("progressPageButton"));
+        logoutButton.setText(bundle.getString("logoutButton"));
+        changeLanguage.setText(bundle.getString("changeLanguageLabel"));
+        /*
+        signUpPageButton.setText(bundle.getString("emptyFieldsAlert"));
+        signUpPageButton.setText(bundle.getString("profileUpdateSuccessAlert"));
+        signUpPageButton.setText(bundle.getString("profileUpdateFailedAlert"));
+
+        signUpPageButton.setText(bundle.getString("errorAlertTitle"));
+        signUpPageButton.setText(bundle.getString("successAlertTitle"));
+         */
     }
 }

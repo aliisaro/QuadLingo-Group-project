@@ -5,7 +5,6 @@ public class Progress {
 
     private User user;
 
-
     private int completedQuizzes;
 
     public Progress(User user) {
@@ -16,7 +15,6 @@ public class Progress {
     public User getUser() {
         return user;
     }
-
 
     public int getCompletedQuizzes() {
         return completedQuizzes;

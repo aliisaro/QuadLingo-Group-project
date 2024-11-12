@@ -72,8 +72,8 @@ public class EnglishLocalizationTest {
         assertEquals("Your score", bundle.getString("userScore"));
         assertEquals("Your quiz progress", bundle.getString("quizProgress"));
         assertEquals("Your flashcard progress", bundle.getString("flashcardProgress"));
-        assertEquals("You have completed {1} of {0} quizzes.", bundle.getString("quizzesCompleted"));
-        assertEquals("You've mastered {1} of {0} flashcards.", bundle.getString("flashcardsMastered"));
+        assertEquals("You have completed {0} of {1} quizzes.", bundle.getString("quizzesCompleted"));
+        assertEquals("You have mastered {0} of {1} flashcards.", bundle.getString("flashcardsMastered"));
     }
 
     @Test
@@ -102,6 +102,7 @@ public class EnglishLocalizationTest {
         assertEquals("Progress", bundle.getString("progressPageButton"));
         assertEquals("Error", bundle.getString("errorAlertTitle"));
         assertEquals("Success", bundle.getString("successAlertTitle"));
+        assertEquals("Change language:", bundle.getString("changeLanguageLabel"));
     }
 
     @Test
@@ -123,7 +124,7 @@ public class EnglishLocalizationTest {
         // Assertions for the flashcard library page
         assertEquals("Flashcards", bundle.getString("flashcardTitle"));
         assertEquals("Unmaster all flashcards", bundle.getString("unmasterAllButton"));
-        assertEquals("Master Flashcards", bundle.getString("masteredFlashcardsButton"));
+        assertEquals("Mastered Flashcards", bundle.getString("masteredFlashcardsButton"));
     }
 
     @Test
@@ -136,6 +137,6 @@ public class EnglishLocalizationTest {
         assertEquals("Please select an answer before submitting.", bundle.getString("selectAnswerError"));
         assertEquals("Quiz Finished!", bundle.getString("quizFinished"));
         assertEquals("Your score: ", bundle.getString("yourScore"));
-        assertEquals("out of ", bundle.getString("outOf"));
+        assertEquals(" out of ", bundle.getString("outOf"));
     }
 }
