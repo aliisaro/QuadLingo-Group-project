@@ -34,6 +34,7 @@ public class FlashCardsPage extends BasePage {
     private Button flipFlashCardButton;
     private VBox flashcardContainer;
     private final ResourceBundle bundle;
+    private String languageCode;
 
     public FlashCardsPage(FlashcardDao flashCardDao, String topic, Stage stage) {
         this.flashCardDao = flashCardDao;
@@ -41,9 +42,12 @@ public class FlashCardsPage extends BasePage {
         this.userID = userController.getCurrentUserId();
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
+        // Retrieve the current language code
+        this.languageCode = LanguageConfig.getInstance().getCurrentLocale().getLanguage();
+
         // Get the flashcards based on the topic
         if (topic.equals("Mastered Flashcards")) {
-            this.flashcards = flashCardDao.getMasteredFlashcardsByUser(userID);
+            this.flashcards = flashCardDao.getMasteredFlashcardsByUser(userID, languageCode);
             if (this.flashcards.isEmpty()) {
                 Label noMasteredFlashcardsLabel = new Label(bundle.getString("noMastered")); // You don't have mastered flashcards yet
                 Button endFlashCardSessionButton = new Button(bundle.getString("backToFlashLibraryButton")); // Go back to library
@@ -203,7 +207,7 @@ public class FlashCardsPage extends BasePage {
 
         // Refresh the list of flashcards
         if (flashcards.get(currentFlashCardIndex).getTopic().equals("Mastered Flashcards")) {
-            flashcards = flashCardDao.getMasteredFlashcardsByUser(userID);
+            flashcards = flashCardDao.getMasteredFlashcardsByUser(userID, languageCode);
             if (flashcards.isEmpty()) {
                 Label noMasteredFlashcardsLabel = new Label(bundle.getString("noMastered")); // You don't have mastered flashcards yet
                 this.getChildren().clear();

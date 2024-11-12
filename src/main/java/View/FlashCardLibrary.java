@@ -74,7 +74,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
 
         Button unmasterAllButton = new Button(bundle.getString("unmasterAllButton")); // Unmaster All
         unmasterAllButton.setOnAction(e -> {
-            flashCardController.unmasterAllFlashcards(userID);
+            flashCardController.unmasterAllFlashcards(userID, languageCode);
             updateFlashcardProgress(progressBar3);
         });
 

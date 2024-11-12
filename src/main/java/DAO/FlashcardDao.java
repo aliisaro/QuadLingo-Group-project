@@ -10,8 +10,8 @@ public interface FlashcardDao {
     List<Flashcard> getAllFlashcards(String languageCode);
     void masterFlashcard(int flashCardId, int userId);
     void unmasterFlashcard(int flashCardId, int userId);
-    List<Flashcard> getMasteredFlashcardsByUser(int userId);
+    List<Flashcard> getMasteredFlashcardsByUser(int userId, String languageCode);
     int getCurrentFlashcardId(String term);
     boolean isFlashcardMastered(int flashCardId, int userId);
-    void unmasterAllFlashcards(int userId);
+    void unmasterAllFlashcards(int userId, String languageCode);
 }
