@@ -16,7 +16,7 @@ public class FrenchLocalizationTest {
     public void testIndexPage() {
         // Assertions for the index page
         assertEquals("Bienvenue à QuadLingo", bundle.getString("welcomeMessage"));
-        assertEquals("Bienvenue", bundle.getString("welcomeLabel"));
+        assertEquals("Bienvenue, ", bundle.getString("welcomeLabel"));
         assertEquals("Votre parcours d'apprentissage commence ici.", bundle.getString("descriptionMessage"));
         assertEquals("Inscrivez-vous", bundle.getString("signUp"));
     }
@@ -88,8 +88,8 @@ public class FrenchLocalizationTest {
     public void testProfilePage() {
         // Assertions for the profile page
         assertEquals("Profil", bundle.getString("profilePageTitle"));
-        assertEquals("Nom d'utilisateur :", bundle.getString("currentUsernameLabel"));
-        assertEquals("E-mail :", bundle.getString("currentEmailLabel"));
+        assertEquals("Nom d'utilisateur : ", bundle.getString("currentUsernameLabel"));
+        assertEquals("E-mail : ", bundle.getString("currentEmailLabel"));
         assertEquals("Mot de passe: **********", bundle.getString("currentPasswordLabel"));
         assertEquals("Changer le nom d'utilisateur :", bundle.getString("changeUsernameLabel"));
         assertEquals("Changer le e-mail:", bundle.getString("changeEmailLabel"));
@@ -136,6 +136,6 @@ public class FrenchLocalizationTest {
         assertEquals("Veuillez sélectionner une réponse avant de soumettre.", bundle.getString("selectAnswerError"));
         assertEquals("Quiz terminé !", bundle.getString("quizFinished"));
         assertEquals("Votre score :", bundle.getString("yourScore"));
-        assertEquals("hors de ", bundle.getString("outOf"));
+        assertEquals("\u0020hors de ", bundle.getString("outOf"));
     }
 }

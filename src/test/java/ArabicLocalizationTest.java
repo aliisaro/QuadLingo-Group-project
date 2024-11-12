@@ -122,8 +122,8 @@ public class ArabicLocalizationTest {
     public void testFlashcardLibraryPage() {
         // Assertions for the flashcard library page
         assertEquals("البطاقات التعليمية", bundle.getString("flashcardTitle"));
-        assertEquals("قم بإزالة كافة عناصر التحكم", bundle.getString("unmasterAllButton"));
-        assertEquals("البطاقات التعليمية الرئيسية", bundle.getString("masteredFlashcardsButton"));
+        assertEquals("إلغاء إتقان جميع البطاقات التعليمية", bundle.getString("unmasterAllButton"));
+        assertEquals("البطاقات التعليمية المُدارة", bundle.getString("masteredFlashcardsButton"));
     }
 
     @Test
