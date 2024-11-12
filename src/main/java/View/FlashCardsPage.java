@@ -187,21 +187,21 @@ public class FlashCardsPage extends BasePage {
 
     // Toggle the mastered status of the flashcard
     private void toggleMasteredStatus() {
+        currentFlashCardId = flashCardDao.getCurrentFlashcardId(flashcards.get(currentFlashCardIndex).getTerm());
+
         if (isMastered) {
             // Unmark as mastered
             isMastered = false;
-            currentFlashCardId = flashCardDao.getCurrentFlashcardId(flashcards.get(currentFlashCardIndex).getTerm());
             flashCardDao.unmasterFlashcard(currentFlashCardId, userID);
             markMasteredButton.setText(bundle.getString("masterThis")); // Master this
         } else {
             // Mark as mastered
             isMastered = true;
-            currentFlashCardId = flashCardDao.getCurrentFlashcardId(flashcards.get(currentFlashCardIndex).getTerm());
             flashCardDao.masterFlashcard(currentFlashCardId, userID);
             markMasteredButton.setText(bundle.getString("unmasterThis")); // Unmaster this
         }
 
-        // Refresh the list of flashcards
+        // Refresh the list of flashcards if the topic is "Mastered Flashcards"
         if (flashcards.get(currentFlashCardIndex).getTopic().equals("Mastered Flashcards")) {
             flashcards = flashCardDao.getMasteredFlashcardsByUser(userID);
             if (flashcards.isEmpty()) {
@@ -219,11 +219,6 @@ public class FlashCardsPage extends BasePage {
         // Clear the translation label
         // Reset the current flashcard index
         currentFlashCardIndex = 0;
-
-        if (isMastered) {
-            currentFlashCardId = flashCardDao.getCurrentFlashcardId(flashcards.get(currentFlashCardIndex).getTerm());
-            flashCardDao.masterFlashcard(currentFlashCardId, userID);
-        }
 
         // Redirect to the FlashCardLibrary page
         this.getScene().setRoot(new FlashCardLibrary((Stage) this.getScene().getWindow()));
