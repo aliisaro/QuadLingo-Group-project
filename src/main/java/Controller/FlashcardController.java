@@ -20,8 +20,8 @@ public class FlashcardController {
         return flashcardDao.getTopics(languageCode);
     }
 
-    public List<Flashcard> getMasteredFlashCards(int userId) {
-        return flashcardDao.getMasteredFlashcardsByUser(userId);
+    public List<Flashcard> getMasteredFlashCards(int userId, String languageCode) {
+        return flashcardDao.getMasteredFlashcardsByUser(userId, languageCode);
     }
 
     public List<Flashcard> getAllFlashcards(String languageCode) {
@@ -32,7 +32,7 @@ public class FlashcardController {
         return flashcardDao;
     }
 
-    public void unmasterAllFlashcards(int userId) {
-        flashcardDao.unmasterAllFlashcards(userId);
+    public void unmasterAllFlashcards(int userId, String languageCode) {
+        flashcardDao.unmasterAllFlashcards(userId, languageCode);
     }
 }
