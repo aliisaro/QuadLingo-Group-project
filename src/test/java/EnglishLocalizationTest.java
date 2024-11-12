@@ -102,6 +102,7 @@ public class EnglishLocalizationTest {
         assertEquals("Progress", bundle.getString("progressPageButton"));
         assertEquals("Error", bundle.getString("errorAlertTitle"));
         assertEquals("Success", bundle.getString("successAlertTitle"));
+        assertEquals("Change language:", bundle.getString("changeLanguageLabel"));
     }
 
     @Test

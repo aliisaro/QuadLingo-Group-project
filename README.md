@@ -33,9 +33,9 @@ Artificial intelligence was used for writing the questions and answers for the q
     - [IntelliJ IDEA (Linux)](https://www.jetbrains.com/idea/download/?section=linux)
 2. Create a new Java project in IntelliJ IDEA. Use Maven as build system.
 3. Clone Quadlingo from GitHub.
-```bash
-git clone https://github.com/aliisaro/QuadLingo-Group-project.git
-```
+   ```bash
+   git clone https://github.com/aliisaro/QuadLingo-Group-project.git
+   ```
 4. Run the class Main.java in the package `Main` to start the application.
 5. Enjoy!
 
