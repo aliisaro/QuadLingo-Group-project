@@ -23,12 +23,16 @@ public class AchiePage extends BasePage implements setMarginButton {
     private VBox unlockedBadgesContainer;
     private VBox lockedBadgesContainer;
     private ResourceBundle bundle;
+    private String languageCode;
 
     //Displays the Achievements page
     public AchiePage(Stage stage) {
         this.userController = UserController.getInstance(UserDaoImpl.getInstance());
         this.badges = new ArrayList<>();
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
+
+        // Retrieve the current language code
+        this.languageCode = LanguageConfig.getInstance().getCurrentLocale().getLanguage();
 
         //Paths to badge images
         badges.add(new Badge("file:docs/badges/FirstBadge.png", 1, bundle.getString("quizRequirement1"),"quiz"));
@@ -91,7 +95,7 @@ public class AchiePage extends BasePage implements setMarginButton {
             Label description = new Label(badge.getDescription());
             VBox badgeContainer = new VBox(5, imageView, description);
 
-            int quizzesCompleted = userController.getQuizzesCompleted(userID);
+            int quizzesCompleted = userController.getQuizzesCompleted(userID, languageCode);
             int flashcardsMastered = userController.getFlashcardsMastered(userID);
             int badgeThreshold = badge.getThreshold();
             String checker = badge.getChecker();

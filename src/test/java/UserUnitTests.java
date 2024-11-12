@@ -160,13 +160,40 @@ class UserUnitTests {
     }
 
     @Test
-    void testGetUserById_Failure_UserNotFound() {
-        // Simulating the case where a user with the given ID doesn't exist
-        when(userDao.getUserById(testUserId)).thenReturn(null);
+    void testDoesEmailExist_Exists() {
+        when(userDao.doesEmailExist(testEmail)).thenReturn(true);
+        boolean exists = userDao.doesEmailExist(testEmail);
+        assertTrue(exists, "Email should exist in the database.");
+    }
 
-        User retrievedUser = userDao.getUserById(testUserId);
+    @Test
+    void testDoesEmailExist_NotExists() {
+        when(userDao.doesEmailExist("nonexistent@example.com")).thenReturn(false);
+        boolean exists = userDao.doesEmailExist("nonexistent@example.com");
+        assertFalse(exists, "Email should not exist in the database.");
+    }
 
-        assertNull(retrievedUser, "User should not be found for invalid ID.");
+    @Test
+    void testGetQuizzesCompleted() {
+        int expectedQuizzesCompleted = 5;
+        when(userDao.getQuizzesCompleted(testUserId, "EN")).thenReturn(expectedQuizzesCompleted);
+        int quizzesCompleted = userDao.getQuizzesCompleted(testUserId, "EN");
+        assertEquals(expectedQuizzesCompleted, quizzesCompleted, "Retrieved quizzes completed should match.");
+    }
+
+    @Test
+    void testGetFlashcardsMastered() {
+        int expectedFlashcardsMastered = 10;
+        when(userDao.getFlashcardsMastered(testUserId)).thenReturn(expectedFlashcardsMastered);
+        int flashcardsMastered = userDao.getFlashcardsMastered(testUserId);
+        assertEquals(expectedFlashcardsMastered, flashcardsMastered, "Retrieved mastered flashcards should match.");
+    }
+
+    @Test
+    void testGetEmail() {
+        when(userDao.getEmail()).thenReturn(testEmail);
+        String retrievedEmail = userDao.getEmail();
+        assertEquals(testEmail, retrievedEmail, "Retrieved email should match the user's email.");
     }
 
     @AfterEach
