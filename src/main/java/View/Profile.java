@@ -97,7 +97,7 @@ public class Profile extends BasePage {
         buttonContainer3.setPadding(new Insets(5, 0,5 , 0));
 
         // Language selection ComboBox
-        changeLanguage = new Label(bundle.getString(changeLanguageLabel));
+        changeLanguage = new Label(bundle.getString("changeLanguageLabel") + "\n");
         languageComboBox = new ComboBox<>();
         languageComboBox.getItems().addAll("English", "French", "Chinese", "Arabic");
         languageComboBox.setValue(bundle.getString("language.key")); // Current selection
@@ -165,7 +165,8 @@ public class Profile extends BasePage {
                 passwordTextField,
                 buttonContainer1,
                 buttonContainer2,
-                buttonContainer3
+                changeLanguage,
+                languageComboBox
         );
     }
 
