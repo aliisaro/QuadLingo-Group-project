@@ -33,6 +33,7 @@ public class Profile extends BasePage {
     private Button buttonProgress;
     private Button backButton;
     private Button logoutButton;
+    private Label changeLanguage;
 
     public Profile(Stage stage) {
         // Initialize UserDaoImpl and UserController objects
@@ -96,6 +97,7 @@ public class Profile extends BasePage {
         buttonContainer3.setPadding(new Insets(5, 0,5 , 0));
 
         // Language selection ComboBox
+        changeLanguage = new Label(bundle.getString(changeLanguageLabel));
         languageComboBox = new ComboBox<>();
         languageComboBox.getItems().addAll("English", "French", "Chinese", "Arabic");
         languageComboBox.setValue(bundle.getString("language.key")); // Current selection
@@ -136,7 +138,6 @@ public class Profile extends BasePage {
 
         // Add buttons to the first button container
         buttonContainer1.getChildren().addAll(saveButton, buttonProgress);
-
 
         // Add buttons to the second button container
         buttonContainer2.getChildren().addAll(backButton, logoutButton);
@@ -297,7 +298,7 @@ public class Profile extends BasePage {
         backButton.setText(bundle.getString("backToHomeButton"));
         buttonProgress.setText(bundle.getString("progressPageButton"));
         logoutButton.setText(bundle.getString("logoutButton"));
-
+        changeLanguage.setText(bundle.getString("changeLanguageLabel"));
         /*
         signUpPageButton.setText(bundle.getString("emptyFieldsAlert"));
         signUpPageButton.setText(bundle.getString("profileUpdateSuccessAlert"));
