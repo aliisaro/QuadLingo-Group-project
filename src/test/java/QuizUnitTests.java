@@ -123,12 +123,12 @@ public class QuizUnitTests {
     @Test
     public void testIncrementCompletedQuizzesForUser() {
         // Mock increment completed quizzes method
-        doNothing().when(quizDaoImpl).incrementCompletedQuizzes(sampleUserId, 1);
+        doNothing().when(quizDaoImpl).incrementCompletedQuizzes(sampleUserId);
 
-        quizDaoImpl.incrementCompletedQuizzes(sampleUserId, 1);
+        quizDaoImpl.incrementCompletedQuizzes(sampleUserId);
 
         // Verify if incrementCompletedQuizzes was called
-        verify(quizDaoImpl, times(1)).incrementCompletedQuizzes(sampleUserId, 1);
+        verify(quizDaoImpl, times(1)).incrementCompletedQuizzes(sampleUserId);
     }
 
     @Test
