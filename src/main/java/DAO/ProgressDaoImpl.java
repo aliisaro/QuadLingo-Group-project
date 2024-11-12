@@ -14,14 +14,14 @@ public class ProgressDaoImpl implements ProgressDao {
     }
 
     @Override
-    public int getUserScore(int user) {
-        // Implement database operation to get overall progress
+    public int getUserScore(int user, String language) {
         int totalScore = 0;
 
         try (Connection connection = MariaDbConnection.getConnection()) {
-            String query = "SELECT SUM(Score) AS TotalScore FROM ISCOMPLETED WHERE UserID = ?";
+            String query = "SELECT SUM(Score) AS TotalScore FROM ISCOMPLETED JOIN QUIZ ON ISCOMPLETED.QuizID = QUIZ.QuizID WHERE UserID = ? AND QUIZ.language_code = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, user);
+            statement.setString(2, language);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -30,19 +30,21 @@ public class ProgressDaoImpl implements ProgressDao {
             resultSet.close();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace(); // Log the error
+            e.printStackTrace();
         }
 
         return totalScore;
     }
 
+
     @Override
-    public int getMaxScore(int user) {
+    public int getMaxScore(String language) {
         int maxScore = 0;
 
         try (Connection connection = MariaDbConnection.getConnection()) {
-            String query = "SELECT SUM(QuizScore) AS TotalMaxScore FROM QUIZ";
+            String query = "SELECT SUM(QuizScore) AS TotalMaxScore FROM QUIZ WHERE language_code = ?";
             PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, language);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -51,21 +53,22 @@ public class ProgressDaoImpl implements ProgressDao {
             resultSet.close();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace(); // Log the error
+            e.printStackTrace();
         }
 
         return maxScore;
     }
 
+
     @Override
-    public int getAllCompletedQuizzes(int user) {
-        // Implement database operation to get overall progress
+    public int getAllCompletedQuizzes(int user, String language) {
         int totalScore = 0;
 
         try (Connection connection = MariaDbConnection.getConnection()) {
-            String query = "SELECT COUNT(*) AS TotalScore FROM ISCOMPLETED WHERE UserID = ?";
+            String query = "SELECT COUNT(*) AS TotalScore FROM ISCOMPLETED JOIN QUIZ ON ISCOMPLETED.QuizID = QUIZ.QuizID WHERE UserID = ? AND QUIZ.language_code = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, user);
+            statement.setString(2, language);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -74,33 +77,34 @@ public class ProgressDaoImpl implements ProgressDao {
             resultSet.close();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace(); // Log the error
+            e.printStackTrace();
         }
 
         return totalScore;
     }
 
+
     @Override
-    public int getQuizAmount() {
-        // Implement database operation to get overall progress
+    public int getQuizAmount(String language) {
         int totalScore = 0;
 
         try (Connection connection = MariaDbConnection.getConnection()) {
-            String query = "SELECT COUNT(*) AS TotalScore FROM QUIZ";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
+            String query = "SELECT COUNT(*) AS TotalScore FROM QUIZ WHERE language_code = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, language);
+                ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
-                totalScore = resultSet.getInt("TotalScore");
+                if (resultSet.next()) {
+                    totalScore = resultSet.getInt("TotalScore");
+                }
             }
-            resultSet.close();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace(); // Log the error
         }
 
         return totalScore;
     }
+
 
     @Override
     public int getMasteredFlashcards(int user) {

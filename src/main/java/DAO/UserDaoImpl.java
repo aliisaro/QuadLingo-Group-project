@@ -276,19 +276,21 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public int getQuizzesCompleted(int userId) {
+    public int getQuizzesCompleted(int userId, String language) {
         int quizzesCompleted = 0;
         try (Connection connection = getConnection()) {
-            String query = "SELECT QuizzesCompleted FROM LINGOUSER WHERE UserID = ?";
+            String query = "SELECT COUNT(*) AS QuizzesCompleted FROM ISCOMPLETED JOIN QUIZ ON ISCOMPLETED.QuizID = QUIZ.QuizID WHERE ISCOMPLETED.UserID = ? AND QUIZ.language_code = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
+            statement.setString(2, language);
             System.out.println("Executing query: " + statement);
+
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 quizzesCompleted = resultSet.getInt("QuizzesCompleted");
                 System.out.println("QuizzesCompleted retrieved: " + quizzesCompleted);
             } else {
-                System.out.println("No record found for user ID: " + userId);
+                System.out.println("No completed quizzes found for user ID: " + userId + " and language: " + language);
             }
 
             resultSet.close();
@@ -298,6 +300,7 @@ public class UserDaoImpl implements UserDao {
         }
         return quizzesCompleted;
     }
+
 
     @Override
     public int getFlashcardsMastered(int userId) {
