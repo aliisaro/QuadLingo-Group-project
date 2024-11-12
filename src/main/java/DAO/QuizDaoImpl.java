@@ -178,17 +178,16 @@ public class QuizDaoImpl implements QuizDao {
         }
     }
 
+    @Override
     public void incrementCompletedQuizzes(int userId) {
-        String incrementSql = "UPDATE LINGOUSER SET QuizzesCompleted = QuizzesCompleted + 1 WHERE UserID = ?";
-        try (PreparedStatement incrementStatement = connection.prepareStatement(incrementSql)) {
-            incrementStatement.setInt(1, userId);
-            incrementStatement.executeUpdate();
+        String sql = "UPDATE LINGOUSER SET QuizzesCompleted = QuizzesCompleted + 1 WHERE UserID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(); // Handle exceptions as needed
         }
     }
-
-
 
     @Override
     public boolean hasUserCompletedQuiz(int userId, int quizId) {
@@ -232,16 +231,4 @@ public class QuizDaoImpl implements QuizDao {
 
         return score;
     }
-
-    public void removeQuizCompletion(int userId, int quizId) {
-        String sql = "DELETE FROM ISCOMPLETED WHERE UserID = ? AND QuizID = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2, quizId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace(); // Log the exception as needed
-        }
-    }
-
 }
