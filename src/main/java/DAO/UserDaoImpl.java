@@ -308,7 +308,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = getConnection()) {
             String query = "SELECT COUNT(*) FROM ISMASTERED " +
                     "JOIN FLASHCARD ON ISMASTERED.FlashcardID = FLASHCARD.FlashcardID " +
-                    "WHERE ISMASTERED.UserID = ? AND FLASHCARD.language_code = ?";
+                    "WHERE ISMASTERED.UserID = ? AND FLASHCARD.language_code2 = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
             statement.setString(2, language);
