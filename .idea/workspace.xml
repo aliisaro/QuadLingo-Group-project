@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="updated progress methods related to flashcards">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/FCImplement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/FCImplement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/FlashcardDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/FlashcardDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/FlashCardsPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/FlashCardsPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/UserUnitTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserUnitTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -496,7 +494,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731410998033</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="updated progress methods related to flashcards">
+      <option name="closed" value="true" />
+      <created>1731412241828</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1731412241828</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

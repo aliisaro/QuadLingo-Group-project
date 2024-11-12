@@ -176,16 +176,16 @@ class UserUnitTests {
     @Test
     void testGetQuizzesCompleted() {
         int expectedQuizzesCompleted = 5;
-        when(userDao.getQuizzesCompleted(testUserId, "EN")).thenReturn(expectedQuizzesCompleted);
-        int quizzesCompleted = userDao.getQuizzesCompleted(testUserId, "EN");
+        when(userDao.getQuizzesCompleted(testUserId, "en")).thenReturn(expectedQuizzesCompleted);
+        int quizzesCompleted = userDao.getQuizzesCompleted(testUserId, "en");
         assertEquals(expectedQuizzesCompleted, quizzesCompleted, "Retrieved quizzes completed should match.");
     }
 
     @Test
     void testGetFlashcardsMastered() {
         int expectedFlashcardsMastered = 10;
-        when(userDao.getFlashcardsMastered(testUserId)).thenReturn(expectedFlashcardsMastered);
-        int flashcardsMastered = userDao.getFlashcardsMastered(testUserId);
+        when(userDao.getFlashcardsMastered(testUserId, "en")).thenReturn(expectedFlashcardsMastered);
+        int flashcardsMastered = userDao.getFlashcardsMastered(testUserId, "en");
         assertEquals(expectedFlashcardsMastered, flashcardsMastered, "Retrieved mastered flashcards should match.");
     }
 
