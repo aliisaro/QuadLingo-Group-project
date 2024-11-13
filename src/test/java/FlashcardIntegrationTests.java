@@ -1,8 +1,18 @@
+import DAO.FlashcardDao;
+import DAO.UserDaoImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.sql.Connection;
+
 public class FlashcardIntegrationTests {
+    private FlashcardDao flashcardDao;
+    private UserDaoImpl userDaoImpl;
+    private Connection connection;
+    private final String testFlashcardTopic = "animals"; // Use an existing flashcard topic
+    private final int sampleUserId = 1; // Use an existing user from the database
+    private final String languageCode = "en"; // Set to match the quiz's language
 
     @BeforeEach
     public void setUp() {
@@ -10,40 +20,41 @@ public class FlashcardIntegrationTests {
     }
 
     @Test
-    void testRetrieveAllFlashcards() {
+    void testRetrieveAllTopics() {
 
     }
 
     @Test
-    void testQuestionLoading() {
+    void testRetrieveAllTopicFlashcards() {
 
     }
 
     @Test
-    void testAnswerChecking() {
+    void testFlashcardLoading() {
 
     }
 
     @Test
-    void testQuizCompletion() {
-    }
-
-    @Test
-    void testScoreCalculation() {
+    void testMastering() {
 
     }
 
     @Test
-    void testHasUserCompletedSpecificQuiz() {
+    void testUnmastering() {
     }
 
     @Test
-    void testRetrieveUserScoreForQuiz() {
+    void testUnmasteringAll() {
 
     }
 
     @Test
-    void testIncrementCompletedQuizzes() {
+    void testHasUserMasteredSpecificFlashcard() {
+    }
+
+
+    @Test
+    void testIncrementMasteredFlashcards() {
         // Step 1: Remove any existing completion records for a clean start
 
     }
