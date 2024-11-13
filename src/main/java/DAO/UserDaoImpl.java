@@ -98,10 +98,8 @@ public class UserDaoImpl implements UserDao {
                         int userId = resultSet.getInt("UserID");
                         currentUserId = userId;
                         String dbEmail = resultSet.getString("Email");
-                        int dbQuizzesCompleted = resultSet.getInt("QuizzesCompleted");
 
                         user = new User(userId, username, dbPassword, dbEmail);
-                        user.setQuizzesCompleted(dbQuizzesCompleted);
                     }
                 }
             }
@@ -125,10 +123,7 @@ public class UserDaoImpl implements UserDao {
                 String dbUsername = resultSet.getString("Username");
                 String dbPassword = resultSet.getString("UserPassword");
                 String dbEmail = resultSet.getString("Email");
-                int dbQuizzesCompleted = resultSet.getInt("QuizzesCompleted");
-
                 user = new User(id, dbUsername, dbPassword, dbEmail);
-                user.setQuizzesCompleted(dbQuizzesCompleted);
             }
 
             resultSet.close();
@@ -184,7 +179,7 @@ public class UserDaoImpl implements UserDao {
 
         // Proceed with the update if all validations pass
         boolean isUpdated = false;
-        String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = COALESCE(?, UserPassword), Email = ?, QuizzesCompleted = ? WHERE UserID = ?";
+        String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = COALESCE(?, UserPassword), Email = ? WHERE UserID = ?";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -200,8 +195,7 @@ public class UserDaoImpl implements UserDao {
             }
 
             statement.setString(3, user.getEmail());
-            statement.setInt(4, user.getQuizzesCompleted());
-            statement.setInt(5, user.getUserId());
+            statement.setInt(4, user.getUserId());
 
             int rowsAffected = statement.executeUpdate();
             isUpdated = (rowsAffected > 0); // Check if any row was updated

@@ -194,15 +194,15 @@ public class QuizPage extends BasePage {
         int userId = currentUser.getUserId(); // Get User ID
 
         // Check if the user has already completed the quiz
-        boolean hasCompletedQuiz = quizDao.hasUserCompletedQuiz(userId, quizId);
+        //boolean hasCompletedQuiz = quizDao.hasUserCompletedQuiz(userId, quizId);
 
         // Always update the score for the quiz
         quizDao.recordQuizCompletion(userId, quizId, score); // Save score to the database
 
         // Increment completed quizzes count if the user has not taken the quiz before
-        if (!hasCompletedQuiz) {
-            quizDao.incrementCompletedQuizzes(userId); // Increment quiz count only if the user has not taken the quiz
-        }
+        //if (!hasCompletedQuiz) {
+         //   quizDao.incrementCompletedQuizzes(userId); // Increment quiz count only if the user has not taken the quiz
+        //}
 
         // Add score labels to the layout
         this.getChildren().addAll(scoreLabel, resultLabel);
