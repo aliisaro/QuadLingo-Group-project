@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="update user model, userdaoimpl, quizdao and quizdaoimpl" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="small update quiz page">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -245,7 +251,8 @@
       <workItem from="1731433623456" duration="425000" />
       <workItem from="1731496480153" duration="3064000" />
       <workItem from="1731500501483" duration="3000" />
-      <workItem from="1731525901088" duration="2897000" />
+      <workItem from="1731525901088" duration="3370000" />
+      <workItem from="1731529492402" duration="770000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
@@ -527,7 +534,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731528536532</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="small update quiz page">
+      <option name="closed" value="true" />
+      <created>1731528961586</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1731528961586</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -546,7 +561,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="fixed UI problem" />
     <MESSAGE value="update pom, dockerfile and usertest" />
     <MESSAGE value="deleted dependency-reduced-pom.xml" />
     <MESSAGE value="small change to dockerfile" />
@@ -571,7 +585,8 @@
     <MESSAGE value="update user unit tests" />
     <MESSAGE value="small update to french bundle and test" />
     <MESSAGE value="update user model, userdaoimpl, quizdao and quizdaoimpl" />
-    <option name="LAST_COMMIT_MESSAGE" value="update user model, userdaoimpl, quizdao and quizdaoimpl" />
+    <MESSAGE value="small update quiz page" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update quiz page" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

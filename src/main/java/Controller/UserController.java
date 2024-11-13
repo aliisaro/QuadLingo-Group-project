@@ -38,8 +38,8 @@ public class UserController {
     }
 
     // Login a user
-    public User loginUser(String username, String password) {
-        return userDao.loginUser(username, password);
+    public User loginUser(String email, String password) {
+        return userDao.loginUser(email, password);
     }
 
     // Get a user by their ID

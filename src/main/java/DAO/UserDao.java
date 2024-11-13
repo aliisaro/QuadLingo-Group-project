@@ -6,7 +6,7 @@ public interface UserDao {
     int createUser(User user);
     boolean updateUser(User user);
     User getUserById(int userId); // Fetch user by ID
-    User loginUser(String username, String password);
+    User loginUser(String email, String password);
     boolean doesEmailExist(String email);
     boolean doesUsernameExist(String username);
     boolean deleteUserByEmail(String email);

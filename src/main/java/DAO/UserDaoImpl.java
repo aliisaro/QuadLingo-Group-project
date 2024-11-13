@@ -81,14 +81,14 @@ public class UserDaoImpl implements UserDao {
 
     // Logs in a user by their username and password
     @Override
-    public User loginUser(String username, String password) {
+    public User loginUser(String email, String password) {
         User user = null;
-        String query = "SELECT * FROM LINGOUSER WHERE Username = ?";
+        String query = "SELECT * FROM LINGOUSER WHERE Email = ?";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setString(1, username);
+            statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     String dbPassword = resultSet.getString("UserPassword");
@@ -97,9 +97,9 @@ public class UserDaoImpl implements UserDao {
                     if (BCrypt.checkpw(password, dbPassword)) {
                         int userId = resultSet.getInt("UserID");
                         currentUserId = userId;
-                        String dbEmail = resultSet.getString("Email");
+                        String Username = resultSet.getString("Username");
 
-                        user = new User(userId, username, dbPassword, dbEmail);
+                        user = new User(userId, Username, dbPassword, email);
                     }
                 }
             }
