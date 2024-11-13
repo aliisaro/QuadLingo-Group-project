@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="update user unit tests">
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bundle_AR.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundle_AR.properties" afterDir="false" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="UPDATE unit tests">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -244,6 +245,8 @@
       <workItem from="1731321178490" duration="6551000" />
       <workItem from="1731361425054" duration="2104000" />
       <workItem from="1731364343864" duration="1537000" />
+      <workItem from="1731433623456" duration="425000" />
+      <workItem from="1731496480153" duration="2735000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />

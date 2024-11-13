@@ -71,8 +71,8 @@ public class FrenchLocalizationTest {
         assertEquals("Votre score", bundle.getString("userScore"));
         assertEquals("Votre progression de quiz", bundle.getString("quizProgress"));
         assertEquals("Votre progression des cartes mémo", bundle.getString("flashcardProgress"));
-        assertEquals("Vous avez complété {1} quiz(zes) sur {0}.", bundle.getString("quizzesCompleted"));
-        assertEquals("Vous avez complété {1} carte(s) mémo sur {0}.", bundle.getString("flashcardsMastered"));
+        assertEquals("Vous avez complété {0} quiz(zes) sur {1}.", bundle.getString("quizzesCompleted"));
+        assertEquals("Vous avez complété {0} carte(s) mémo sur {1}.", bundle.getString("flashcardsMastered"));
     }
 
     @Test
