@@ -17,8 +17,8 @@ public class FlashcardIntegrationTests {
     private FlashcardDao flashcardDao = new FCImplement(connection);
     private UserDaoImpl userDao = UserDaoImpl.getInstance();
     private final String testFlashcardTopic = "animals"; // Use an existing flashcard topic
-    private int userId = 0;
-    private final String languageCode = "en"; // Set to match the quiz's language
+    private int userId;
+    private final String languageCode = "en"; // Set to match the flashcards' language
     private final String testEmail = "flashcardtest@test.com"; // Create a new email
 
     @BeforeEach
