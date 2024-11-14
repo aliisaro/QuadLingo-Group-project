@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="small update quiz page">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="update quiz tests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/QuizUnitTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/QuizUnitTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/UserIntegrationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserIntegrationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/UserUnitTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserUnitTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/QuizIntegrationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/QuizIntegrationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -542,7 +539,23 @@
       <option name="project" value="LOCAL" />
       <updated>1731528961586</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Updated user tests">
+      <option name="closed" value="true" />
+      <created>1731572000471</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1731572000471</updated>
+    </task>
+    <task id="LOCAL-00038" summary="update quiz tests">
+      <option name="closed" value="true" />
+      <created>1731572817132</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1731572817132</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -561,8 +574,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="update pom, dockerfile and usertest" />
-    <MESSAGE value="deleted dependency-reduced-pom.xml" />
     <MESSAGE value="small change to dockerfile" />
     <MESSAGE value="update pom.xml" />
     <MESSAGE value="update dockerfile" />
@@ -586,7 +597,9 @@
     <MESSAGE value="small update to french bundle and test" />
     <MESSAGE value="update user model, userdaoimpl, quizdao and quizdaoimpl" />
     <MESSAGE value="small update quiz page" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update quiz page" />
+    <MESSAGE value="Updated user tests" />
+    <MESSAGE value="update quiz tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="update quiz tests" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
