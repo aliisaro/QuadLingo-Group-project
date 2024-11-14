@@ -15,7 +15,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
@@ -132,12 +135,28 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
 
         updateFlashcardProgress(progressBar3);
 
-        Button helpButton = new Button("?");
+        // Help button with custom PNG image
+        Image helpImage = new Image(getClass().getResourceAsStream("/helpButton3.png"));
+        ImageView helpImageView = new ImageView(helpImage);
+
+        // Set the desired size for the ImageView
+        helpImageView.setFitWidth(50); // Set the desired width
+        helpImageView.setFitHeight(50); // Set the desired height
+
+        Button helpButton = new Button();
+        helpButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;"); // Transparent background
+        helpButton.setGraphic(helpImageView);
+        helpButton.setId("helpButton");
         helpButton.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(bundle.getString("help"));
             alert.setHeaderText(null);
-            alert.setContentText(bundle.getString("helpFlashcardLibrary"));
+
+            // Create a Text node to wrap the content text
+            Text content = new Text(bundle.getString("helpFlashcardLibrary"));
+            content.setWrappingWidth(400); // Set the desired wrapping width
+
+            alert.getDialogPane().setContent(content);
             alert.showAndWait();
         });
 
