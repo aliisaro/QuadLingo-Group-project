@@ -11,6 +11,7 @@ import Main.SessionManager;
 import Model.Flashcard;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -131,8 +132,17 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
 
         updateFlashcardProgress(progressBar3);
 
+        Button helpButton = new Button("?");
+        helpButton.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(bundle.getString("help"));
+            alert.setHeaderText(null);
+            alert.setContentText(bundle.getString("helpFlashcardLibrary"));
+            alert.showAndWait();
+        });
+
         // Add all components to the layout
-        this.getChildren().addAll(pageTitle, topicBox, buttonBox);
+        this.getChildren().addAll(pageTitle, topicBox, buttonBox, helpButton);
     }
 
     @Override

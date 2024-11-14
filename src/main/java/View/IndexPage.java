@@ -2,6 +2,7 @@ package View;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
@@ -54,8 +55,17 @@ public class IndexPage extends BasePage {
         buttonContainer.setPadding(new Insets(10, 0, 0, 0));
         buttonContainer.setAlignment(Pos.CENTER);
 
+        Button helpButton = new Button("?");
+        helpButton.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(bundle.getString("help"));
+            alert.setHeaderText(null);
+            alert.setContentText(bundle.getString("helpIndex"));
+            alert.showAndWait();
+        });
+
         // Add elements to layout
-        this.getChildren().addAll(welcomeLabel, descriptionLabel, buttonContainer);
+        this.getChildren().addAll(welcomeLabel, descriptionLabel, buttonContainer, helpButton);
     }
 
     private void switchLanguage(String language) {

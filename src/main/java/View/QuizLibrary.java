@@ -12,6 +12,7 @@ import Model.User;
 import Model.Quiz;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -133,11 +134,22 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         updateQuizProgress(progressBar1);
         updateScoreProgress(progressBar2);
 
+        // Help button for user
+        Button helpButton = new Button("?");
+        helpButton.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(bundle.getString("help"));
+            alert.setHeaderText(null);
+            alert.setContentText(bundle.getString("helpQuizLibrary"));
+            alert.showAndWait();
+        });
+
         // Add components to the layout
         this.getChildren().addAll(
                 pageTitle,
                 quizzesBox,
-                buttonBox
+                buttonBox,
+                helpButton
         );
     }
 

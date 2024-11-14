@@ -10,14 +10,19 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
+import java.awt.*;
 import java.sql.Connection;
 import java.util.ResourceBundle;
 
 import Database.MariaDbConnection;
+
+import javax.swing.*;
 
 public class Homepage extends BasePage {
 
@@ -111,10 +116,21 @@ public class Homepage extends BasePage {
         buttonContainer.setAlignment(Pos.CENTER);
         VBox.setVgrow(buttonContainer, Priority.ALWAYS);  // Allow the VBox to take the full height
 
+        Button helpButton = new Button("?");
+        helpButton.setOnAction(e -> {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle(bundle.getString("help"));
+            alert.setHeaderText(null);
+            alert.setContentText(bundle.getString("helpHomepage"));
+            alert.showAndWait();
+        });
+
+
         // Add all components to the layout
         this.getChildren().addAll(
                 welcomeLabel,
-                buttonContainer
+                buttonContainer,
+                helpButton
         );
     }
 }
