@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -116,12 +117,18 @@ public class Homepage extends BasePage {
         buttonContainer.setAlignment(Pos.CENTER);
         VBox.setVgrow(buttonContainer, Priority.ALWAYS);  // Allow the VBox to take the full height
 
+        // Help button
         Button helpButton = new Button("?");
         helpButton.setOnAction(e -> {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle(bundle.getString("help"));
             alert.setHeaderText(null);
-            alert.setContentText(bundle.getString("helpHomepage"));
+
+            // Create a Text node to wrap the content text
+            Text content = new Text(bundle.getString("helpHomepage"));
+            content.setWrappingWidth(400); // Set the desired wrapping width
+
+            alert.getDialogPane().setContent(content);
             alert.showAndWait();
         });
 
