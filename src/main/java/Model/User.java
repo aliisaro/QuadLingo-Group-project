@@ -5,7 +5,6 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private int quizzesCompleted;
     private boolean passwordChanged;
 
     // Constructor with ID (for existing users)
@@ -45,10 +44,6 @@ public class User {
         return email;
     }
 
-    public int getQuizzesCompleted() {
-        return quizzesCompleted;
-    }
-
     // Setters
     public void setUsername(String username) {
         this.username = username;
@@ -65,9 +60,5 @@ public class User {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public void setQuizzesCompleted(int quizzesCompleted) {
-        this.quizzesCompleted = quizzesCompleted;
     }
 }

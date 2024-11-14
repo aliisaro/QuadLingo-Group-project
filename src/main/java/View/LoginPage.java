@@ -44,8 +44,8 @@ public class LoginPage extends BasePage {
         // Center the title horizontally
         titleContainer.setAlignment(Pos.CENTER);
 
-        Label usernameLabel = new Label(bundle.getString("usernameLabel")); // Use bundle for label
-        TextField usernameField = new TextField();
+        Label emailLabel = new Label(bundle.getString("emailLabel")); // Use bundle for label
+        TextField emailField = new TextField();
 
         Label passwordLabel = new Label(bundle.getString("passwordLabel")); // Use bundle for label
         PasswordField passwordField = new PasswordField();
@@ -54,7 +54,7 @@ public class LoginPage extends BasePage {
         Button loginButton = new Button(bundle.getString("login")); // Use bundle for button text
         loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         loginButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
-        loginButton.setOnAction(e -> handleLoginAction(usernameField, passwordField, stage));
+        loginButton.setOnAction(e -> handleLoginAction(emailField, passwordField, stage));
 
         // Go back to the index page
         Button indexPageButton = new Button(bundle.getString("goBackButton")); // Use bundle for button text
@@ -82,8 +82,8 @@ public class LoginPage extends BasePage {
         // Add elements to layout
         getChildren().addAll(
                 titleContainer,
-                usernameLabel,
-                usernameField,
+                emailLabel,
+                emailField,
                 passwordLabel,
                 passwordField,
                 buttonContainer,
@@ -91,20 +91,20 @@ public class LoginPage extends BasePage {
                 signUpButton);
     }
 
-    private void handleLoginAction(TextField usernameField, PasswordField passwordField, Stage stage) {
-        String username = usernameField.getText();
+    private void handleLoginAction(TextField emailField, PasswordField passwordField, Stage stage) {
+        String email = emailField.getText();
         String password = passwordField.getText();
 
         StringBuilder errorMessages = new StringBuilder(); // Object to store error messages
 
         // Basic validation: Check if fields are empty
-        if (username.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty()) {
             errorMessages.append(bundle.getString("allFieldsRequired")).append("\n"); // All fields are required.
-        } else if (!userController.doesUsernameExist(username)) { // Check if the user exists
+        } else if (!userController.doesEmailExist(email)) { // Check if the user exists
             errorMessages.append(bundle.getString("userDoesNotExist")).append("\n"); // User does not exist.
         } else {
             // Attempt to log in
-            User user = userController.loginUser(username, password);
+            User user = userController.loginUser(email, password);
             if (user == null) {
                 errorMessages.append(bundle.getString("incorrectPassword")).append("\n"); // Incorrect password.
             } else {

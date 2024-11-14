@@ -179,17 +179,6 @@ public class QuizDaoImpl implements QuizDao {
     }
 
     @Override
-    public void incrementCompletedQuizzes(int userId) {
-        String sql = "UPDATE LINGOUSER SET QuizzesCompleted = QuizzesCompleted + 1 WHERE UserID = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, userId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions as needed
-        }
-    }
-
-    @Override
     public boolean hasUserCompletedQuiz(int userId, int quizId) {
         // Implement the logic to check if the user has completed the quiz
         String sql = "SELECT COUNT(*) FROM ISCOMPLETED WHERE UserID = ? AND QuizID = ?";
