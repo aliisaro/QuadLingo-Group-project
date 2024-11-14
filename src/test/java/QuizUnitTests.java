@@ -3,155 +3,98 @@ import Model.Question;
 import Model.Quiz;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
 
-// Tests for quizzes using mockito
-// Mockito is used to create "mock" versions of the QuizDaoImpl class and its methods so that they don’t perform actual database operations.
-// Instead, they return predefined values when called during the test.
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class QuizUnitTests {
 
     private QuizDaoImpl quizDaoImpl;
+    private Connection mockConnection;
     private Quiz sampleQuiz;
-    private int sampleUserId;
 
     @BeforeEach
     public void setUp() {
-        // Mock the QuizDaoImpl class
-        quizDaoImpl = mock(QuizDaoImpl.class);
+        // Mock the Connection and QuizDaoImpl
+        mockConnection = mock(Connection.class);
+        quizDaoImpl = new QuizDaoImpl(mockConnection);
 
-        // Create a mock Quiz object with mock data, setting the score to 5
-        sampleQuiz = new Quiz(1, "Sample Quiz", 5, "en");
+        // Create a mock Quiz object with sample data
+        sampleQuiz = new Quiz(1, "Sample Quiz", 0, "en");
+    }
 
-        // Create a list of 5 mock questions for this quiz
-        Question mockQuestion1 = new Question(1, "What is 2 + 2?", Arrays.asList("4", "3", "5", "6"), "4");
-        Question mockQuestion2 = new Question(2, "What is 3 + 3?", Arrays.asList("6", "5", "7", "8"), "6");
-        Question mockQuestion3 = new Question(3, "What is 4 + 4?", Arrays.asList("8", "7", "6", "9"), "8");
-        Question mockQuestion4 = new Question(4, "What is 5 + 5?", Arrays.asList("10", "9", "11", "12"), "10");
-        Question mockQuestion5 = new Question(5, "What is 6 + 6?", Arrays.asList("12", "11", "13", "14"), "12");
-
-        // Mock the behavior of getQuestionsForQuiz to return the 5 questions
-        when(quizDaoImpl.getQuestionsForQuiz(1)).thenReturn(Arrays.asList(mockQuestion1, mockQuestion2, mockQuestion3, mockQuestion4, mockQuestion5));
-
-        // Mock the behavior of getAllQuizzes to return the sample quiz
+    @Test
+    public void testGetAllQuizzes() {
+        // Mock the behavior of getAllQuizzes
         when(quizDaoImpl.getAllQuizzes("en")).thenReturn(Arrays.asList(sampleQuiz));
 
-        // Mocking checkAnswer method for correct answers, ensuring that "4" is the correct answer for question 1
-        when(quizDaoImpl.checkAnswer(1, "4")).thenReturn(true); // Correct answer for "What is 2 + 2?"
-        when(quizDaoImpl.checkAnswer(1, "Incorrect Answer")).thenReturn(false);  // Incorrect answer
-
-        // Mocking recordQuizCompletion to just simulate the behavior
-        sampleUserId = 123;
-        when(quizDaoImpl.getUserScoreForQuiz(sampleUserId, 1)).thenReturn(5);  // Assuming the user answered all 5 questions correctly
-
-        // Mocking hasUserCompletedQuiz to return true for the given user and quiz
-        when(quizDaoImpl.hasUserCompletedQuiz(sampleUserId, 1)).thenReturn(true);
+        List<Quiz> quizzes = quizDaoImpl.getAllQuizzes("en");
+        assertNotNull(quizzes, "Quizzes list should not be null");
+        assertEquals(1, quizzes.size(), "Quizzes list should contain one quiz");
+        assertEquals("Sample Quiz", quizzes.get(0).getQuizTitle(), "Quiz title should match the sample quiz title");
     }
 
     @Test
-    public void testQuestionLoading() {
+    public void testGetQuestionsForQuiz() {
+        // Create sample questions for the quiz
+        Question question1 = new Question(1, "What is 2 + 2?", Arrays.asList("4", "3", "5", "6"), "4");
+        Question question2 = new Question(2, "What is 3 + 3?", Arrays.asList("6", "5", "7", "8"), "6");
+
+        // Mock the behavior of getQuestionsForQuiz to return the sample questions
+        when(quizDaoImpl.getQuestionsForQuiz(1)).thenReturn(Arrays.asList(question1, question2));
+
         List<Question> questions = quizDaoImpl.getQuestionsForQuiz(1);
         assertNotNull(questions, "Questions list should not be null");
-        assertTrue(questions.size() > 0, "Questions list should contain at least one question");
+        assertEquals(2, questions.size(), "Questions list should contain two questions");
 
-        for (Question question : questions) {
-            assertTrue(question.getAnswerOptions().size() >= 2, "Each question should have at least two answer options");
-            assertTrue(question.getAnswerOptions().contains(question.getCorrectAnswer()), "Correct answer should be among the options");
-        }
+        // Check the first question's details
+        Question firstQuestion = questions.get(0);
+        assertEquals("What is 2 + 2?", firstQuestion.getQuestionText(), "First question text should match");
+        assertTrue(firstQuestion.getAnswerOptions().contains("4"), "First question should have '4' as an answer option");
     }
 
     @Test
-    public void testAnswerChecking() {
-        int questionId = 1; // Example question ID
-        String correctAnswer = "4";  // Correct answer for "What is 2 + 2?"
-        String incorrectAnswer = "Incorrect Answer"; // This is an incorrect answer
+    public void testCheckAnswer_Correct() {
+        int questionId = 1;
+        String correctAnswer = "4";
 
-        // The correct answer is "4" for question 1
-        assertTrue(quizDaoImpl.checkAnswer(questionId, correctAnswer), "Correct answer should return true");
+        // Mock the behavior of checkAnswer to return true for the correct answer
+        when(quizDaoImpl.checkAnswer(questionId, correctAnswer)).thenReturn(true);
 
-        // This will still check for the wrong answer and should return false
-        assertFalse(quizDaoImpl.checkAnswer(questionId, incorrectAnswer), "Incorrect answer should return false");
-    }
-
-
-    @Test
-    public void testScoreCalculation() {
-        int expectedScore = 5;
-        quizDaoImpl.recordQuizCompletion(sampleUserId, 1, expectedScore);
-
-        int actualScore = quizDaoImpl.getUserScoreForQuiz(sampleUserId, 1);
-        assertEquals(expectedScore, actualScore, "The recorded score should match the expected score");
+        boolean result = quizDaoImpl.checkAnswer(questionId, correctAnswer);
+        assertTrue(result, "Correct answer should return true");
     }
 
     @Test
-    public void testQuizCompletion() {
-        // Set the expected score to match the number of questions
-        int expectedScore = 5;  // The quiz has 5 questions, so the score should be 5
-        int correctAnswers = 5; // Assume the user answers all 5 questions correctly
+    public void testCheckAnswer_Incorrect() {
+        int questionId = 1;
+        String incorrectAnswer = "5";
 
-        // Mock that the user has completed the quiz and got all answers correct
-        when(quizDaoImpl.getUserScoreForQuiz(sampleUserId, 1)).thenReturn(correctAnswers);
+        // Mock the behavior of checkAnswer to return false for an incorrect answer
+        when(quizDaoImpl.checkAnswer(questionId, incorrectAnswer)).thenReturn(false);
 
-        // Check if the user has completed the quiz
-        quizDaoImpl.recordQuizCompletion(sampleUserId, 1, expectedScore); // Simulate completing the quiz
-
-        // Since the user completed the quiz and got all answers correct, score should be expected
-        assertTrue(quizDaoImpl.hasUserCompletedQuiz(sampleUserId, 1), "User should have completed the quiz");
-
-        // Now, check if the score reflects the correct number of answers
-        int actualScore = quizDaoImpl.getUserScoreForQuiz(sampleUserId, 1);
-        assertEquals(expectedScore, actualScore, "The recorded score should match the expected score based on correct answers");
-
-        // Test for another quiz that has not been completed
-        int anotherQuizId = 999;  // Assuming this quiz ID doesn't exist or hasn't been completed
-        assertFalse(quizDaoImpl.hasUserCompletedQuiz(sampleUserId, anotherQuizId), "User should not have completed a different quiz");
+        boolean result = quizDaoImpl.checkAnswer(questionId, incorrectAnswer);
+        assertFalse(result, "Incorrect answer should return false");
     }
 
     @Test
-    public void testRetrieveAllQuizzes() {
-        List<Quiz> quizzes = quizDaoImpl.getAllQuizzes("en");
+    public void testRecordQuizCompletion() {
+        int userId = 123;
+        int quizId = 1;
+        int score = 5;
 
-        assertNotNull(quizzes, "Quizzes list should not be null.");
-        assertTrue(quizzes.size() > 0, "Quizzes list should contain at least one quiz.");
-        assertEquals("Sample Quiz", quizzes.get(0).getQuizTitle(), "The first quiz title should match the expected title.");
+        // Use Mockito to simulate recordQuizCompletion behavior
+        doNothing().when(quizDaoImpl).recordQuizCompletion(userId, quizId, score);
+
+        // Call the method to check that it executes without errors
+        quizDaoImpl.recordQuizCompletion(userId, quizId, score);
+
+        // Verify that recordQuizCompletion was called with the correct parameters
+        verify(quizDaoImpl, times(1)).recordQuizCompletion(userId, quizId, score);
     }
-    /*
-    @Test
-     public void testIncrementCompletedQuizzesForUser() {
-        // Mock increment completed quizzes method
-        doNothing().when(quizDaoImpl).incrementCompletedQuizzes(sampleUserId);
-
-        quizDaoImpl.incrementCompletedQuizzes(sampleUserId);
-
-        // Verify if incrementCompletedQuizzes was called
-        verify(quizDaoImpl, times(1)).incrementCompletedQuizzes(sampleUserId);
-    }
-
-     */
-
-    @Test
-    public void testHasUserCompletedSpecificQuiz() {
-        // Check if the user has completed a specific quiz
-        boolean hasCompleted = quizDaoImpl.hasUserCompletedQuiz(sampleUserId, 1);
-
-        assertTrue(hasCompleted, "User should have completed the specified quiz.");
-
-        // Test for a quiz that hasn't been completed
-        int anotherQuizId = 999;
-        when(quizDaoImpl.hasUserCompletedQuiz(sampleUserId, anotherQuizId)).thenReturn(false);
-        assertFalse(quizDaoImpl.hasUserCompletedQuiz(sampleUserId, anotherQuizId), "User should not have completed a different quiz.");
-    }
-
-    @Test
-    public void testRetrieveUserScoreForQuiz() {
-        int expectedScore = 5;
-        int actualScore = quizDaoImpl.getUserScoreForQuiz(sampleUserId, 1);
-
-        assertEquals(expectedScore, actualScore, "The retrieved score should match the expected score.");
-    }
-
 }

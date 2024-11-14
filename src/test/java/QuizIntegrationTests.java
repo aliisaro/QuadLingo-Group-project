@@ -32,39 +32,23 @@ class QuizIntegrationTests {
     }
 
     @Test
-    void testQuestionLoading() {
+    void testGetQuestionsForQuiz() {
 
     }
 
     @Test
-    void testAnswerChecking() {
+    void testCheckAnswer_Correct() {
 
     }
 
     @Test
-    void testQuizCompletion() {
-    }
-
-    @Test
-    void testScoreCalculation() {
+    void testCheckAnswer_Incorrect() {
 
     }
 
     @Test
-    void testHasUserCompletedSpecificQuiz() {
+    void testRecordQuizCompletion() {
     }
-
-    @Test
-    void testRetrieveUserScoreForQuiz() {
-
-    }
-
-    @Test
-    void testIncrementCompletedQuizzes() {
-        // Step 1: Remove any existing completion records for a clean start
-
-    }
-
 
     @AfterEach
     void tearDown() {
