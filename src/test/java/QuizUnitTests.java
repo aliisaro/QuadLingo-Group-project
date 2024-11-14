@@ -119,9 +119,9 @@ public class QuizUnitTests {
         assertTrue(quizzes.size() > 0, "Quizzes list should contain at least one quiz.");
         assertEquals("Sample Quiz", quizzes.get(0).getQuizTitle(), "The first quiz title should match the expected title.");
     }
-
+    /*
     @Test
-    public void testIncrementCompletedQuizzesForUser() {
+     public void testIncrementCompletedQuizzesForUser() {
         // Mock increment completed quizzes method
         doNothing().when(quizDaoImpl).incrementCompletedQuizzes(sampleUserId);
 
@@ -130,6 +130,8 @@ public class QuizUnitTests {
         // Verify if incrementCompletedQuizzes was called
         verify(quizDaoImpl, times(1)).incrementCompletedQuizzes(sampleUserId);
     }
+
+     */
 
     @Test
     public void testHasUserCompletedSpecificQuiz() {

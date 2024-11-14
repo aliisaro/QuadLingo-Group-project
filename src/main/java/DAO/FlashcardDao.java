@@ -14,4 +14,5 @@ public interface FlashcardDao {
     int getCurrentFlashcardId(String term);
     boolean isFlashcardMastered(int flashCardId, int userId);
     void unmasterAllFlashcards(int userId, String languageCode);
+    boolean hasUserMasteredSpecificFlashcard(int flashCardId, int userId);
 }

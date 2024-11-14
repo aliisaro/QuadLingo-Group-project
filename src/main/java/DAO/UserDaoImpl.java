@@ -322,6 +322,25 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
+    public Boolean getUserByEmail(String email) {
+        try (Connection connection = getConnection()) {
+            String query = "SELECT * FROM LINGOUSER WHERE Email = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return true;
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public String getEmail() {
         try (Connection connection = getConnection()) {
             String query = "SELECT Email FROM LINGOUSER WHERE UserID = ?";
@@ -341,7 +360,6 @@ public class UserDaoImpl implements UserDao {
         return email;
     }
 
-    // Implement other methods related to User database operations
 
     @Override
     public int getCurrentUserId() {

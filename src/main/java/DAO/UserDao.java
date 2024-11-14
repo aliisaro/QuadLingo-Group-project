@@ -14,4 +14,5 @@ public interface UserDao {
     int getFlashcardsMastered(int userId, String language);
     String getEmail();
     int getCurrentUserId();
+    Boolean getUserByEmail(String email);
 }
