@@ -101,6 +101,8 @@ public class ChineseLocalizationTest {
         assertEquals("进步", bundle.getString("progressPageButton"));
         assertEquals("错误", bundle.getString("errorAlertTitle"));
         assertEquals("成功", bundle.getString("successAlertTitle"));
+        assertEquals("更改语言:", bundle.getString("changeLanguageLabel"));
+
     }
 
     @Test
@@ -136,5 +138,12 @@ public class ChineseLocalizationTest {
         assertEquals("测验结束！", bundle.getString("quizFinished"));
         assertEquals("您的分数：", bundle.getString("yourScore"));
         assertEquals("出", bundle.getString("outOf"));
+    }
+
+    @Test
+    public void testLoggedOutPage() {
+        // Assertions for the logged out page
+        assertEquals("您已退出。", bundle.getString("loggedOutMessage"));
+        assertEquals("转到起始页", bundle.getString("indexPageButton"));
     }
 }
