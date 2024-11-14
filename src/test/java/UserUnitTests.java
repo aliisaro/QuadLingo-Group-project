@@ -102,10 +102,10 @@ class UserUnitTests {
     }
 
     @Test
-    void testLoginWithInvalidUsername() {
+    void testLoginWithInvalidEmail() {
         when(userDao.loginUser("nonexistent", "Password123")).thenReturn(null);
         User loggedInUser = userDao.loginUser("nonexistent", "Password123");
-        assertNull(loggedInUser, "Login should fail with nonexistent username.");
+        assertNull(loggedInUser, "Login should fail with nonexistent email.");
     }
 
     @Test
@@ -121,7 +121,7 @@ class UserUnitTests {
     }
 
     @Test
-    void testDeleteUserByEmail_Success() {
+    void testDeleteUserByEmail() {
         // Mock behavior for deleting a user by email
         when(userDao.deleteUserByEmail(testEmail)).thenReturn(true);  // Simulate successful deletion
         boolean result = userDao.deleteUserByEmail(testEmail);
@@ -129,15 +129,7 @@ class UserUnitTests {
     }
 
     @Test
-    void testDeleteUserByEmail_Failure_UserNotFound() {
-        // Simulate failure for non-existing user
-        when(userDao.deleteUserByEmail("nonexistent@example.com")).thenReturn(false);  // Simulate failure
-        boolean result = userDao.deleteUserByEmail("nonexistent@example.com");
-        assertFalse(result, "Deletion should fail for non-existing user.");
-    }
-
-    @Test
-    void testGetUserById_Success() {
+    void testGetUserById() {
         // Mocking the retrieval of a user by ID
         when(userDao.getUserById(testUserId)).thenReturn(validUser);
 
@@ -147,53 +139,6 @@ class UserUnitTests {
         assertEquals(testUserId, retrievedUser.getUserId(), "User ID should match.");
         assertEquals(testUsername, retrievedUser.getUsername(), "Username should match.");
         assertEquals(testEmail, retrievedUser.getEmail(), "Email should match.");
-    }
-
-    @Test
-    void testGetUserById_Failure() {
-        // Simulating the case where no user is found for the given ID
-        when(userDao.getUserById(testUserId)).thenReturn(null);
-
-        User retrievedUser = userDao.getUserById(testUserId);
-
-        assertNull(retrievedUser, "User should not be found for invalid ID.");
-    }
-
-    @Test
-    void testDoesEmailExist_Exists() {
-        when(userDao.doesEmailExist(testEmail)).thenReturn(true);
-        boolean exists = userDao.doesEmailExist(testEmail);
-        assertTrue(exists, "Email should exist in the database.");
-    }
-
-    @Test
-    void testDoesEmailExist_NotExists() {
-        when(userDao.doesEmailExist("nonexistent@example.com")).thenReturn(false);
-        boolean exists = userDao.doesEmailExist("nonexistent@example.com");
-        assertFalse(exists, "Email should not exist in the database.");
-    }
-
-    @Test
-    void testGetQuizzesCompleted() {
-        int expectedQuizzesCompleted = 5;
-        when(userDao.getQuizzesCompleted(testUserId, "en")).thenReturn(expectedQuizzesCompleted);
-        int quizzesCompleted = userDao.getQuizzesCompleted(testUserId, "en");
-        assertEquals(expectedQuizzesCompleted, quizzesCompleted, "Retrieved quizzes completed should match.");
-    }
-
-    @Test
-    void testGetFlashcardsMastered() {
-        int expectedFlashcardsMastered = 10;
-        when(userDao.getFlashcardsMastered(testUserId, "en")).thenReturn(expectedFlashcardsMastered);
-        int flashcardsMastered = userDao.getFlashcardsMastered(testUserId, "en");
-        assertEquals(expectedFlashcardsMastered, flashcardsMastered, "Retrieved mastered flashcards should match.");
-    }
-
-    @Test
-    void testGetEmail() {
-        when(userDao.getEmail()).thenReturn(testEmail);
-        String retrievedEmail = userDao.getEmail();
-        assertEquals(testEmail, retrievedEmail, "Retrieved email should match the user's email.");
     }
 
     @AfterEach

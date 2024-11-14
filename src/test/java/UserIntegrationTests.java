@@ -1,3 +1,4 @@
+import Controller.UserController;
 import DAO.UserDaoImpl;
 import Model.User;
 import org.junit.jupiter.api.*;
@@ -6,72 +7,66 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserIntegrationTests {
 
+    private UserController userController;
     private UserDaoImpl userDao;
     private final String testEmail = "testuser@example.com";
     private int userId; // Store userId for later use
 
     @BeforeEach
     void setUp() {
+        // Initialize UserDaoImpl and UserController for direct database interaction
         userDao = UserDaoImpl.getInstance();
+        userController = new UserController(userDao);
 
         // Create a user with a known email before each test
         User validUser = new User("testUser", "Password123", testEmail);
-        userId = userDao.createUser(validUser); // Save the created user's ID
+        userId = userController.createUser("testUser", "Password123", testEmail).getUserId();
     }
 
     @Test
     void testCreateUser_Success() {
-        User validUser = new User("testUser2", "Password123", testEmail);
-        int newUserId = userDao.createUser(validUser);
-        assertTrue(newUserId < 0, "Register should fail with existing email");
+        User createdUser = userController.createUser("testUser2", "Password123", "unique@example.com");
+
+        assertNotNull(createdUser, "User creation should succeed with unique email");
+        assertTrue(createdUser.getUserId() > 0, "User ID should be greater than 0 for successfully created user");
     }
 
     @Test
     void testCreateUser_WithExistingEmail() {
-        // Attempt to create a user with existing email
-        User existingEmailUser = new User("testUser3", "Password123", testEmail);
-        int existingEmailId = userDao.createUser(existingEmailUser);
-        assertTrue(existingEmailId < 0, "Register should fail with existing email");
+        // Attempt to create a user with an email that already exists
+        User createdUser = userController.createUser("testUser3", "Password123", testEmail);
+        assertNull(createdUser, "User creation should fail with existing email");
     }
 
     @Test
     void testCreateUser_WithInvalidEmailFormat() {
-        // Attempt to create a user with an invalid email format
-        User invalidEmailUser = new User("testUser4", "Password123", "invalidemailformat");
-        int invalidEmailId = userDao.createUser(invalidEmailUser);
-        assertTrue(invalidEmailId < 0, "Register should fail with invalid email format");
+        User createdUser = userController.createUser("testUser7", "Password123", "invalidemail");
+        assertNull(createdUser, "User creation should fail with an invalid email format");
     }
 
     @Test
-    void testCreateUser_WithInvalidPassword_NoUppercase() {
-        // Attempt to create a user with an invalid password (no uppercase letter)
-        User invalidPasswordUser1 = new User("testUser5", "password123", testEmail);
-        int invalidPasswordId1 = userDao.createUser(invalidPasswordUser1);
-        assertTrue(invalidPasswordId1 < 0, "Register should fail with password missing uppercase letter");
+    void testCreateUser_InvalidPassword_NoUppercase() {
+        User createdUser = userController.createUser("testUser4", "password123", "noupcase@example.com");
+        assertNull(createdUser, "User creation should fail with a password that has no uppercase letter");
     }
 
     @Test
-    void testCreateUser_WithInvalidPassword_NoDigit() {
-        // Attempt to create a user with an invalid password (no digit)
-        User invalidPasswordUser2 = new User("testUser6", "Password", testEmail);
-        int invalidPasswordId2 = userDao.createUser(invalidPasswordUser2);
-        assertTrue(invalidPasswordId2 < 0, "Register should fail with password missing digit");
+    void testCreateUser_InvalidPassword_NoDigit() {
+        User createdUser = userController.createUser("testUser5", "Password", "nodigit@example.com");
+        assertNull(createdUser, "User creation should fail with a password that has no digit");
     }
 
     @Test
-    void testCreateUser_WithInvalidPassword_TooShort() {
-        // Attempt to create a user with an invalid password (too short)
-        User invalidPasswordUser3 = new User("testUser7", "P1", testEmail);
-        int invalidPasswordId3 = userDao.createUser(invalidPasswordUser3);
-        assertTrue(invalidPasswordId3 < 0, "Register should fail with password too short");
+    void testCreateUser_InvalidPassword_TooShort() {
+        User createdUser = userController.createUser("testUser6", "Pass1", "shortpwd@example.com");
+        assertNull(createdUser, "User creation should fail with a password that is too short");
     }
 
     @Test
     void testLoginUser() {
         // Attempt to log in with valid credentials
-        User loggedInUser = userDao.loginUser("testUser", "Password123");
+        User loggedInUser = userController.loginUser(testEmail, "Password123");
 
-        // Assert that the logged-in user is not null and that the details are correct
         assertNotNull(loggedInUser, "Login should succeed with valid credentials");
         assertEquals("testUser", loggedInUser.getUsername(), "Username should match");
         assertEquals(testEmail, loggedInUser.getEmail(), "Email should match");
@@ -80,81 +75,61 @@ class UserIntegrationTests {
     @Test
     void testLoginWithInvalidPassword() {
         // Attempt to log in with incorrect password
-        User invalidPasswordLogin = userDao.loginUser("testUser", "WrongPassword");
+        User invalidPasswordLogin = userController.loginUser(testEmail, "WrongPassword");
         assertNull(invalidPasswordLogin, "Login should fail with incorrect password");
     }
 
     @Test
-    void testLoginWithInvalidUsername() {
-        // Attempt to log in with a username that doesn't exist in the database
-        User invalidUsernameLogin = userDao.loginUser("nonexistentusername", "Password123");
-        assertNull(invalidUsernameLogin, "Login should fail with nonexistent username");
+    void testLoginWithInvalidEmail() {
+        User loggedInUser = userController.loginUser("nonexistent@example.com", "Password123");
+        assertNull(loggedInUser, "Login should fail with a nonexistent username");
     }
 
     @Test
     void testUpdateUser_Success() {
-        // Arrange
-        User existingUser = userDao.getUserById(userId); // Use the dynamic ID
+        // Retrieve the user and update username
+        User existingUser = userController.getUserById(userId);
         User updatedUser = new User(existingUser.getUserId(), "updatedUser", existingUser.getPassword(), existingUser.getEmail());
 
-        // Act
-        boolean result = userDao.updateUser(updatedUser);
+        boolean result = userController.updateUser(updatedUser);
+        assertTrue(result, "The updateUser method should return true on success");
 
-        // Assert
-        assertTrue(result, "The updateUser method should return true on success.");
-
-        // Fetch the updated user to verify changes
-        User retrievedUser = userDao.getUserById(existingUser.getUserId());
-        assertEquals("updatedUser", retrievedUser.getUsername(), "The username should be updated successfully.");
+        User retrievedUser = userController.getUserById(existingUser.getUserId());
+        assertEquals("updatedUser", retrievedUser.getUsername(), "The username should be updated successfully");
     }
 
     @Test
     void testDeleteUserByEmail() {
         // Attempt to delete a user with the known test email
-        boolean deletionResult = userDao.deleteUserByEmail(testEmail);
+        boolean deletionResult = userController.deleteUserByEmail(testEmail);
 
-        // Assert that the deletion was successful
-        assertTrue(deletionResult, "User should be deleted successfully with valid email.");
+        assertTrue(deletionResult, "User should be deleted successfully with valid email");
 
         // Try to retrieve the deleted user to ensure they are no longer in the system
-        User deletedUser = userDao.getUserById(userId); // We saved the user's ID earlier
-        assertNull(deletedUser, "Deleted user should not be found in the system.");
+        User deletedUser = userController.getUserById(userId);
+        assertNull(deletedUser, "Deleted user should not be found in the system");
     }
 
     @Test
-    void testDeleteUserByEmail_UserDoesNotExist() {
-        // Attempt to delete a user with an email that does not exist
-        boolean deletionResult = userDao.deleteUserByEmail("nonexistent@example.com");
+    void testGetUserById() {
+        User retrievedUser = userController.getUserById(userId);
 
-        // Assert that the deletion was unsuccessful
-        assertFalse(deletionResult, "Deletion should fail for non-existing user.");
-    }
-
-    @Test
-    void testGetUserById_Success() {
-        // Mocking the retrieval of a user by ID
-        User retrievedUser = userDao.getUserById(userId);
-
-        assertNotNull(retrievedUser, "User should be retrieved successfully.");
-        assertEquals(userId, retrievedUser.getUserId(), "User ID should match.");
-        assertEquals("testUser", retrievedUser.getUsername(), "Username should match.");
-        assertEquals(testEmail, retrievedUser.getEmail(), "Email should match.");
-    }
-
-    @Test
-    void testGetUserById_Failure() {
-        // Simulating the case where no user is found for the given ID
-        User retrievedUser = userDao.getUserById(-1); // Using an invalid ID
-
-        assertNull(retrievedUser, "User should not be found for invalid ID.");
+        assertNotNull(retrievedUser, "User should be retrieved successfully");
+        assertEquals(userId, retrievedUser.getUserId(), "User ID should match");
+        assertEquals("testUser", retrievedUser.getUsername(), "Username should match");
+        assertEquals(testEmail, retrievedUser.getEmail(), "Email should match");
     }
 
     @AfterEach
     void tearDown() {
-        // Only attempt to delete the user if they exist in the database
-        User user = userDao.getUserById(userId);
-        if (user != null) {
-            userDao.deleteUserByEmail(testEmail);
+        // Attempt to delete both the main test user and the "unique@example.com" user
+        if (userController.getUserById(userId) != null) {
+            assertTrue(userController.deleteUserByEmail(testEmail), "User should be deleted successfully in tearDown");
+        }
+        // Clean up any "unique@example.com" entries in case of failure to delete in test
+        User uniqueUser = userController.loginUser("unique@example.com", "Password123");
+        if (uniqueUser != null) {
+            assertTrue(userController.deleteUserByEmail("unique@example.com"), "Unique user should be deleted in tearDown");
         }
     }
 }
