@@ -102,6 +102,8 @@ public class FrenchLocalizationTest {
         assertEquals("Progrès", bundle.getString("progressPageButton"));
         assertEquals("Erreur", bundle.getString("errorAlertTitle"));
         assertEquals("Succès", bundle.getString("successAlertTitle"));
+        assertEquals("Changer la langue:", bundle.getString("changeLanguageLabel"));
+
     }
 
     @Test
@@ -137,5 +139,12 @@ public class FrenchLocalizationTest {
         assertEquals("Quiz terminé !", bundle.getString("quizFinished"));
         assertEquals("Votre score :", bundle.getString("yourScore"));
         assertEquals("\u0020hors de ", bundle.getString("outOf"));
+    }
+
+    @Test
+    public void testLoggedOutPage() {
+        // Assertions for the logged out page
+        assertEquals("Vous avez été déconnecté.", bundle.getString("loggedOutMessage"));
+        //assertEquals("Go to start page", bundle.getString("indexPageButton"));
     }
 }

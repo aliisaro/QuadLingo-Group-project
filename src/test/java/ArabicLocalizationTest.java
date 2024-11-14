@@ -102,6 +102,7 @@ public class ArabicLocalizationTest {
         assertEquals("تقدم", bundle.getString("progressPageButton"));
         assertEquals("خطأ", bundle.getString("errorAlertTitle"));
         assertEquals("نجاح", bundle.getString("successAlertTitle"));
+        assertEquals("تغيير اللغة:", bundle.getString("changeLanguageLabel"));
     }
 
     @Test
@@ -137,5 +138,12 @@ public class ArabicLocalizationTest {
         assertEquals("إنتهى الإختبار!", bundle.getString("quizFinished"));
         assertEquals("نقاطك:", bundle.getString("yourScore"));
         assertEquals("خارج من", bundle.getString("outOf"));
+    }
+
+    @Test
+    public void testLoggedOutPage() {
+        // Assertions for the logged out page
+        assertEquals("لقد تم تسجيل خروجك.", bundle.getString("loggedOutMessage"));
+        assertEquals("انتقل إلى الصفحة الرئيسية", bundle.getString("indexPageButton"));
     }
 }
