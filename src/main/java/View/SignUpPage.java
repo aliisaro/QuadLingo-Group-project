@@ -104,25 +104,28 @@ public class SignUpPage extends BasePage {
         // Basic validation: Check if fields are empty
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
             errorMessages.append(bundle.getString("allFieldsRequired")).append("\n"); // All fields are required.
-        }
-        // Email format validation
-        else if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            errorMessages.append(bundle.getString("invalidEmail")).append("\n"); // Invalid email format.
-        }
-        // Check if the email is already registered
-        else if (userController.doesEmailExist(email)) {
-            errorMessages.append(bundle.getString("accountExists")).append("\n"); // An account with this email already exists.
-        }
+        } else {
+            // Email format validation
+            if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+                errorMessages.append(bundle.getString("invalidEmail")).append("\n"); // Invalid email format.
+            }
+            // Check if the email is already registered
+            if (userController.doesEmailExist(email)) {
+                errorMessages.append(bundle.getString("accountExists")).append("\n"); // An account with this email already exists.
+            }
 
-        // Password validation
-        if (!password.matches(".*[A-Z].*")) {
-            errorMessages.append(bundle.getString("oneUppercaseLetter")).append("\n"); // Password must include at least 1 uppercase letter.
-        }
-        if (!password.matches(".*\\d.*")) {
-            errorMessages.append(bundle.getString("oneNumber")).append("\n"); // Password must include at least 1 number.
-        }
-        if (password.length() < 8) {
-            errorMessages.append(bundle.getString("atLeastEight")).append("\n"); // Password must be at least 8 characters.
+            // Password validation (only if the password field is not empty)
+            if (!password.isEmpty()) {
+                if (!password.matches(".*[A-Z].*")) {
+                    errorMessages.append(bundle.getString("oneUppercaseLetter")).append("\n"); // Password must include at least 1 uppercase letter.
+                }
+                if (!password.matches(".*\\d.*")) {
+                    errorMessages.append(bundle.getString("oneNumber")).append("\n"); // Password must include at least 1 number.
+                }
+                if (password.length() < 8) {
+                    errorMessages.append(bundle.getString("atLeastEight")).append("\n"); // Password must be at least 8 characters.
+                }
+            }
         }
 
         // If there are errors, display them in an alert
@@ -149,4 +152,5 @@ public class SignUpPage extends BasePage {
             }
         }
     }
+
 }
