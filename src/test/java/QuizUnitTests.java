@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,21 +18,33 @@ public class QuizUnitTests {
 
     private QuizDaoImpl quizDaoImpl;
     private Connection mockConnection;
+    private PreparedStatement mockPreparedStatement;
     private Quiz sampleQuiz;
 
     @BeforeEach
-    public void setUp() {
-        // Mock the Connection and QuizDaoImpl
+    public void setUp() throws Exception {
+        // Mock Connection and PreparedStatement
         mockConnection = mock(Connection.class);
-        quizDaoImpl = new QuizDaoImpl(mockConnection);
+        mockPreparedStatement = mock(PreparedStatement.class);
 
-        // Create a mock Quiz object with sample data
+        // Mock behavior for prepareStatement
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+
+        // Mock behavior for PreparedStatement methods
+        when(mockPreparedStatement.executeQuery()).thenReturn(mock(ResultSet.class));
+        doNothing().when(mockPreparedStatement).setInt(anyInt(), anyInt());
+        doNothing().when(mockPreparedStatement).setString(anyInt(), anyString());
+
+        // Mock QuizDaoImpl
+        quizDaoImpl = mock(QuizDaoImpl.class);
+
+        // Set up a sample quiz
         sampleQuiz = new Quiz(1, "Sample Quiz", 0, "en");
     }
 
     @Test
     public void testGetAllQuizzes() {
-        // Mock the behavior of getAllQuizzes
+        // Mock getAllQuizzes behavior
         when(quizDaoImpl.getAllQuizzes("en")).thenReturn(Arrays.asList(sampleQuiz));
 
         List<Quiz> quizzes = quizDaoImpl.getAllQuizzes("en");
@@ -63,7 +77,7 @@ public class QuizUnitTests {
         int questionId = 1;
         String correctAnswer = "4";
 
-        // Mock the behavior of checkAnswer to return true for the correct answer
+        // Mock checkAnswer behavior
         when(quizDaoImpl.checkAnswer(questionId, correctAnswer)).thenReturn(true);
 
         boolean result = quizDaoImpl.checkAnswer(questionId, correctAnswer);
@@ -75,7 +89,7 @@ public class QuizUnitTests {
         int questionId = 1;
         String incorrectAnswer = "5";
 
-        // Mock the behavior of checkAnswer to return false for an incorrect answer
+        // Mock checkAnswer behavior
         when(quizDaoImpl.checkAnswer(questionId, incorrectAnswer)).thenReturn(false);
 
         boolean result = quizDaoImpl.checkAnswer(questionId, incorrectAnswer);
@@ -88,13 +102,12 @@ public class QuizUnitTests {
         int quizId = 1;
         int score = 5;
 
-        // Use Mockito to simulate recordQuizCompletion behavior
+        // Mock recordQuizCompletion behavior
         doNothing().when(quizDaoImpl).recordQuizCompletion(userId, quizId, score);
 
-        // Call the method to check that it executes without errors
         quizDaoImpl.recordQuizCompletion(userId, quizId, score);
 
-        // Verify that recordQuizCompletion was called with the correct parameters
+        // Verify the method was called
         verify(quizDaoImpl, times(1)).recordQuizCompletion(userId, quizId, score);
     }
 }
