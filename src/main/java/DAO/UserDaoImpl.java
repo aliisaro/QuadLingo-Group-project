@@ -6,7 +6,6 @@ import java.sql.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 // Responsible for direct interactions with the database, executes SQL queries and handles results
-// Not the same as UserController
 public class UserDaoImpl implements UserDao {
 
     public static UserDaoImpl instance;
@@ -78,7 +77,6 @@ public class UserDaoImpl implements UserDao {
         return -1; // Indicate failure
     }
 
-
     // Logs in a user by their username and password
     @Override
     public User loginUser(String email, String password) {
@@ -133,7 +131,6 @@ public class UserDaoImpl implements UserDao {
         }
         return user;
     }
-
 
     // Updates a user's info in the LINGOUSER table (if password is changed, it will be hashed)
     @Override
@@ -205,7 +202,6 @@ public class UserDaoImpl implements UserDao {
         }
         return isUpdated;
     }
-    
 
     // Checks if a username exists in the LINGOUSER table
     @Override
@@ -251,7 +247,6 @@ public class UserDaoImpl implements UserDao {
         return exists;
     }
 
-
     // Deletes a user by their email from the LINGOUSER table
     @Override
     public boolean deleteUserByEmail(String email) {
@@ -268,7 +263,7 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-
+    // Gets the number of quizzes completed by a user
     @Override
     public int getQuizzesCompleted(int userId, String language) {
         int quizzesCompleted = 0;
@@ -277,12 +272,10 @@ public class UserDaoImpl implements UserDao {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
             statement.setString(2, language);
-            System.out.println("Executing query: " + statement);
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 quizzesCompleted = resultSet.getInt("QuizzesCompleted");
-                System.out.println("QuizzesCompleted retrieved: " + quizzesCompleted + "Language: " + language);
             } else {
                 System.out.println("No completed quizzes found for user ID: " + userId + " and language: " + language);
             }
@@ -295,7 +288,7 @@ public class UserDaoImpl implements UserDao {
         return quizzesCompleted;
     }
 
-
+    // Gets the number of flashcards mastered by a user
     @Override
     public int getFlashcardsMastered(int userId, String language) {
         int flashcardsMastered = 0;
@@ -320,7 +313,7 @@ public class UserDaoImpl implements UserDao {
         return flashcardsMastered;
     }
 
-
+    // Gets user by email
     @Override
     public Boolean getUserByEmail(String email) {
         try (Connection connection = getConnection()) {
@@ -340,6 +333,7 @@ public class UserDaoImpl implements UserDao {
         return false;
     }
 
+    // Returns the email of the current user
     @Override
     public String getEmail() {
         try (Connection connection = getConnection()) {
@@ -360,7 +354,7 @@ public class UserDaoImpl implements UserDao {
         return email;
     }
 
-
+    // Returns the current user ID
     @Override
     public int getCurrentUserId() {
         return currentUserId;

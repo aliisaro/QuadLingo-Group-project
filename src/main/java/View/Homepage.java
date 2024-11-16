@@ -19,13 +19,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.awt.*;
 import java.sql.Connection;
 import java.util.ResourceBundle;
-
 import Database.MariaDbConnection;
 
-import javax.swing.*;
 
 public class Homepage extends BasePage {
 
@@ -118,7 +115,6 @@ public class Homepage extends BasePage {
 
         buttonContainer.setAlignment(Pos.CENTER);
         VBox.setVgrow(buttonContainer, Priority.ALWAYS);  // Allow the VBox to take the full height
-
 
         // Help button with custom PNG image
         Image helpImage = new Image(getClass().getResourceAsStream("/helpButton3.png"));

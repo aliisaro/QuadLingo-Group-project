@@ -9,7 +9,7 @@ import javafx.application.Application;
 public class QuadLingoGui extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         // Setting the title of the window
         primaryStage.setTitle("QuadLingo");
 

@@ -112,6 +112,7 @@ public class IndexPage extends BasePage {
         updateTexts(); // Update UI texts
     }
 
+    // Update UI texts
     private void updateTexts() {
         welcomeLabel.setText(bundle.getString("welcomeMessage"));
         descriptionLabel.setText(bundle.getString("descriptionMessage"));

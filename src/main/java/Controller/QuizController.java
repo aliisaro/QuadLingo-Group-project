@@ -2,7 +2,6 @@ package Controller;
 
 import DAO.QuizDao;
 import Model.Quiz;
-import Model.Question;
 import java.util.List;
 
 public class QuizController {
@@ -20,5 +19,4 @@ public class QuizController {
         return this.quizDao;
     }
 
-    // Add other controller methods as needed
 }

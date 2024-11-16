@@ -1,9 +1,7 @@
 package Controller;
 
 import DAO.UserDaoImpl;
-import Model.Progress;
 import Model.User;
-import org.mindrot.jbcrypt.BCrypt;
 
 public class UserController {
     private UserDaoImpl userDao;
@@ -57,34 +55,15 @@ public class UserController {
         return userDao.doesEmailExist(email);
     }
 
-    // Check if a username exists
-    public boolean doesUsernameExist(String username) {
-        return userDao.doesUsernameExist(username);
-    }
-
     // Delete a user by email
     public boolean deleteUserByEmail(String email) {return userDao.deleteUserByEmail(email); }
 
     public int getQuizzesCompleted(int userId, String language) {
-        System.out.println("Retrieving quizzes completed quizzes for user: " + userId + ". Language " + language);
-        int quizzesCompleted = userDao.getQuizzesCompleted(userId, language );
-        System.out.println("Quizzes completed: " + quizzesCompleted + ". Language " + language);
-        return quizzesCompleted;
+        return userDao.getQuizzesCompleted(userId, language );
     }
 
     public int getFlashcardsMastered(int userId, String language) {
-        System.out.println("Retrieving flashcards mastered for user: " + userId);
-        int flashcardsMastered = userDao.getFlashcardsMastered(userId, language);
-        System.out.println("Flashcards mastered: " + flashcardsMastered);
-        return flashcardsMastered;
-    }
-
-    public String getEmailDao() {
-        return userDao.getEmail();
-    }
-
-    public Progress getUserProgress(User user) {
-        return null; // Placeholder
+        return userDao.getFlashcardsMastered(userId, language);
     }
 
     public int getCurrentUserId() {

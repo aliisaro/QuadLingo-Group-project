@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class QuizPage extends BasePage {
-    private QuizDao quizDao;
-    private List<Question> questions;
-    private int quizId;
+    private final QuizDao quizDao;
+    private final List<Question> questions;
+    private final int quizId;
     private int currentQuestionIndex = 0;
     private int score = 0;
     private Label questionLabel;

@@ -23,13 +23,11 @@ public class ProgressPage extends BasePage implements setMarginButton, UpdatePro
     private final int allQuizzes;
     private final int masteredFlashcards;
     private final int allFlashcards;
-    private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
     private static final ProgressBar progressBar1 = new ProgressBar();
     private static final ProgressBar progressBar2 = new ProgressBar();
     private static final ProgressBar progressBar3 = new ProgressBar();
     private ResourceBundle bundle;
     private String languageCode;
-
 
     //Displays the progress page
     public ProgressPage(Stage stage) {
