@@ -30,9 +30,6 @@ public class LoggedOutPage extends BasePage {
         loggedOutLabel = new Label(bundle.getString("loggedOutMessage"));
         loggedOutLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // descriptionLabel = new Label(bundle.getString("descriptionMessage"));
-        // descriptionLabel.setStyle("-fx-font-size: 16px;");
-
         indexPageButton = new Button(bundle.getString("indexPageButton"));
         indexPageButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px; -fx-pref-width: 200px;");
         indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
@@ -46,10 +43,4 @@ public class LoggedOutPage extends BasePage {
         this.getChildren().addAll(loggedOutLabel, buttonContainer);
     }
 
-
-    private void updateTexts() {
-        loggedOutLabel.setText(bundle.getString("welcomeMessage"));
-        // descriptionLabel.setText(bundle.getString("descriptionMessage"));
-        indexPageButton.setText(bundle.getString("indexPageButton")); // Make sure this key is correct
-    }
 }

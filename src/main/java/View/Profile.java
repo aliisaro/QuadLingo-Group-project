@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.Locale;
@@ -276,6 +275,7 @@ public class Profile extends BasePage {
         alert.showAndWait();
     }
 
+    // Method to update UI texts
     private void updateTexts() {
         User currentUser = SessionManager.getInstance().getCurrentUser();
 
@@ -291,13 +291,5 @@ public class Profile extends BasePage {
         buttonProgress.setText(bundle.getString("progressPageButton"));
         logoutButton.setText(bundle.getString("logoutButton"));
         changeLanguage.setText(bundle.getString("changeLanguageLabel"));
-        /*
-        signUpPageButton.setText(bundle.getString("emptyFieldsAlert"));
-        signUpPageButton.setText(bundle.getString("profileUpdateSuccessAlert"));
-        signUpPageButton.setText(bundle.getString("profileUpdateFailedAlert"));
-
-        signUpPageButton.setText(bundle.getString("errorAlertTitle"));
-        signUpPageButton.setText(bundle.getString("successAlertTitle"));
-         */
     }
 }

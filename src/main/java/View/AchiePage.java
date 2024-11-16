@@ -18,12 +18,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AchiePage extends BasePage implements setMarginButton {
-    private UserController userController;
-    private List<Badge> badges;
+    private final UserController userController;
+    private final List<Badge> badges;
     private VBox unlockedBadgesContainer;
     private VBox lockedBadgesContainer;
     private ResourceBundle bundle;
-    private String languageCode;
+    private final String languageCode;
 
     //Displays the Achievements page
     public AchiePage(Stage stage) {
@@ -100,12 +100,6 @@ public class AchiePage extends BasePage implements setMarginButton {
             int badgeThreshold = badge.getThreshold();
             String checker = badge.getChecker();
 
-            // Debug statements
-            System.out.println("Badge: " + badge.getDescription());
-            System.out.println("Quizzes Completed: " + quizzesCompleted);
-            System.out.println("Flashcards Mastered: " + flashcardsMastered);
-            System.out.println("Badge Threshold: " + badgeThreshold);
-
             boolean isUnlocked = false;
 
             // Check if the badge is for quizzes or flashcards
@@ -149,7 +143,6 @@ public class AchiePage extends BasePage implements setMarginButton {
     public void setMargin(Button button, int top, int right, int bottom, int left) {
         VBox.setMargin(button, new Insets(top, right, bottom, left));
     }
-
 
     //Unlocks the badge
     public void unlockBadge(ImageView imageView) {

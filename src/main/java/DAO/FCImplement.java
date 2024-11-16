@@ -60,25 +60,6 @@ public class FCImplement implements FlashcardDao {
     }
 
     @Override
-    public List<Flashcard> getAllFlashcards(String languageCode) {
-        List<Flashcard> flashCards = new ArrayList<>();
-        String query = "SELECT Term, Translation, Topic FROM FLASHCARD WHERE language_code2 = ?";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                String term = rs.getString("Term");
-                String translation = rs.getString("Translation");
-                String topic = rs.getString("Topic");
-                flashCards.add(new Flashcard(term, translation, topic));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return flashCards;
-    }
-
-    @Override
     public void masterFlashcard(int flashCardId, int userId) {
         String query = "INSERT INTO ISMASTERED (FlashCardID, UserID) VALUES (?, ?)";
 

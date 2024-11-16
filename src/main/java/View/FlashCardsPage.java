@@ -165,6 +165,7 @@ public class FlashCardsPage extends BasePage {
         loadFlashCard(false);
     }
 
+    // Apply the flip transition to the flashcard
     private void applyFlipTransition(VBox container, boolean show) {
         RotateTransition flipOut = new RotateTransition(Duration.millis(150), container);
         flipOut.setAxis(Rotate.Y_AXIS);
