@@ -30,7 +30,7 @@ Artificial intelligence was used for writing the questions and answers for the q
     - [HeidiSQL (Windows)](https://www.heidisql.com/download.php?download=installer)
     - [DataGrip (Windows, Mac, Linux)](https://www.jetbrains.com/datagrip/features/?source=google&medium=cpc&campaign=EMEA_en_WEST_DataGrip_Search_RLSA&term=sql%20database&content=555193249366&gad_source=1&gclid=Cj0KCQiA88a5BhDPARIsAFj595hZXkn2YbwaTcrq-f8E_5OuTMKJviU8mQVWBeXH3rUCOKaPguWJ5nUaAnzhEALw_wcB)
 
-2. Set up a database for the project. The script is available in file `quadlingo.sql` in the root of the project.
+2. Set up a database for the project. The script is available in directory `DatabaseCreation` in the root of the project.
 
 3. Download and install IntelliJ IDEA.
     - [IntelliJ IDEA (Windows)](https://www.jetbrains.com/idea/download/?section=windows)
