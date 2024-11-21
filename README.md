@@ -19,7 +19,16 @@ For coding the projects Frontend and Backend we used Java, JavaFX and CSS. The w
 Since the project is a group project, we used GitHub for version control and Trello for project management. The prototype was made on Figma.
 We also used Google Docs for project Sprint documentation and Google Sheets for tracking work hours.
 
-Artificial intelligence was used for writing the questions and answers for the quizzes. For writing the code of some of the functionalities in this project, we used ChatGpt and Copilot.
+Artificial intelligence was used for writing the questions and answers for the quizzes. For writing the code of some of the functionalities 
+in this project, we used ChatGpt and Copilot.
+
+More information about product backlog and sprint processes can be found in the documentation directory.
+
+****
+
+<h3>User manual</h3>
+
+User manual is located in the directory `docs/documentation/UserManual.md`.
 
 ****
 
