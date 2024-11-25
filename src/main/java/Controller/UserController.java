@@ -4,15 +4,12 @@ import DAO.UserDaoImpl;
 import Model.User;
 
 public class UserController {
-    private UserDaoImpl userDao;
-
-    private UserDaoImpl quizzesDao;
+    private final UserDaoImpl userDao;
 
     private static UserController instance;
 
     public UserController(UserDaoImpl userDao) {
         this.userDao = userDao;
-        quizzesDao = new UserDaoImpl();
     }
 
     public static UserController getInstance(UserDaoImpl userDao) {

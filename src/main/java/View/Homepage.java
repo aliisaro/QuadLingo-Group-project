@@ -1,11 +1,8 @@
 package View;
 
 import Config.LanguageConfig;
-import Controller.UserController;
 import Main.SessionManager;
 import Model.User;
-import Controller.QuizController;
-import DAO.QuizDaoImpl;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,19 +17,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.sql.Connection;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import Database.MariaDbConnection;
 
 
 public class Homepage extends BasePage {
 
-    private QuizController quizController; // Declare the QuizController
-    private UserController userController; // UserController object
     private ResourceBundle bundle;
 
-    private String normalButtonStyle;
-    private String hoveredButtonStyle;
-
+    // Constructor to initialize the Homepage
     public Homepage(Stage stage) {
         // Get the current logged-in user from the session
         User currentUser = SessionManager.getInstance().getCurrentUser();
@@ -48,18 +42,17 @@ public class Homepage extends BasePage {
 
         // Initialize the QuizController with a new instance of QuizDaoImpl and a database connection
         Connection connection = MariaDbConnection.getConnection(); // Get the database connection
-        this.quizController = new QuizController(new QuizDaoImpl(connection)); // Pass the connection
 
         // Set up the layout
         setLayout(stage, currentUser);
 
         // Close the connection when the application is exiting (or you might want to manage it elsewhere)
-        stage.setOnCloseRequest(event -> {
-            MariaDbConnection.terminate(connection);
-        });
+        stage.setOnCloseRequest(event -> MariaDbConnection.terminate(connection));
     }
 
     private void setLayout(Stage stage, User currentUser) {
+        String hoveredButtonStyle;
+        String normalButtonStyle;
         // Apply padding and spacing to the VBox
         this.setPadding(new Insets(10));
 
@@ -117,7 +110,7 @@ public class Homepage extends BasePage {
         VBox.setVgrow(buttonContainer, Priority.ALWAYS);  // Allow the VBox to take the full height
 
         // Help button with custom PNG image
-        Image helpImage = new Image(getClass().getResourceAsStream("/helpButton3.png"));
+        Image helpImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/helpButton3.png")));
         ImageView helpImageView = new ImageView(helpImage);
 
         // Set the desired size for the ImageView

@@ -20,22 +20,24 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.sql.Connection;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.scene.layout.VBox;
 
-public class FlashCardLibrary extends BasePage implements UpdateProgress{
+public class FlashCardLibrary extends BasePage implements UpdateProgress {
+    // Class to display the Flashcard Library page
+
+    // Initialize controllers and variables
     private final UserController userController = new UserController(new UserDaoImpl());
-    private final int userID = userController.getCurrentUserId();
+    private final int userId = userController.getCurrentUserId();
     private FlashcardController flashCardController;
     private final ProgressBar progressBar3 = ProgressPage.getProgressBar3();
     private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
     private ResourceBundle bundle;
     private String languageCode;
 
+    // Constructor to initialize the FlashCardLibrary page
     public FlashCardLibrary(Stage stage) {
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
@@ -78,7 +80,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
 
         Button unmasterAllButton = new Button(bundle.getString("unmasterAllButton")); // Unmaster All
         unmasterAllButton.setOnAction(e -> {
-            flashCardController.unmasterAllFlashcards(userID, languageCode);
+            flashCardController.unmasterAllFlashcards(userId, languageCode);
             updateFlashcardProgress(progressBar3);
         });
 
@@ -144,7 +146,8 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
         helpImageView.setFitHeight(50); // Set the desired height
 
         Button helpButton = new Button();
-        helpButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;"); // Transparent background
+        // Transparent background
+        helpButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         helpButton.setGraphic(helpImageView);
         helpButton.setId("helpButton");
         helpButton.setOnAction(e -> {
@@ -176,7 +179,7 @@ public class FlashCardLibrary extends BasePage implements UpdateProgress{
 
     @Override
     public void updateFlashcardProgress(ProgressBar progressBar) {
-        int masteredFlashcards = progressDao.getMasteredFlashcards(userID, languageCode);
+        int masteredFlashcards = progressDao.getMasteredFlashcards(userId, languageCode);
         int allFlashcards = progressDao.getFlashcardAmount(languageCode);
         double progress = (double) masteredFlashcards / allFlashcards;
         progressBar.setProgress(progress);

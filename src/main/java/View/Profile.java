@@ -16,7 +16,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Profile extends BasePage {
-    private UserController userController; // UserController object
     private ResourceBundle bundle;
     private ComboBox<String> languageComboBox;
     private String normalButtonStyle, hoveredButtonStyle;
@@ -26,8 +25,6 @@ public class Profile extends BasePage {
 
 
     public Profile(Stage stage) {
-        // Initialize UserDaoImpl and UserController objects
-        userController = new UserController(new UserDaoImpl());
 
         // Get the current logged-in user from the session
         User currentUser = SessionManager.getInstance().getCurrentUser();
