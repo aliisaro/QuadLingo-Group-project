@@ -23,12 +23,14 @@
 - [x] Achievements functionality
 - [x] Quizzes feature and functionality
 - [x] Database implementation and mock data
+- [x] Self made badges
 
 ## Sprint 4
 - [x] User progress tracking functionality
 - [x] Flashcards feature and functionality
 - [x] Proper UI design for all pages
 - [x] User unit tests
+- [x] Start page 
 
 ## Sprint 5
 - [x] Language selection feature and functionality
