@@ -2,7 +2,7 @@ package Main;
 
 import Controller.UserController;
 import DAO.UserDaoImpl;
-import View.QuadLingoGui;
+import view.QuadLingoGui;
 
 // This launches the whole program
 public class Main {

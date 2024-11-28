@@ -28,7 +28,7 @@ this.getChildren().addAll(logoutButton, <muita elementtejä>); // Lisää kaikki
 
 // ESIMERKKI KÄYTTÖ:
 
-package View;
+package view;
 
 import Main.SessionManager;
 import Model.User;

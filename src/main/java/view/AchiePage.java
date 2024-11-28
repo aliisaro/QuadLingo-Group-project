@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import Config.LanguageConfig;
 import DAO.UserDaoImpl;

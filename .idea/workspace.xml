@@ -4,9 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="Update chinese localization tests">
+    <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="Muutin View pakkausken ---&gt; view koska se oli yksi sonarlint &quot;ongelma&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_11_2024_9_50_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_11_2024_9_50__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_11_2024_12_26_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_11_2024_12_26__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main/SessionManagerOHJE" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main/SessionManagerOHJE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/AchiePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/AchiePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/BasePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/BasePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/FlashCardLibrary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/FlashCardLibrary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/FlashCardsPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/FlashCardsPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/Homepage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/Homepage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/IndexPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/IndexPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/LoggedOutPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/LoggedOutPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/LoginPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/ProgressPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ProgressPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/QuadLingoGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/QuadLingoGui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/QuizLibrary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/QuizLibrary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/QuizPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/QuizPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/SignUpPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/SignUpPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/UpdateProgress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/UpdateProgress.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/setMarginButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/setMarginButton.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,57 +89,60 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Profile.executor&quot;: &quot;Run&quot;,
-    &quot;Application.QuadLingoQui.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.Dockerfile.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ArabicLocalizationTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChineseLocalizationTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EnglishLocalizationTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FrenchLocalizationTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IndexPageLocalizationTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LoginPageLocalizationTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MariaDbConnectionTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.QuizIntegrationTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.QuizTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.QuizUnitTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserDaoImplTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserDaoImplUnitTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserIntegrationTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTests.testUpdateUser.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserUnitTests.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.QuadLingo [clean,install].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.QuadLingo [clean,package,-DskipTests].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.QuadLingo [clean,package,-U].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.QuadLingo [clean,package].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.Main.executor": "Run",
+    "Application.Profile.executor": "Run",
+    "Application.QuadLingoQui.executor": "Run",
+    "Docker.Dockerfile.executor": "Run",
+    "JUnit.ArabicLocalizationTest.executor": "Run",
+    "JUnit.ChineseLocalizationTest.executor": "Run",
+    "JUnit.EnglishLocalizationTest.executor": "Run",
+    "JUnit.FlashcardUnitTests.executor": "Run",
+    "JUnit.FrenchLocalizationTest.executor": "Run",
+    "JUnit.IndexPageLocalizationTest.executor": "Run",
+    "JUnit.LoginPageLocalizationTest.executor": "Run",
+    "JUnit.MariaDbConnectionTest.executor": "Run",
+    "JUnit.ProgressUnitTests.executor": "Run",
+    "JUnit.QuizIntegrationTests.executor": "Run",
+    "JUnit.QuizTests.executor": "Run",
+    "JUnit.QuizUnitTests.executor": "Run",
+    "JUnit.UserDaoImplTest.executor": "Run",
+    "JUnit.UserDaoImplUnitTest.executor": "Run",
+    "JUnit.UserIntegrationTests.executor": "Run",
+    "JUnit.UserTests.executor": "Run",
+    "JUnit.UserTests.testUpdateUser.executor": "Run",
+    "JUnit.UserUnitTests.executor": "Run",
+    "Maven.QuadLingo [clean,install].executor": "Run",
+    "Maven.QuadLingo [clean,package,-DskipTests].executor": "Run",
+    "Maven.QuadLingo [clean,package,-U].executor": "Run",
+    "Maven.QuadLingo [clean,package].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Global Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mariadb&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\aliis\IdeaProjects\QuadLingo-Group-project\src\main\java\Config" />
@@ -250,6 +275,13 @@
       <workItem from="1731500501483" duration="3000" />
       <workItem from="1731525901088" duration="3370000" />
       <workItem from="1731529492402" duration="770000" />
+      <workItem from="1731854391666" duration="19000" />
+      <workItem from="1731919533519" duration="49000" />
+      <workItem from="1732530955503" duration="52000" />
+      <workItem from="1732534013239" duration="3560000" />
+      <workItem from="1732735086290" duration="220000" />
+      <workItem from="1732808814634" duration="373000" />
+      <workItem from="1732809202639" duration="1543000" />
     </task>
     <task id="LOCAL-00001" summary="pushaan cindyn version">
       <option name="closed" value="true" />
@@ -579,7 +611,31 @@
       <option name="project" value="LOCAL" />
       <updated>1731574917360</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="user and quiz unit tests done">
+      <option name="closed" value="true" />
+      <created>1732535040886</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1732535040886</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Progress unit tests done">
+      <option name="closed" value="true" />
+      <created>1732535587702</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1732535587702</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Flashcard unit tests done">
+      <option name="closed" value="true" />
+      <created>1732536536875</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1732536536875</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -598,10 +654,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa" />
-    <MESSAGE value="lokalisoin kotisivun ja muokkasin english resource bundle" />
-    <MESSAGE value="muutin register ---&gt; signUp" />
-    <MESSAGE value="update english bundle + lisäsin successAlertTitlen chinese bundleen" />
     <MESSAGE value="localized quiz library and quiz page" />
     <MESSAGE value="added localization tests for all bundles and added mockito depenency in pom.xml" />
     <MESSAGE value="updated ui localization tests" />
@@ -623,7 +675,11 @@
     <MESSAGE value="Quiz integration test done" />
     <MESSAGE value="Update english localization tests" />
     <MESSAGE value="Update chinese localization tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update chinese localization tests" />
+    <MESSAGE value="user and quiz unit tests done" />
+    <MESSAGE value="Progress unit tests done" />
+    <MESSAGE value="Flashcard unit tests done" />
+    <MESSAGE value="Muutin View pakkausken ---&gt; view koska se oli yksi sonarlint &quot;ongelma&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Muutin View pakkausken ---&gt; view koska se oli yksi sonarlint &quot;ongelma&quot;" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
