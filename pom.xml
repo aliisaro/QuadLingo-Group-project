@@ -17,7 +17,7 @@
     <build>
         <finalName>QuadLingo</finalName>
         <plugins>
-            <!-- Compiler Plugin for setting the Java version -->
+            <!-- Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -28,7 +28,7 @@
                 </configuration>
             </plugin>
 
-            <!-- JAR Plugin for configuring the manifest file -->
+            <!-- JAR Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -36,13 +36,13 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>Main.Main</mainClass> <!-- Correct main class -->
+                            <mainClass>Main.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
 
-            <!-- JaCoCo Plugin for code coverage -->
+            <!-- JaCoCo Plugin -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -54,15 +54,13 @@
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <!-- Explicitly set destination for execution data -->
                             <destFile>${project.build.directory}/jacoco.exec</destFile>
-                            <!-- Set the argLine property for Surefire -->
                             <propertyName>argLine</propertyName>
                         </configuration>
                     </execution>
                     <execution>
                         <id>jacoco-report</id>
-                        <phase>verify</phase> <!-- Run report generation during verify -->
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
@@ -70,15 +68,14 @@
                 </executions>
             </plugin>
 
-            <!-- Surefire Plugin for running tests -->
+            <!-- Surefire Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <!-- Ensure JaCoCo agent is passed to the JVM -->
-                    <argLine>${argLine}</argLine>
-                    <useModulePath>false</useModulePath> <!-- Important for JUnit 5 -->
+                    <argLine>-Dnet.bytebuddy.experimental=true ${argLine}</argLine>
+                    <useModulePath>false</useModulePath>
                     <includes>
                         <include>**/Test*.java</include>
                         <include>**/*Test.java</include>
@@ -86,7 +83,6 @@
                     </includes>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
@@ -100,7 +96,7 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <version>3.1.0</version> <!-- Use the latest version if possible -->
+            <version>3.1.0</version>
         </dependency>
 
         <dependency>
@@ -115,7 +111,6 @@
             <version>0.4</version>
         </dependency>
 
-        <!-- JUnit Dependency -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -123,7 +118,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Byte Buddy -->
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
@@ -131,7 +125,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
