@@ -53,10 +53,16 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                        <configuration>
+                            <!-- Explicitly set destination for execution data -->
+                            <destFile>${project.build.directory}/jacoco.exec</destFile>
+                            <!-- Set the argLine property for Surefire -->
+                            <propertyName>argLine</propertyName>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>jacoco-report</id>
-                        <phase>test</phase>
+                        <phase>verify</phase> <!-- Run report generation during verify -->
                         <goals>
                             <goal>report</goal>
                         </goals>
@@ -64,15 +70,15 @@
                 </executions>
             </plugin>
 
-
             <!-- Surefire Plugin for running tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version> <!-- Already the latest version -->
+                <version>3.2.5</version>
                 <configuration>
+                    <!-- Ensure JaCoCo agent is passed to the JVM -->
+                    <argLine>${argLine}</argLine>
                     <useModulePath>false</useModulePath> <!-- Important for JUnit 5 -->
-                    <argLine>-Dnet.bytebuddy.experimental=true</argLine> <!-- Add this line -->
                     <includes>
                         <include>**/Test*.java</include>
                         <include>**/*Test.java</include>
@@ -94,7 +100,7 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <version>3.1.0</version> <!-- Use the lateast version if possible -->
+            <version>3.1.0</version> <!-- Use the latest version if possible -->
         </dependency>
 
         <dependency>
@@ -111,12 +117,6 @@
 
         <!-- JUnit Dependency -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.8.1</version>
@@ -127,7 +127,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.14.6</version> <!-- Latest version at the time -->
+            <version>1.14.6</version>
             <scope>test</scope>
         </dependency>
 
@@ -135,7 +135,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.5.0</version> <!-- Use the latest version -->
+            <version>5.5.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
