@@ -12,8 +12,6 @@ import java.util.ResourceBundle;
 
 public class LoggedOutPage extends BasePage {
     private ResourceBundle bundle;
-    private Label loggedOutLabel;
-    private Button indexPageButton;
 
     public LoggedOutPage(Stage stage) {
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale()); // Default to current locale
@@ -24,15 +22,16 @@ public class LoggedOutPage extends BasePage {
         this.setPadding(new Insets(10));
         this.setAlignment(Pos.CENTER);
 
-        // Labels and Buttons
-        loggedOutLabel = new Label(bundle.getString("loggedOutMessage"));
+        // Create and configure the logged-out message label
+        Label loggedOutLabel = new Label(bundle.getString("loggedOutMessage"));
         loggedOutLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        indexPageButton = new Button(bundle.getString("indexPageButton"));
+        // Create and configure the index page button
+        Button indexPageButton = new Button(bundle.getString("indexPageButton"));
         indexPageButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px; -fx-pref-width: 200px;");
         indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
 
-        // Layout for buttons and language selector
+        // Layout for buttons
         VBox buttonContainer = new VBox(10, indexPageButton);
         buttonContainer.setPadding(new Insets(10, 0, 0, 0));
         buttonContainer.setAlignment(Pos.CENTER);
@@ -40,5 +39,4 @@ public class LoggedOutPage extends BasePage {
         // Add elements to layout
         this.getChildren().addAll(loggedOutLabel, buttonContainer);
     }
-
 }

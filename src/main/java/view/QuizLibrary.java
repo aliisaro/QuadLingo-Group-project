@@ -2,13 +2,12 @@ package view;
 
 import Config.LanguageConfig;
 import Controller.UserController;
-import Controller.QuizController; // Ensure you have a QuizController
+import Controller.QuizController;
 import DAO.ProgressDaoImpl;
 import DAO.UserDaoImpl;
 import DAO.QuizDaoImpl;
 import Database.MariaDbConnection;
 import Main.SessionManager;
-import Model.User;
 import Model.Quiz;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,29 +22,26 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.ProgressBar;
+
 import java.sql.Connection;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class QuizLibrary extends BasePage implements UpdateProgress {
-    private final UserController userController = new UserController(new UserDaoImpl()); // UserController object
-    private QuizController quizController; // QuizController object
+    private static final Logger LOGGER = Logger.getLogger(QuizLibrary.class.getName());
+
+    private final UserController userController = new UserController(new UserDaoImpl());
+    private QuizController quizController;
     private final ProgressBar progressBar1 = ProgressPage.getProgressBar1();
     private final ProgressBar progressBar2 = ProgressPage.getProgressBar2();
     private final ProgressDaoImpl progressDao = new ProgressDaoImpl();
     private final int userID = userController.getCurrentUserId();
     private ResourceBundle bundle;
     private String languageCode;
-    private String normalButtonStyle;
-    private String hoveredButtonStyle;
 
     public QuizLibrary(Stage stage) {
-        // Initialize UserDaoImpl and UserController objects
-
-        // Get the current logged-in user from the session
-        User currentUser = SessionManager.getInstance().getCurrentUser();
-
-        // If user is not logged in, redirect to index page
         if (!SessionManager.getInstance().isLoggedIn()) {
             stage.setScene(new IndexPage(stage).createScene());
             return;
@@ -56,72 +52,58 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
         quizController = new QuizController(new QuizDaoImpl(connection));
 
         // Use the global locale from Config
-        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale()); // Initialize bundle here
+        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
 
         // Retrieve the current language code
         this.languageCode = LanguageConfig.getInstance().getCurrentLocale().getLanguage();
 
         // Set layout to the stage
-        setLayout(stage, currentUser, connection);
+        setLayout(stage);
     }
 
-    private void setLayout(Stage stage, User currentUser, Connection connection) {
-        // Apply padding and spacing to the VBox
+    private void setLayout(Stage stage) {
         this.setPadding(new Insets(10));
-
-        // Set the alignment of the entire page to center
         this.setAlignment(Pos.CENTER);
 
-        // Page title
         Label pageTitle = new Label(bundle.getString("quizLibraryButton"));
         pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Return to the homepage button
         Button backButton = new Button(bundle.getString("backToHomeButton"));
         backButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
-        backButton.setMaxWidth(Double.MAX_VALUE); // Allow responsiveness, max width based on window size
+        backButton.setMaxWidth(Double.MAX_VALUE);
         backButton.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
 
-        // Logout button: clears session and redirects to LoggedOutPage
-        normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px;";
-        hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px;";
+        String normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px;";
+        String hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px;";
 
         Button logoutButton = new Button(bundle.getString("logoutButton"));
         logoutButton.setStyle(normalButtonStyle);
         logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(hoveredButtonStyle));
         logoutButton.setOnMouseExited(e -> logoutButton.setStyle(normalButtonStyle));
-        logoutButton.setMaxWidth(Double.MAX_VALUE); // Allow responsiveness, max width based on window size
+        logoutButton.setMaxWidth(Double.MAX_VALUE);
         logoutButton.setOnAction(e -> {
             SessionManager.getInstance().logout();
             stage.setScene(new LoggedOutPage(stage).createScene());
         });
 
-        // Group the buttons in an HBox
-        HBox buttonBox = new HBox(10); // 10px spacing between buttons
+        HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(backButton, logoutButton);
 
-        // Fetch quizzes based on the selected language
-        System.out.println("Language Code: " + languageCode);
+        LOGGER.log(Level.INFO, "Language Code: {0}", languageCode);
         List<Quiz> quizzes = quizController.getAllQuizzes(languageCode);
-        System.out.println("Number of quizzes retrieved: " + quizzes.size());
+        LOGGER.log(Level.INFO, "Number of quizzes retrieved: {0}", quizzes.size());
 
-
-        // VBox to hold quiz buttons
-        VBox quizzesBox = new VBox(10); // 10px spacing between quiz buttons
+        VBox quizzesBox = new VBox(10);
         quizzesBox.setPadding(new Insets(10));
         quizzesBox.setStyle("-fx-padding: 10px; -fx-spacing: 10px;");
         quizzesBox.setAlignment(Pos.CENTER);
 
-
-        // Add quiz buttons
         for (Quiz quiz : quizzes) {
             Button quizButton = new Button(quiz.getQuizTitle());
             quizButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
-            quizButton.setMaxWidth(Double.MAX_VALUE); // Allow quiz buttons to stretch fully in their container
-
+            quizButton.setMaxWidth(Double.MAX_VALUE);
             HBox.setHgrow(quizButton, Priority.ALWAYS);
-
             quizButton.setOnAction(e -> {
                 QuizPage quizPage = new QuizPage(quizController.getQuizDao(), quiz.getQuizId(), stage);
                 stage.setScene(quizPage.createScene());
@@ -129,24 +111,19 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
             quizzesBox.getChildren().add(quizButton);
         }
 
-        // Allow the buttons to grow with the HBox
         HBox.setHgrow(backButton, Priority.ALWAYS);
         HBox.setHgrow(logoutButton, Priority.ALWAYS);
 
-        // Update progress bars
         updateQuizProgress(progressBar1);
         updateScoreProgress(progressBar2);
 
-        // Help button with custom PNG image
         Image helpImage = new Image(getClass().getResourceAsStream("/helpButton3.png"));
         ImageView helpImageView = new ImageView(helpImage);
-
-        // Set the desired size for the ImageView
-        helpImageView.setFitWidth(50); // Set the desired width
-        helpImageView.setFitHeight(50); // Set the desired height
+        helpImageView.setFitWidth(50);
+        helpImageView.setFitHeight(50);
 
         Button helpButton = new Button();
-        helpButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;"); // Transparent background
+        helpButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         helpButton.setGraphic(helpImageView);
         helpButton.setId("helpButton");
         helpButton.setOnAction(e -> {
@@ -154,21 +131,13 @@ public class QuizLibrary extends BasePage implements UpdateProgress {
             alert.setTitle(bundle.getString("help"));
             alert.setHeaderText(null);
 
-            // Create a Text node to wrap the content text
             Text content = new Text(bundle.getString("helpQuizLibrary"));
-            content.setWrappingWidth(400); // Set the desired wrapping width
-
+            content.setWrappingWidth(400);
             alert.getDialogPane().setContent(content);
             alert.showAndWait();
         });
 
-        // Add components to the layout
-        this.getChildren().addAll(
-                pageTitle,
-                quizzesBox,
-                buttonBox,
-                helpButton
-        );
+        this.getChildren().addAll(pageTitle, quizzesBox, buttonBox, helpButton);
     }
 
     @Override

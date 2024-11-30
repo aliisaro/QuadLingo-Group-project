@@ -2,7 +2,7 @@ package view;
 
 import Config.LanguageConfig;
 import Controller.UserController;
-import DAO.UserDaoImpl; // Import UserDaoImpl
+import DAO.UserDaoImpl;
 import Main.SessionManager;
 import Model.User;
 import javafx.geometry.Insets;
@@ -13,33 +13,30 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SignUpPage extends BasePage {
-    private final UserController userController; // UserController object
+    private static final Logger LOGGER = Logger.getLogger(SignUpPage.class.getName());
+    private final UserController userController;
     private final ResourceBundle bundle;
 
     public SignUpPage(Stage stage) {
-        // Initialize UserDaoImpl and UserController objects
         userController = new UserController(new UserDaoImpl());
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
-
-        // Set layout to the stage
         setLayout(stage);
     }
 
     private void setLayout(Stage stage) {
-        // Apply padding directly to 'this' (inheriting VBox)
         this.setPadding(new Insets(10));
-        this.setSpacing(5); // Add spacing between all child elements
+        this.setSpacing(5);
         this.setAlignment(Pos.CENTER);
 
-        // Elements
         Label pageTitle = new Label(bundle.getString("signUp"));
         pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Create an HBox for the title and center it
         HBox titleContainer = new HBox(pageTitle);
-        titleContainer.setAlignment(Pos.CENTER);  // Center the title horizontally
+        titleContainer.setAlignment(Pos.CENTER);
 
         Label usernameLabel = new Label(bundle.getString("usernameLabel"));
         TextField usernameField = new TextField();
@@ -50,36 +47,29 @@ public class SignUpPage extends BasePage {
         Label passwordLabel = new Label(bundle.getString("passwordLabel"));
         PasswordField passwordField = new PasswordField();
 
-        // Handle registerButton click
         Button signUpButton = new Button(bundle.getString("signUp"));
         signUpButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
-        signUpButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        signUpButton.setMaxWidth(Double.MAX_VALUE);
         signUpButton.setOnAction(event -> handleRegisterAction(usernameField, emailField, passwordField, stage));
 
-        // Back to Index Page button
         Button indexPageButton = new Button(bundle.getString("goBackButton"));
-        indexPageButton .setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
-        indexPageButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        indexPageButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        indexPageButton.setMaxWidth(Double.MAX_VALUE);
         indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
 
         Label hasAccountLabel = new Label(bundle.getString("hasAccountLabel"));
 
-        // Go to the login page
         Button loginButton = new Button(bundle.getString("login"));
         loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
-        loginButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand horizontally
+        loginButton.setMaxWidth(Double.MAX_VALUE);
         loginButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
 
-        // Create a container (HBox) for buttons
         HBox buttonContainer = new HBox(10);
         buttonContainer.setPadding(new Insets(10, 0, 0, 0));
         buttonContainer.getChildren().addAll(signUpButton, indexPageButton);
-
-        // Allow the buttons to grow with the HBox
         HBox.setHgrow(signUpButton, Priority.ALWAYS);
         HBox.setHgrow(indexPageButton, Priority.ALWAYS);
 
-        // Add elements to layout
         this.getChildren().addAll(
                 titleContainer,
                 usernameLabel,
@@ -99,58 +89,65 @@ public class SignUpPage extends BasePage {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        StringBuilder errorMessages = new StringBuilder(); // Object to store error messages
+        String errorMessages = validateInputs(username, email, password);
 
-        // Basic validation: Check if fields are empty
-        if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            errorMessages.append(bundle.getString("allFieldsRequired")).append("\n"); // All fields are required.
+        if (!errorMessages.isEmpty()) {
+            showErrorAlert(errorMessages);
         } else {
-            // Email format validation
-            if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-                errorMessages.append(bundle.getString("invalidEmail")).append("\n"); // Invalid email format.
-            }
-            // Check if the email is already registered
-            if (userController.doesEmailExist(email)) {
-                errorMessages.append(bundle.getString("accountExists")).append("\n"); // An account with this email already exists.
-            }
-
-            // Password validation (only if the password field is not empty)
-            if (!password.isEmpty()) {
-                if (!password.matches(".*[A-Z].*")) {
-                    errorMessages.append(bundle.getString("oneUppercaseLetter")).append("\n"); // Password must include at least 1 uppercase letter.
-                }
-                if (!password.matches(".*\\d.*")) {
-                    errorMessages.append(bundle.getString("oneNumber")).append("\n"); // Password must include at least 1 number.
-                }
-                if (password.length() < 8) {
-                    errorMessages.append(bundle.getString("atLeastEight")).append("\n"); // Password must be at least 8 characters.
-                }
-            }
-        }
-
-        // If there are errors, display them in an alert
-        if (errorMessages.length() > 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(bundle.getString("signUpErrorTitle"));
-            alert.setHeaderText(null);
-            alert.setContentText(errorMessages.toString());
-            alert.showAndWait();
-        } else {
-            // If validation passes, call the UserController to register the user
-            User user = userController.createUser(username, password, email);
-            if (user != null) {
-                SessionManager.getInstance().setCurrentUser(user); // Start a new session
-                stage.setScene(new LoginPage(stage).createScene()); // Redirect to the login page
-                System.out.println("Sign up successful: " + user.getUsername() + "\n");
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle(bundle.getString("signUpErrorTitle"));
-                alert.setHeaderText(null);
-                alert.setContentText(bundle.getString("errorContext")); // Register failed. Please try again.
-                alert.showAndWait();
-                System.out.println("Sign up failed.\n");
-            }
+            processRegistration(username, email, password, stage);
         }
     }
 
+    private String validateInputs(String username, String email, String password) {
+        StringBuilder errorMessages = new StringBuilder();
+
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            errorMessages.append(bundle.getString("allFieldsRequired")).append("\n");
+        } else {
+            if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+                errorMessages.append(bundle.getString("invalidEmail")).append("\n");
+            }
+            if (userController.doesEmailExist(email)) {
+                errorMessages.append(bundle.getString("accountExists")).append("\n");
+            }
+            if (!password.isEmpty()) {
+                validatePassword(password, errorMessages);
+            }
+        }
+
+        return errorMessages.toString();
+    }
+
+    private void validatePassword(String password, StringBuilder errorMessages) {
+        if (!password.matches(".*[A-Z].*")) {
+            errorMessages.append(bundle.getString("oneUppercaseLetter")).append("\n");
+        }
+        if (!password.matches(".*\\d.*")) {
+            errorMessages.append(bundle.getString("oneNumber")).append("\n");
+        }
+        if (password.length() < 8) {
+            errorMessages.append(bundle.getString("atLeastEight")).append("\n");
+        }
+    }
+
+    private void processRegistration(String username, String email, String password, Stage stage) {
+        User user = userController.createUser(username, password, email);
+
+        if (user != null) {
+            SessionManager.getInstance().setCurrentUser(user);
+            stage.setScene(new LoginPage(stage).createScene());
+            LOGGER.log(Level.INFO, "Sign up successful: {0}", user.getUsername());
+        } else {
+            showErrorAlert(bundle.getString("errorContext"));
+            LOGGER.log(Level.WARNING, "Sign up failed.");
+        }
+    }
+
+    private void showErrorAlert(String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(bundle.getString("signUpErrorTitle"));
+        alert.setHeaderText(null);
+        alert.setContentText(errorMessage);
+        alert.showAndWait();
+    }
 }

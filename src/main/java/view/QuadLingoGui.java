@@ -27,8 +27,6 @@ public class QuadLingoGui extends Application {
         primaryStage.show();
 
         // Force layout update to ensure scrollbars and other dynamic content are properly displayed
-        Platform.runLater(() -> {
-            primaryStage.sizeToScene(); // Adjust the stage size based on the content
-        });
+        Platform.runLater(primaryStage::sizeToScene); // Use method reference
     }
 }

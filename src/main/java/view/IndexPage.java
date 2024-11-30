@@ -21,7 +21,6 @@ public class IndexPage extends BasePage {
     private Label descriptionLabel;
     private Button loginPageButton;
     private Button signUpPageButton;
-    private ComboBox<String> languageComboBox;
 
     public IndexPage(Stage stage) {
         this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale()); // Default to current locale
@@ -47,8 +46,8 @@ public class IndexPage extends BasePage {
         signUpPageButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px; -fx-pref-width: 200px;");
         signUpPageButton.setOnAction(e -> stage.setScene(new SignUpPage(stage).createScene()));
 
-        // Language selection ComboBox
-        languageComboBox = new ComboBox<>();
+        // Language selection ComboBox as a local variable
+        ComboBox<String> languageComboBox = new ComboBox<>();
         languageComboBox.getItems().addAll("English", "French", "Chinese", "Arabic");
         languageComboBox.setValue("English"); // Default selection
         languageComboBox.setOnAction(e -> switchLanguage(languageComboBox.getValue()));
