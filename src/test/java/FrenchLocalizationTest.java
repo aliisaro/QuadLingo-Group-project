@@ -147,4 +147,14 @@ public class FrenchLocalizationTest {
         assertEquals("Vous avez été déconnecté.", bundle.getString("loggedOutMessage"));
         //assertEquals("Go to start page", bundle.getString("indexPageButton"));
     }
+
+    @Test
+    public void testHelpMessage() {
+        // Assertions for help messages
+        assertEquals("Ceci est votre page d'accueil. Vous pouvez accéder à la bibliothèque de quiz, à la bibliothèque de cartes mémoire, aux réalisations et à votre profil à partir d'ici.", bundle.getString("helpHomepage"));
+        assertEquals("Ceci est la bibliothèque de quiz. Vous pouvez répondre à des quiz divisés en différents sujets.", bundle.getString("helpQuizLibrary"));
+        assertEquals("Il s'agit de la bibliothèque de cartes mémoire. Vous pouvez pratiquer le vocabulaire avec des flashcards sur différents sujets.", bundle.getString("helpFlashcardLibrary"));
+        assertEquals("Pour avoir accès aux fonctionnalités de QuadLingo, connectez-vous ou inscrivez-vous.", bundle.getString("helpIndex"));
+        assertEquals("Aide", bundle.getString("help"));
+    }
 }

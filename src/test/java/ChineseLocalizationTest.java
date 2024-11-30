@@ -146,4 +146,14 @@ public class ChineseLocalizationTest {
         assertEquals("您已退出。", bundle.getString("loggedOutMessage"));
         assertEquals("转到起始页", bundle.getString("indexPageButton"));
     }
+
+    @Test
+    public void testHelpMessage() {
+        // Assertions for help messages
+        assertEquals("这是您的主页。您可以从这里访问测验库、抽认卡库、成就和您的个人资料。", bundle.getString("helpHomepage"));
+        assertEquals("这是测验库。您可以从这里参加测验。测验分为不同的主题。", bundle.getString("helpQuizLibrary"));
+        assertEquals("这是抽认卡库。你可以练习词汇。抽认卡分为不同的主题。", bundle.getString("helpFlashcardLibrary"));
+        assertEquals("要访问 QuadLingo 的功能，请登录或注册。", bundle.getString("helpIndex"));
+        assertEquals("帮助", bundle.getString("help"));
+    }
 }

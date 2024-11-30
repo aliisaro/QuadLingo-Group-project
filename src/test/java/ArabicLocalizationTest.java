@@ -146,4 +146,14 @@ public class ArabicLocalizationTest {
         assertEquals("لقد تم تسجيل خروجك.", bundle.getString("loggedOutMessage"));
         assertEquals("انتقل إلى الصفحة الرئيسية", bundle.getString("indexPageButton"));
     }
+
+    @Test
+    public void testHelpMessage() {
+        // Assertions for help messages
+        assertEquals("هذه هي صفحتك الرئيسية. يمكنك الوصول إلى مكتبة الاختبارات ومكتبة البطاقات التعليمية والإنجازات وملفك الشخصي من هنا.", bundle.getString("helpHomepage"));
+        assertEquals("هذه هي مكتبة المسابقة. يمكنك إجراء الاختبارات من هنا. وتنقسم الاختبارات إلى مواضيع مختلفة.", bundle.getString("helpQuizLibrary"));
+        assertEquals("هذه هي مكتبة البطاقات التعليمية. يمكنك ممارسة المفردات. يتم تقسيم البطاقات التعليمية إلى مواضيع مختلفة.", bundle.getString("helpFlashcardLibrary"));
+        assertEquals("لتتمكن من الوصول إلى ميزات QuadLingo، قم بتسجيل الدخول أو الاشتراك.", bundle.getString("helpIndex"));
+        assertEquals("يساعد", bundle.getString("help"));
+    }
 }

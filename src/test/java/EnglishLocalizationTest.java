@@ -146,4 +146,14 @@ public class EnglishLocalizationTest {
         assertEquals("You have been logged out.", bundle.getString("loggedOutMessage"));
         assertEquals("Go to start page", bundle.getString("indexPageButton"));
     }
+
+    @Test
+    public void testHelpMessage() {
+        // Assertions for help messages
+        assertEquals("This is your homepage. You can access the quiz library,flashcard library, achievements, and your profile from here.", bundle.getString("helpHomepage"));
+        assertEquals("This is the quiz library. You can take quizzes from here. Quizzes are divided into different topics.", bundle.getString("helpQuizLibrary"));
+        assertEquals("This is the flashcard library. You can practice vocabulary. Flashcards are divided into different topics.", bundle.getString("helpFlashcardLibrary"));
+        assertEquals("To have access to QuadLingo's features, either login or sign up.", bundle.getString("helpIndex"));
+        assertEquals("Help", bundle.getString("help"));
+    }
 }
