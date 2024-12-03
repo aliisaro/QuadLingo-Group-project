@@ -2,11 +2,11 @@ package Model;
 
 public class Flashcard {
 
-    public String term;
+    private final String term;
 
-    public String translation;
+    private final String translation;
 
-    public String topic;
+    private final String topic;
 
     public Flashcard(String term, String translation, String topic) {
         this.term = term;

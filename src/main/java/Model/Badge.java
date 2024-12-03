@@ -2,13 +2,11 @@ package Model;
 
 import javafx.scene.image.Image;
 
-import javax.swing.text.html.ImageView;
-
 public class Badge {
-    private Image image;
-    private int threshold;
-    private String description;
-    private String checker;
+    private final Image image;
+    private final int threshold;
+    private final String description;
+    private final String checker;
 
     public Badge(String imagePath, int threshold, String description, String checker) {
         this.image = new Image(imagePath);
