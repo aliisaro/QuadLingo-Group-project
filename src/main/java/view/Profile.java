@@ -2,7 +2,7 @@ package view;
 
 import Config.LanguageConfig;
 import Controller.UserController;
-import DAO.UserDaoImpl;
+import Dao.UserDaoImpl;
 import Main.SessionManager;
 import Model.User;
 import javafx.geometry.Insets;

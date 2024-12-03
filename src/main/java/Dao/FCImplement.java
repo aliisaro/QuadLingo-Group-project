@@ -1,4 +1,4 @@
-package DAO;
+package Dao;
 
 import Model.Flashcard;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FCImplement implements FlashcardDao {
-    private Connection connection;
+    private final Connection connection;
 
     public FCImplement(Connection connection) {
         this.connection = connection;
@@ -86,6 +86,38 @@ public class FCImplement implements FlashcardDao {
     }
 
     @Override
+    public void unmasterAllFlashcards(int userId, String language) {
+        String query = "DELETE FROM ISMASTERED " +
+                "WHERE UserID = ? AND FlashCardID IN (SELECT FlashCardID FROM FLASHCARD WHERE language_code2 = ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            stmt.setString(2, language);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean hasUserMasteredSpecificFlashcard(int flashCardId, int userId) {
+        String query = "SELECT * " + " FROM ISMASTERED WHERE FlashCardID = ? AND UserID = ?";
+        boolean isMastered = false;
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, flashCardId);
+            stmt.setInt(2, userId);
+            if (stmt.executeQuery().next()) {
+                isMastered = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return isMastered;
+    }
+
+    // Check if a flashcard is mastered by a user
+    @Override
     public List<Flashcard> getMasteredFlashcardsByUser(int userId, String language) {
         List<Flashcard> flashCards = new ArrayList<>();
         String query = "SELECT Term, Translation, Topic FROM FLASHCARD " +
@@ -111,7 +143,7 @@ public class FCImplement implements FlashcardDao {
         return flashCards;
     }
 
-
+    //Get the current flashcard ID
     @Override
     public int getCurrentFlashcardId(String term) {
         int flashCardId = 0;
@@ -133,7 +165,7 @@ public class FCImplement implements FlashcardDao {
 
     @Override
     public boolean isFlashcardMastered(int flashCardId, int userId) {
-        String query = "SELECT * FROM ISMASTERED WHERE FlashCardID = ? AND UserID = ?";
+        String query = "SELECT * " + "FROM ISMASTERED WHERE FlashCardID = ? AND UserID = ?";
         boolean isMastered = false;
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, flashCardId);
@@ -146,37 +178,4 @@ public class FCImplement implements FlashcardDao {
         }
         return isMastered;
     }
-
-    @Override
-    public void unmasterAllFlashcards(int userId, String language) {
-        String query = "DELETE FROM ISMASTERED " +
-                "WHERE UserID = ? AND FlashCardID IN (SELECT FlashCardID FROM FLASHCARD WHERE language_code2 = ?)";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            stmt.setString(2, language);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public boolean hasUserMasteredSpecificFlashcard(int flashCardId, int userId) {
-        String query = "SELECT * FROM ISMASTERED WHERE FlashCardID = ? AND UserID = ?";
-        boolean isMastered = false;
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, flashCardId);
-            stmt.setInt(2, userId);
-            if (stmt.executeQuery().next()) {
-                isMastered = true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-        }
-        return isMastered;
-    }
-
-
 }

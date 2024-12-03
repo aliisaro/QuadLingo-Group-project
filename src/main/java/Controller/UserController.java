@@ -1,6 +1,6 @@
 package Controller;
 
-import DAO.UserDaoImpl;
+import Dao.UserDaoImpl;
 import Model.User;
 
 public class UserController {

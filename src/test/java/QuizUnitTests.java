@@ -1,4 +1,4 @@
-import DAO.QuizDao;
+import Dao.QuizDao;
 import Model.Question;
 import Model.Quiz;
 import org.junit.jupiter.api.BeforeEach;

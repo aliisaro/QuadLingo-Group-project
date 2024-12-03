@@ -1,5 +1,5 @@
 import Controller.UserController;
-import DAO.UserDaoImpl;
+import Dao.UserDaoImpl;
 import Model.User;
 import org.junit.jupiter.api.*;
 

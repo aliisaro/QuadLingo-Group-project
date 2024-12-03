@@ -1,6 +1,6 @@
 package Controller;
 
-import DAO.QuizDao;
+import Dao.QuizDao;
 import Model.Quiz;
 import java.util.List;
 

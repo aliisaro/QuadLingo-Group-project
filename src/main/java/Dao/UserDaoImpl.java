@@ -1,17 +1,19 @@
-package DAO;
+package Dao;
 
 import Database.MariaDbConnection;
 import Model.User;
 import java.sql.*;
 import org.mindrot.jbcrypt.BCrypt;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // Responsible for direct interactions with the database, executes SQL queries and handles results
 public class UserDaoImpl implements UserDao {
 
-    public static UserDaoImpl instance;
-
+    private static UserDaoImpl instance;
     private static int currentUserId;
-    public String email;
+    private String email;
+    private static final Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
 
     public static UserDaoImpl getInstance() {
         if (instance == null) {
@@ -21,7 +23,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     // Retrieves a database connection
-    private Connection getConnection() throws SQLException {
+    private Connection getConnection() {
         return MariaDbConnection.getConnection(); // Make sure your MariaDbConnection class is correct
     }
 
@@ -81,7 +83,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User loginUser(String email, String password) {
         User user = null;
-        String query = "SELECT * FROM LINGOUSER WHERE Email = ?";
+        String query = "SELECT * " + "FROM LINGOUSER WHERE Email = ?";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -95,9 +97,9 @@ public class UserDaoImpl implements UserDao {
                     if (BCrypt.checkpw(password, dbPassword)) {
                         int userId = resultSet.getInt("UserID");
                         currentUserId = userId;
-                        String Username = resultSet.getString("Username");
+                        String username = resultSet.getString("Username");
 
-                        user = new User(userId, Username, dbPassword, email);
+                        user = new User(userId, username, dbPassword, email);
                     }
                 }
             }
@@ -112,7 +114,7 @@ public class UserDaoImpl implements UserDao {
     public User getUserById(int id) {
         User user = null;
         try (Connection connection = getConnection()) {
-            String query = "SELECT * FROM LINGOUSER WHERE UserID = ?";
+            String query = "SELECT * " + "FROM LINGOUSER WHERE UserID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -135,17 +137,31 @@ public class UserDaoImpl implements UserDao {
     // Updates a user's info in the LINGOUSER table (if password is changed, it will be hashed)
     @Override
     public boolean updateUser(User user) {
-        StringBuilder errorMessages = new StringBuilder(); // Object to store error messages
+        StringBuilder errorMessages = new StringBuilder();
 
-        // First, retrieve the original username and email from the database
-        User originalUser = getUserById(user.getUserId()); // You may need to implement this method to fetch the user by ID
+        User originalUser = getUserById(user.getUserId());
 
-        // Validate username if changed
+        validateUsername(user, originalUser, errorMessages);
+        validateEmail(user, originalUser, errorMessages);
+        validatePassword(user, errorMessages);
+
+        if (!errorMessages.isEmpty()) {
+            logger.log(Level.WARNING, "Profile update errors: {0}", errorMessages);
+            return false;
+        }
+
+        return updateUserInDatabase(user);
+    }
+
+    // Validates the username
+    private void validateUsername(User user, User originalUser, StringBuilder errorMessages) {
         if (!user.getUsername().equals(originalUser.getUsername()) && doesUsernameExist(user.getUsername())) {
             errorMessages.append("Username already exists.\n");
         }
+    }
 
-        // Validate email if changed
+    // Validates the email
+    private void validateEmail(User user, User originalUser, StringBuilder errorMessages) {
         if (!user.getEmail().equals(originalUser.getEmail())) {
             if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
                 errorMessages.append("Invalid email format.\n");
@@ -153,8 +169,10 @@ public class UserDaoImpl implements UserDao {
                 errorMessages.append("An account with this email already exists.\n");
             }
         }
+    }
 
-        // Validate password if changed
+    // Validates the password
+    private void validatePassword(User user, StringBuilder errorMessages) {
         if (user.isPasswordChanged()) {
             String password = user.getPassword();
             if (!password.matches(".*[A-Z].*")) {
@@ -167,14 +185,9 @@ public class UserDaoImpl implements UserDao {
                 errorMessages.append("Password must be at least 8 characters.\n");
             }
         }
+    }
 
-        // If there are error messages, log them and prevent the update
-        if (errorMessages.length() > 0) {
-            System.out.println("Profile update errors: " + errorMessages.toString());
-            return false; // Indicate the update was not successful
-        }
-
-        // Proceed with the update if all validations pass
+    private boolean updateUserInDatabase(User user) {
         boolean isUpdated = false;
         String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = COALESCE(?, UserPassword), Email = ? WHERE UserID = ?";
 
@@ -183,19 +196,18 @@ public class UserDaoImpl implements UserDao {
 
             statement.setString(1, user.getUsername());
 
-            // Check if the user has changed their password
             if (user.isPasswordChanged()) {
                 String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-                statement.setString(2, hashedPassword); // Set the new password
+                statement.setString(2, hashedPassword);
             } else {
-                statement.setString(2, null); // Set to null, so the existing password remains unchanged
+                statement.setString(2, null);
             }
 
             statement.setString(3, user.getEmail());
             statement.setInt(4, user.getUserId());
 
             int rowsAffected = statement.executeUpdate();
-            isUpdated = (rowsAffected > 0); // Check if any row was updated
+            isUpdated = (rowsAffected > 0);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -277,7 +289,7 @@ public class UserDaoImpl implements UserDao {
             if (resultSet.next()) {
                 quizzesCompleted = resultSet.getInt("QuizzesCompleted");
             } else {
-                System.out.println("No completed quizzes found for user ID: " + userId + " and language: " + language);
+                logger.log(Level.INFO, "No completed quizzes found for user ID: {0} and language: {1}", new Object[]{userId, language});
             }
 
             resultSet.close();
@@ -317,7 +329,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Boolean getUserByEmail(String email) {
         try (Connection connection = getConnection()) {
-            String query = "SELECT * FROM LINGOUSER WHERE Email = ?";
+            String query = "SELECT * " + " FROM LINGOUSER WHERE Email = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();

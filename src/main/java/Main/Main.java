@@ -1,7 +1,7 @@
 package Main;
 
 import Controller.UserController;
-import DAO.UserDaoImpl;
+import Dao.UserDaoImpl;
 import view.QuadLingoGui;
 
 // This launches the whole program

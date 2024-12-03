@@ -1,4 +1,4 @@
-import DAO.ProgressDao;
+import Dao.ProgressDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

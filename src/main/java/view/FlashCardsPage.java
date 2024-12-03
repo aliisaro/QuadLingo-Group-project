@@ -2,8 +2,8 @@ package view;
 
 import Config.LanguageConfig;
 import Controller.UserController;
-import DAO.FlashcardDao;
-import DAO.UserDaoImpl;
+import Dao.FlashcardDao;
+import Dao.UserDaoImpl;
 import Main.SessionManager;
 import Model.Flashcard;
 import javafx.animation.RotateTransition;

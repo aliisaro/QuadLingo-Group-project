@@ -1,4 +1,4 @@
-import DAO.*;
+import Dao.*;
 import Database.MariaDbConnection;
 import Model.User;
 import org.junit.jupiter.api.AfterEach;

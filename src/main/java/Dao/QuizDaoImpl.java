@@ -1,18 +1,19 @@
-package DAO;
+package Dao;
 
 import Model.Quiz;
 import Model.Question;
-import Database.MariaDbConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static Database.MariaDbConnection.getConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class QuizDaoImpl implements QuizDao {
-    private Connection connection;
+    private final Connection connection;
+    private String answerLabel = "Answer";
+    private static final Logger logger = Logger.getLogger(QuizDaoImpl.class.getName());
 
     public QuizDaoImpl(Connection connection) {
         this.connection = connection;
@@ -21,7 +22,7 @@ public class QuizDaoImpl implements QuizDao {
     @Override
     public List<Quiz> getAllQuizzes(String language) {
         List<Quiz> quizzes = new ArrayList<>();
-        String query = "SELECT * FROM QUIZ WHERE language_code = ?";
+        String query = "SELECT * " + " FROM QUIZ WHERE language_code = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, language);
@@ -41,12 +42,31 @@ public class QuizDaoImpl implements QuizDao {
         return quizzes;
     }
 
+    private String fetchCorrectAnswer(int questionId) {
+        String correctAnswer = "";
+        String correctAnswerQuery = "SELECT A.Answer FROM CORRECTANSWER CA JOIN ANSWER A ON CA.AnswerID = A.AnswerID WHERE CA.QuestionID = ?";
+
+        try (PreparedStatement correctStmt = connection.prepareStatement(correctAnswerQuery)) {
+            correctStmt.setInt(1, questionId);
+            try (ResultSet correctRs = correctStmt.executeQuery()) {
+                if (correctRs.next()) {
+                    correctAnswer = correctRs.getString(answerLabel);
+                } else {
+                    logger.log(Level.INFO, "No correct answer found for Question ID: {0}", questionId);
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error fetching correct answer for Question ID: {0}",  questionId);
+        }
+
+        return correctAnswer;
+    }
+
     @Override
     public List<Question> getQuestionsForQuiz(int quizId) {
         List<Question> questions = new ArrayList<>();
         String questionQuery = "SELECT QuestionID, Question FROM QUESTION WHERE QuizID = ?";
-        String correctAnswerQuery = "SELECT A.Answer FROM CORRECTANSWER CA JOIN ANSWER A ON CA.AnswerID = A.AnswerID WHERE CA.QuestionID = ?";
-        String wrongAnswerQuery = "SELECT A.Answer FROM ANSWER A WHERE A.AnswerID NOT IN (SELECT AnswerID FROM CORRECTANSWER WHERE QuestionID = ?) ORDER BY RAND() LIMIT 3"; // Fetch multiple wrong answers
+        String wrongAnswerQuery = "SELECT A.Answer FROM ANSWER A WHERE A.AnswerID NOT IN (SELECT AnswerID FROM CORRECTANSWER WHERE QuestionID = ?) ORDER BY RAND() LIMIT 3";
 
         try (PreparedStatement questionStmt = connection.prepareStatement(questionQuery)) {
             questionStmt.setInt(1, quizId);
@@ -56,21 +76,7 @@ public class QuizDaoImpl implements QuizDao {
                     String questionText = rs.getString("Question");
 
                     // Fetch Correct Answer
-                    String correctAnswer = "";
-                    try (PreparedStatement correctStmt = connection.prepareStatement(correctAnswerQuery)) {
-                        correctStmt.setInt(1, questionId);
-                        try (ResultSet correctRs = correctStmt.executeQuery()) {
-                            if (correctRs.next()) {
-                                correctAnswer = correctRs.getString("Answer");
-                            } else {
-                                System.out.println("No correct answer found for Question ID: " + questionId);
-                            }
-                        }
-                    } catch (SQLException e) {
-                        System.out.println("Error fetching correct answer for Question ID: " + questionId);
-                        e.printStackTrace();
-                    }
-
+                    String correctAnswer = fetchCorrectAnswer(questionId);
 
                     // Fetch Wrong Answers
                     List<String> wrongAnswers = new ArrayList<>();
@@ -78,10 +84,10 @@ public class QuizDaoImpl implements QuizDao {
                         wrongStmt.setInt(1, questionId);
                         try (ResultSet wrongRs = wrongStmt.executeQuery()) {
                             while (wrongRs.next()) {
-                                wrongAnswers.add(wrongRs.getString("Answer"));
+                                wrongAnswers.add(wrongRs.getString(answerLabel));
                             }
                             if (wrongAnswers.isEmpty()) {
-                                System.out.println("No wrong answers found for Question ID: " + questionId);
+                                logger.log(Level.INFO, "No wrong answers found for Question ID: {0}", questionId);
                             }
                         }
                     }
@@ -91,23 +97,20 @@ public class QuizDaoImpl implements QuizDao {
                     if (!correctAnswer.isEmpty()) {
                         answerOptions.add(correctAnswer);
                     }
-                    answerOptions.addAll(wrongAnswers); // Add all wrong answers
+                    answerOptions.addAll(wrongAnswers);
 
-                    // Ensure there are answer options
                     if (answerOptions.isEmpty()) {
-                        answerOptions.add("No answers available"); // Placeholder for no answers
+                        answerOptions.add("No answers available");
                     }
 
-                    // Shuffle to randomize answer order
                     Collections.shuffle(answerOptions);
 
-                    // Create Question object
                     Question question = new Question(questionId, questionText, answerOptions, correctAnswer);
                     questions.add(question);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error fetching questions for Quiz ID: {0}", quizId);
         }
 
         return questions;
@@ -123,8 +126,8 @@ public class QuizDaoImpl implements QuizDao {
             pstmt.setInt(1, questionId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    String correctAnswer = rs.getString("Answer");
-                    System.out.println("Checking Answer for Question ID " + questionId + ": " + selectedAnswer + " | Correct Answer: " + correctAnswer);
+                    String correctAnswer = rs.getString(answerLabel);
+                    logger.log(Level.INFO, "Checking Answer for Question ID {0}: {1} | Correct Answer: {2}", new Object[]{questionId, selectedAnswer, correctAnswer});
                     return correctAnswer.equalsIgnoreCase(selectedAnswer.trim());
                 }
             }
@@ -148,7 +151,6 @@ public class QuizDaoImpl implements QuizDao {
             try (ResultSet rs = checkStmt.executeQuery()) {
                 if (rs.next()) {
                     // User has completed the quiz, update the score
-                    int existingScore = rs.getInt("Score");
                     String updateSQL = "UPDATE ISCOMPLETED SET Score = ? WHERE UserID = ? AND QuizID = ?";
 
                     try (PreparedStatement updateStmt = connection.prepareStatement(updateSQL)) {
@@ -157,7 +159,7 @@ public class QuizDaoImpl implements QuizDao {
                         updateStmt.setInt(3, quizId);
                         updateStmt.executeUpdate();
 
-                        System.out.println("Quiz score updated: UserID = " + userId + ", QuizID = " + quizId + ", New Score = " + score);
+                        logger.log(Level.INFO, "Quiz score updated: UserID = {0}, QuizID = {1}, New Score = {2}", new Object[]{userId, quizId, score});
                     }
                 } else {
                     // User has not completed the quiz, insert a new record
@@ -169,12 +171,12 @@ public class QuizDaoImpl implements QuizDao {
                         insertStmt.setInt(3, score);
                         insertStmt.executeUpdate();
 
-                        System.out.println("Quiz completion recorded: UserID = " + userId + ", QuizID = " + quizId + ", Score = " + score);
+                        logger.log(Level.INFO, "Quiz completion recorded: UserID = {0}, QuizID = {1}, Score = {2}", new Object[]{userId, quizId, score});
                     }
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error recording quiz completion: " + e.getMessage());
+            logger.log(Level.SEVERE, "Error recording quiz completion: {0}", e.getMessage());
         }
     }
 

@@ -1,7 +1,7 @@
 package view;
 
 import Config.LanguageConfig;
-import DAO.QuizDao;
+import Dao.QuizDao;
 import Main.SessionManager;
 import Model.Question;
 import Model.User;

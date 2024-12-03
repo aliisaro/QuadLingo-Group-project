@@ -1,7 +1,7 @@
 package view;
 
 import Config.LanguageConfig;
-import DAO.UserDaoImpl;
+import Dao.UserDaoImpl;
 import Model.Badge;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

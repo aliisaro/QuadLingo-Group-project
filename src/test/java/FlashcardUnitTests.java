@@ -1,4 +1,4 @@
-import DAO.FlashcardDao;
+import Dao.FlashcardDao;
 import Model.Flashcard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

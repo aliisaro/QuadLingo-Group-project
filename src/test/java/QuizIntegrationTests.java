@@ -1,4 +1,4 @@
-import DAO.QuizDaoImpl;
+import Dao.QuizDaoImpl;
 import Model.Question;
 import Model.Quiz;
 import Database.MariaDbConnection;

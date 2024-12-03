@@ -1,4 +1,4 @@
-package DAO;
+package Dao;
 
 import Database.MariaDbConnection;
 
@@ -9,9 +9,7 @@ import java.sql.SQLException;
 
 public class ProgressDaoImpl implements ProgressDao {
 
-    private Connection getConnection() throws SQLException {
-        return MariaDbConnection.getConnection(); // Make sure your MariaDbConnection class is correct
-    }
+    String scoreLabel = "TotalScore";
 
     @Override
     public int getUserScore(int user, String language) {
@@ -25,7 +23,7 @@ public class ProgressDaoImpl implements ProgressDao {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                totalScore = resultSet.getInt("TotalScore");
+                totalScore = resultSet.getInt(scoreLabel);
             }
             resultSet.close();
             statement.close();
@@ -46,7 +44,6 @@ public class ProgressDaoImpl implements ProgressDao {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, language);
             ResultSet resultSet = statement.executeQuery();
-
             if (resultSet.next()) {
                 maxScore = resultSet.getInt("TotalMaxScore");
             }
@@ -72,7 +69,7 @@ public class ProgressDaoImpl implements ProgressDao {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                totalScore = resultSet.getInt("TotalScore");
+                totalScore = resultSet.getInt(scoreLabel);
             }
             resultSet.close();
             statement.close();
@@ -95,7 +92,7 @@ public class ProgressDaoImpl implements ProgressDao {
                 ResultSet resultSet = statement.executeQuery();
 
                 if (resultSet.next()) {
-                    totalScore = resultSet.getInt("TotalScore");
+                    totalScore = resultSet.getInt(scoreLabel);
                 }
             }
         } catch (SQLException e) {

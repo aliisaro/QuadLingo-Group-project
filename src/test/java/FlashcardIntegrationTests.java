@@ -1,6 +1,6 @@
-import DAO.FCImplement;
-import DAO.FlashcardDao;
-import DAO.UserDaoImpl;
+import Dao.FCImplement;
+import Dao.FlashcardDao;
+import Dao.UserDaoImpl;
 import Database.MariaDbConnection;
 import Model.User;
 import org.junit.jupiter.api.Assertions;
