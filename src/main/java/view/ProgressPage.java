@@ -1,8 +1,10 @@
 package view;
 
 import Config.LanguageConfig;
+
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+
 import Dao.ProgressDaoImpl;
 import Dao.UserDaoImpl;
 import javafx.geometry.Insets;
