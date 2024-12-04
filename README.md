@@ -46,7 +46,7 @@ More information about product backlog and sprint processes can be found in the 
 - [Work hours](https://docs.google.com/spreadsheets/d/10PlqGo4965hiHXeSnTN6XlKYykul5-xdi_aEbyekmFA/edit?gid=0#gid=0)
 
 ****
-<h3>database design</h3>
+<h3>Database design</h3>
 
 ![ER-diagram](docs/diagrams/ER-diagram.png)
 
