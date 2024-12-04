@@ -1,0 +1,1964 @@
+Index: src/main/java/view/QuizPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package view;\r\n\r\nimport Config.LanguageConfig;\r\nimport Dao.QuizDao;\r\nimport Main.SessionManager;\r\nimport Model.Question;\r\nimport Model.User;\r\nimport javafx.geometry.Insets;\r\nimport javafx.scene.control.*;\r\nimport javafx.scene.layout.HBox;\r\nimport javafx.scene.layout.VBox;\r\nimport javafx.stage.Stage;\r\nimport javafx.animation.PauseTransition;\r\nimport javafx.util.Duration;\r\nimport javafx.scene.paint.Color;\r\nimport java.util.List;\r\nimport java.util.ResourceBundle;\r\n\r\npublic class QuizPage extends BasePage {\r\n    private final QuizDao quizDao;\r\n    private final List<Question> questions;\r\n    private final int quizId;\r\n    private int currentQuestionIndex = 0;\r\n    private int score = 0;\r\n    private Label questionLabel;\r\n    private ToggleGroup answerGroup;\r\n    private RadioButton[] answerButtons;\r\n    private Label errorLabel;\r\n    private Label feedbackLabel;\r\n    private ResourceBundle bundle;\r\n\r\n    public QuizPage(QuizDao quizDao, int quizId, Stage stage) {\r\n        this.quizDao = quizDao;\r\n        this.questions = quizDao.getQuestionsForQuiz(quizId); // Load questions based on quizId\r\n        this.quizId = quizId;\r\n\r\n        if (!SessionManager.getInstance().isLoggedIn()) {\r\n            stage.setScene(new IndexPage(stage).createScene());\r\n            return;\r\n        }\r\n\r\n        this.bundle = ResourceBundle.getBundle(\"bundle\", LanguageConfig.getInstance().getCurrentLocale());\r\n\r\n        setLayout(stage); // Initialize UI components\r\n        loadQuestion(); // Load the first question\r\n    }\r\n\r\n    private void setLayout(Stage stage) {\r\n        this.setPadding(new Insets(20));\r\n\r\n        questionLabel = new Label();\r\n        questionLabel.setWrapText(true);\r\n        questionLabel.setStyle(\"-fx-font-size: 13px; -fx-font-weight: bold;\");\r\n\r\n        answerGroup = new ToggleGroup();\r\n        answerButtons = new RadioButton[4];\r\n        VBox answersBox = new VBox(10);\r\n        answersBox.setPadding(new Insets(10, 0, 10, 0));\r\n\r\n        for (int i = 0; i < answerButtons.length; i++) {\r\n            answerButtons[i] = new RadioButton();\r\n            answerButtons[i].setToggleGroup(answerGroup);\r\n            answerButtons[i].setWrapText(true);\r\n            answerButtons[i].setStyle(\"-fx-font-size: 16px;\");\r\n            answersBox.getChildren().add(answerButtons[i]);\r\n        }\r\n\r\n        feedbackLabel = new Label();\r\n        feedbackLabel.setVisible(false);\r\n\r\n        Button submitButton = new Button(bundle.getString(\"submitAnswer\"));\r\n        submitButton.setStyle(\"-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 175;\");\r\n        submitButton.setOnAction(e -> handleSubmitAnswer());\r\n\r\n        Button cancelButton = new Button(bundle.getString(\"cancelQuiz\"));\r\n        cancelButton.setStyle(\"-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 150;\");\r\n        cancelButton.setOnAction(e -> stage.setScene(new QuizLibrary(stage).createScene()));\r\n\r\n        String normalButtonStyle = \"-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125\";\r\n        String hoveredButtonStyle = \"-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125\";\r\n\r\n        Button logoutButton = new Button(bundle.getString(\"logoutButton\"));\r\n        logoutButton.setStyle(normalButtonStyle);\r\n        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(hoveredButtonStyle));\r\n        logoutButton.setOnMouseExited(e -> logoutButton.setStyle(normalButtonStyle));\r\n        logoutButton.setOnAction(e -> {\r\n            SessionManager.getInstance().logout();\r\n            stage.setScene(new LoggedOutPage(stage).createScene());\r\n        });\r\n\r\n        HBox buttonBox = new HBox(10);\r\n        buttonBox.setPadding(new Insets(10, 0, 10, 0));\r\n        buttonBox.setStyle(\"-fx-alignment: center;\");\r\n        buttonBox.getChildren().addAll(submitButton, cancelButton, logoutButton);\r\n\r\n        errorLabel = new Label();\r\n        errorLabel.setStyle(\"-fx-text-fill: red;\");\r\n\r\n        this.getChildren().addAll(questionLabel, answersBox, feedbackLabel, errorLabel, buttonBox);\r\n    }\r\n\r\n    private void loadQuestion() {\r\n        answerGroup.selectToggle(null);\r\n        errorLabel.setText(\"\");\r\n\r\n        if (currentQuestionIndex < questions.size()) {\r\n            Question question = questions.get(currentQuestionIndex);\r\n            questionLabel.setText((currentQuestionIndex + 1) + \". \" + question.getQuestionText());\r\n\r\n            List<String> answerOptions = question.getAnswerOptions();\r\n            for (int i = 0; i < answerButtons.length; i++) {\r\n                if (i < answerOptions.size()) {\r\n                    answerButtons[i].setText(answerOptions.get(i));\r\n                    answerButtons[i].setVisible(true);\r\n                } else answerButtons[i].setVisible(false);\r\n            }\r\n        } else showFinalScore();\r\n    }\r\n\r\n    private void handleSubmitAnswer() {\r\n        RadioButton selectedButton = (RadioButton) answerGroup.getSelectedToggle();\r\n        if (selectedButton != null) {\r\n            String selectedAnswer = selectedButton.getText();\r\n            Question currentQuestion = questions.get(currentQuestionIndex);\r\n\r\n            if (quizDao.checkAnswer(currentQuestion.getQuestionId(), selectedAnswer)) {\r\n                score++;\r\n                feedbackLabel.setText(bundle.getString(\"correct\"));\r\n                feedbackLabel.setTextFill(Color.GREEN);\r\n            } else {\r\n                feedbackLabel.setText(bundle.getString(\"incorrect\") + currentQuestion.getCorrectAnswer());\r\n                feedbackLabel.setTextFill(Color.RED);\r\n            }\r\n\r\n            feedbackLabel.setVisible(true);\r\n\r\n            PauseTransition pause = new PauseTransition(Duration.seconds(1));\r\n            pause.setOnFinished(event -> {\r\n                currentQuestionIndex++;\r\n                loadQuestion();\r\n            });\r\n            pause.play();\r\n        } else errorLabel.setText(bundle.getString(\"selectAnswerError\"));\r\n    }\r\n\r\n    private void showFinalScore() {\r\n        this.getChildren().clear();\r\n        this.setPadding(new Insets(20));\r\n\r\n        Label scoreLabel = new Label(bundle.getString(\"quizFinished\"));\r\n        scoreLabel.setStyle(\"-fx-font-size: 24px; -fx-font-weight: bold;\");\r\n\r\n        Label resultLabel = new Label(bundle.getString(\"yourScore\") + score + bundle.getString(\"outOf\") + questions.size());\r\n        resultLabel.setStyle(\"-fx-font-size: 18px;\");\r\n\r\n        User currentUser = SessionManager.getInstance().getCurrentUser();\r\n        int userId = currentUser.getUserId();\r\n\r\n        quizDao.recordQuizCompletion(userId, quizId, score);\r\n\r\n        this.getChildren().addAll(scoreLabel, resultLabel);\r\n\r\n        Button backButton = new Button(bundle.getString(\"quizLibraryButton\"));\r\n        backButton.setStyle(\"-fx-font-size: 16px; -fx-padding: 10px;-fx-pref-width: 180;\");\r\n        backButton.setOnAction(e -> {\r\n            Stage stage = (Stage) this.getScene().getWindow();\r\n            stage.setScene(new QuizLibrary(stage).createScene());\r\n        });\r\n\r\n        this.getChildren().add(backButton);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/view/QuizPage.java b/src/main/java/view/QuizPage.java
+--- a/src/main/java/view/QuizPage.java	(revision d11ef74f7788de6af1b5cce4c11f0cf68b2e4da9)
++++ b/src/main/java/view/QuizPage.java	(date 1733316393099)
+@@ -13,160 +13,161 @@
+ import javafx.animation.PauseTransition;
+ import javafx.util.Duration;
+ import javafx.scene.paint.Color;
++
+ import java.util.List;
+ import java.util.ResourceBundle;
+ 
+ public class QuizPage extends BasePage {
+-    private final QuizDao quizDao;
+-    private final List<Question> questions;
+-    private final int quizId;
+-    private int currentQuestionIndex = 0;
+-    private int score = 0;
+-    private Label questionLabel;
+-    private ToggleGroup answerGroup;
+-    private RadioButton[] answerButtons;
+-    private Label errorLabel;
+-    private Label feedbackLabel;
+-    private ResourceBundle bundle;
++  private final QuizDao quizDao;
++  private final List<Question> questions;
++  private final int quizId;
++  private int currentQuestionIndex = 0;
++  private int score = 0;
++  private Label questionLabel;
++  private ToggleGroup answerGroup;
++  private RadioButton[] answerButtons;
++  private Label errorLabel;
++  private Label feedbackLabel;
++  private ResourceBundle bundle;
+ 
+-    public QuizPage(QuizDao quizDao, int quizId, Stage stage) {
+-        this.quizDao = quizDao;
+-        this.questions = quizDao.getQuestionsForQuiz(quizId); // Load questions based on quizId
+-        this.quizId = quizId;
++  public QuizPage(QuizDao quizDao, int quizId, Stage stage) {
++    this.quizDao = quizDao;
++    this.questions = quizDao.getQuestionsForQuiz(quizId); // Load questions based on quizId
++    this.quizId = quizId;
+ 
+-        if (!SessionManager.getInstance().isLoggedIn()) {
+-            stage.setScene(new IndexPage(stage).createScene());
+-            return;
+-        }
++    if (!SessionManager.getInstance().isLoggedIn()) {
++      stage.setScene(new IndexPage(stage).createScene());
++      return;
++    }
+ 
+-        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
++    this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
+ 
+-        setLayout(stage); // Initialize UI components
+-        loadQuestion(); // Load the first question
+-    }
++    setLayout(stage); // Initialize UI components
++    loadQuestion(); // Load the first question
++  }
+ 
+-    private void setLayout(Stage stage) {
+-        this.setPadding(new Insets(20));
++  private void setLayout(Stage stage) {
++    this.setPadding(new Insets(20));
+ 
+-        questionLabel = new Label();
+-        questionLabel.setWrapText(true);
+-        questionLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: bold;");
++    questionLabel = new Label();
++    questionLabel.setWrapText(true);
++    questionLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: bold;");
+ 
+-        answerGroup = new ToggleGroup();
+-        answerButtons = new RadioButton[4];
+-        VBox answersBox = new VBox(10);
+-        answersBox.setPadding(new Insets(10, 0, 10, 0));
++    answerGroup = new ToggleGroup();
++    answerButtons = new RadioButton[4];
++    VBox answersBox = new VBox(10);
++    answersBox.setPadding(new Insets(10, 0, 10, 0));
+ 
+-        for (int i = 0; i < answerButtons.length; i++) {
+-            answerButtons[i] = new RadioButton();
+-            answerButtons[i].setToggleGroup(answerGroup);
+-            answerButtons[i].setWrapText(true);
+-            answerButtons[i].setStyle("-fx-font-size: 16px;");
+-            answersBox.getChildren().add(answerButtons[i]);
+-        }
++    for (int i = 0; i < answerButtons.length; i++) {
++      answerButtons[i] = new RadioButton();
++      answerButtons[i].setToggleGroup(answerGroup);
++      answerButtons[i].setWrapText(true);
++      answerButtons[i].setStyle("-fx-font-size: 16px;");
++      answersBox.getChildren().add(answerButtons[i]);
++    }
+ 
+-        feedbackLabel = new Label();
+-        feedbackLabel.setVisible(false);
++    feedbackLabel = new Label();
++    feedbackLabel.setVisible(false);
+ 
+-        Button submitButton = new Button(bundle.getString("submitAnswer"));
+-        submitButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 175;");
+-        submitButton.setOnAction(e -> handleSubmitAnswer());
++    Button submitButton = new Button(bundle.getString("submitAnswer"));
++    submitButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 175;");
++    submitButton.setOnAction(e -> handleSubmitAnswer());
+ 
+-        Button cancelButton = new Button(bundle.getString("cancelQuiz"));
+-        cancelButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 150;");
+-        cancelButton.setOnAction(e -> stage.setScene(new QuizLibrary(stage).createScene()));
++    Button cancelButton = new Button(bundle.getString("cancelQuiz"));
++    cancelButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 150;");
++    cancelButton.setOnAction(e -> stage.setScene(new QuizLibrary(stage).createScene()));
+ 
+-        String normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125";
+-        String hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125";
++    String normalButtonStyle = "-fx-background-color: #e86c6c; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125";
++    String hoveredButtonStyle = "-fx-background-color: #d9534f; -fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 125";
+ 
+-        Button logoutButton = new Button(bundle.getString("logoutButton"));
+-        logoutButton.setStyle(normalButtonStyle);
+-        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(hoveredButtonStyle));
+-        logoutButton.setOnMouseExited(e -> logoutButton.setStyle(normalButtonStyle));
+-        logoutButton.setOnAction(e -> {
+-            SessionManager.getInstance().logout();
+-            stage.setScene(new LoggedOutPage(stage).createScene());
+-        });
++    Button logoutButton = new Button(bundle.getString("logoutButton"));
++    logoutButton.setStyle(normalButtonStyle);
++    logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(hoveredButtonStyle));
++    logoutButton.setOnMouseExited(e -> logoutButton.setStyle(normalButtonStyle));
++    logoutButton.setOnAction(e -> {
++      SessionManager.getInstance().logout();
++      stage.setScene(new LoggedOutPage(stage).createScene());
++    });
+ 
+-        HBox buttonBox = new HBox(10);
+-        buttonBox.setPadding(new Insets(10, 0, 10, 0));
+-        buttonBox.setStyle("-fx-alignment: center;");
+-        buttonBox.getChildren().addAll(submitButton, cancelButton, logoutButton);
++    HBox buttonBox = new HBox(10);
++    buttonBox.setPadding(new Insets(10, 0, 10, 0));
++    buttonBox.setStyle("-fx-alignment: center;");
++    buttonBox.getChildren().addAll(submitButton, cancelButton, logoutButton);
+ 
+-        errorLabel = new Label();
+-        errorLabel.setStyle("-fx-text-fill: red;");
++    errorLabel = new Label();
++    errorLabel.setStyle("-fx-text-fill: red;");
+ 
+-        this.getChildren().addAll(questionLabel, answersBox, feedbackLabel, errorLabel, buttonBox);
+-    }
++    this.getChildren().addAll(questionLabel, answersBox, feedbackLabel, errorLabel, buttonBox);
++  }
+ 
+-    private void loadQuestion() {
+-        answerGroup.selectToggle(null);
+-        errorLabel.setText("");
++  private void loadQuestion() {
++    answerGroup.selectToggle(null);
++    errorLabel.setText("");
+ 
+-        if (currentQuestionIndex < questions.size()) {
+-            Question question = questions.get(currentQuestionIndex);
+-            questionLabel.setText((currentQuestionIndex + 1) + ". " + question.getQuestionText());
++    if (currentQuestionIndex < questions.size()) {
++      Question question = questions.get(currentQuestionIndex);
++      questionLabel.setText((currentQuestionIndex + 1) + ". " + question.getQuestionText());
+ 
+-            List<String> answerOptions = question.getAnswerOptions();
+-            for (int i = 0; i < answerButtons.length; i++) {
+-                if (i < answerOptions.size()) {
+-                    answerButtons[i].setText(answerOptions.get(i));
+-                    answerButtons[i].setVisible(true);
+-                } else answerButtons[i].setVisible(false);
+-            }
+-        } else showFinalScore();
+-    }
++      List<String> answerOptions = question.getAnswerOptions();
++      for (int i = 0; i < answerButtons.length; i++) {
++        if (i < answerOptions.size()) {
++          answerButtons[i].setText(answerOptions.get(i));
++          answerButtons[i].setVisible(true);
++        } else answerButtons[i].setVisible(false);
++      }
++    } else showFinalScore();
++  }
+ 
+-    private void handleSubmitAnswer() {
+-        RadioButton selectedButton = (RadioButton) answerGroup.getSelectedToggle();
+-        if (selectedButton != null) {
+-            String selectedAnswer = selectedButton.getText();
+-            Question currentQuestion = questions.get(currentQuestionIndex);
++  private void handleSubmitAnswer() {
++    RadioButton selectedButton = (RadioButton) answerGroup.getSelectedToggle();
++    if (selectedButton != null) {
++      String selectedAnswer = selectedButton.getText();
++      Question currentQuestion = questions.get(currentQuestionIndex);
+ 
+-            if (quizDao.checkAnswer(currentQuestion.getQuestionId(), selectedAnswer)) {
+-                score++;
+-                feedbackLabel.setText(bundle.getString("correct"));
+-                feedbackLabel.setTextFill(Color.GREEN);
+-            } else {
+-                feedbackLabel.setText(bundle.getString("incorrect") + currentQuestion.getCorrectAnswer());
+-                feedbackLabel.setTextFill(Color.RED);
+-            }
++      if (quizDao.checkAnswer(currentQuestion.getQuestionId(), selectedAnswer)) {
++        score++;
++        feedbackLabel.setText(bundle.getString("correct"));
++        feedbackLabel.setTextFill(Color.GREEN);
++      } else {
++        feedbackLabel.setText(bundle.getString("incorrect") + currentQuestion.getCorrectAnswer());
++        feedbackLabel.setTextFill(Color.RED);
++      }
+ 
+-            feedbackLabel.setVisible(true);
++      feedbackLabel.setVisible(true);
+ 
+-            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+-            pause.setOnFinished(event -> {
+-                currentQuestionIndex++;
+-                loadQuestion();
+-            });
+-            pause.play();
+-        } else errorLabel.setText(bundle.getString("selectAnswerError"));
+-    }
++      PauseTransition pause = new PauseTransition(Duration.seconds(1));
++      pause.setOnFinished(event -> {
++        currentQuestionIndex++;
++        loadQuestion();
++      });
++      pause.play();
++    } else errorLabel.setText(bundle.getString("selectAnswerError"));
++  }
+ 
+-    private void showFinalScore() {
+-        this.getChildren().clear();
+-        this.setPadding(new Insets(20));
++  private void showFinalScore() {
++    this.getChildren().clear();
++    this.setPadding(new Insets(20));
+ 
+-        Label scoreLabel = new Label(bundle.getString("quizFinished"));
+-        scoreLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
++    Label scoreLabel = new Label(bundle.getString("quizFinished"));
++    scoreLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+ 
+-        Label resultLabel = new Label(bundle.getString("yourScore") + score + bundle.getString("outOf") + questions.size());
+-        resultLabel.setStyle("-fx-font-size: 18px;");
++    Label resultLabel = new Label(bundle.getString("yourScore") + score + bundle.getString("outOf") + questions.size());
++    resultLabel.setStyle("-fx-font-size: 18px;");
+ 
+-        User currentUser = SessionManager.getInstance().getCurrentUser();
+-        int userId = currentUser.getUserId();
++    User currentUser = SessionManager.getInstance().getCurrentUser();
++    int userId = currentUser.getUserId();
+ 
+-        quizDao.recordQuizCompletion(userId, quizId, score);
++    quizDao.recordQuizCompletion(userId, quizId, score);
+ 
+-        this.getChildren().addAll(scoreLabel, resultLabel);
++    this.getChildren().addAll(scoreLabel, resultLabel);
+ 
+-        Button backButton = new Button(bundle.getString("quizLibraryButton"));
+-        backButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;-fx-pref-width: 180;");
+-        backButton.setOnAction(e -> {
+-            Stage stage = (Stage) this.getScene().getWindow();
+-            stage.setScene(new QuizLibrary(stage).createScene());
+-        });
++    Button backButton = new Button(bundle.getString("quizLibraryButton"));
++    backButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;-fx-pref-width: 180;");
++    backButton.setOnAction(e -> {
++      Stage stage = (Stage) this.getScene().getWindow();
++      stage.setScene(new QuizLibrary(stage).createScene());
++    });
+ 
+-        this.getChildren().add(backButton);
+-    }
++    this.getChildren().add(backButton);
++  }
+ }
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"JavadocGenerationManager\">\r\n    <option name=\"OUTPUT_DIRECTORY\" value=\"$USER_HOME$/Downloads\" />\r\n  </component>\r\n  <component name=\"MavenProjectsManager\">\r\n    <option name=\"originalFiles\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/pom.xml\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"jbr-17\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision d11ef74f7788de6af1b5cce4c11f0cf68b2e4da9)
++++ b/.idea/misc.xml	(date 1733316426879)
+@@ -1,6 +1,31 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="CheckstyleConfigurable">
++    <option name="suppFilterFilename" value="" />
++    <option name="suppCommentFilter" value="false" />
++    <option name="offComment" value="CHECKSTYLE\:OFF" />
++    <option name="onComment" value="CHECKSTYLE\:ON" />
++    <option name="checkFormat" value=".*" />
++    <option name="messageFormat" value="" />
++    <option name="checkCPP" value="true" />
++    <option name="checkC" value="true" />
++    <option name="suppNearbyCommentFilter" value="false" />
++    <option name="snCommentFormat" value="SUPPRESS CHECKSTYLE (\w+)" />
++    <option name="snCheckFormat" value="$1" />
++    <option name="snMessageFormat" value="" />
++    <option name="snInfluenceFormat" value="0" />
++    <option name="snCheckCPP" value="true" />
++    <option name="snCheckC" value="true" />
++    <option name="pathToUserRulesConfiguration" value="" />
++    <option name="pathToJarWithRules" value="" />
++  </component>
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="FindBugsConfigurable">
++    <option name="make" value="true" />
++    <option name="effort" value="default" />
++    <option name="priority" value="Medium" />
++    <option name="excludeFilter" value="" />
++  </component>
+   <component name="JavadocGenerationManager">
+     <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Downloads" />
+   </component>
+@@ -14,4 +39,7 @@
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
++  <component name="SuppressionsComponent">
++    <option name="suppComments" value="[]" />
++  </component>
+ </project>
+\ No newline at end of file
+Index: src/main/java/Dao/UserDao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Dao;\r\n\r\nimport Model.User;\r\n\r\npublic interface UserDao {\r\n    int createUser(User user);\r\n    boolean updateUser(User user);\r\n    User getUserById(int userId); // Fetch user by ID\r\n    User loginUser(String email, String password);\r\n    boolean doesEmailExist(String email);\r\n    boolean doesUsernameExist(String username);\r\n    boolean deleteUserByEmail(String email);\r\n    int getQuizzesCompleted(int userId, String language);\r\n    int getFlashcardsMastered(int userId, String language);\r\n    String getEmail();\r\n    int getCurrentUserId();\r\n    Boolean getUserByEmail(String email);\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Dao/UserDao.java b/src/main/java/Dao/UserDao.java
+--- a/src/main/java/Dao/UserDao.java	(revision d11ef74f7788de6af1b5cce4c11f0cf68b2e4da9)
++++ b/src/main/java/Dao/UserDao.java	(date 1733316393095)
+@@ -3,16 +3,27 @@
+ import Model.User;
+ 
+ public interface UserDao {
+-    int createUser(User user);
+-    boolean updateUser(User user);
+-    User getUserById(int userId); // Fetch user by ID
+-    User loginUser(String email, String password);
+-    boolean doesEmailExist(String email);
+-    boolean doesUsernameExist(String username);
+-    boolean deleteUserByEmail(String email);
+-    int getQuizzesCompleted(int userId, String language);
+-    int getFlashcardsMastered(int userId, String language);
+-    String getEmail();
+-    int getCurrentUserId();
+-    Boolean getUserByEmail(String email);
++  int createUser(User user);
++
++  boolean updateUser(User user);
++
++  User getUserById(int userId); // Fetch user by ID
++
++  User loginUser(String email, String password);
++
++  boolean doesEmailExist(String email);
++
++  boolean doesUsernameExist(String username);
++
++  boolean deleteUserByEmail(String email);
++
++  int getQuizzesCompleted(int userId, String language);
++
++  int getFlashcardsMastered(int userId, String language);
++
++  String getEmail();
++
++  int getCurrentUserId();
++
++  Boolean getUserByEmail(String email);
+ }
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"6436838c-4e0c-4eac-a79b-699bd6f9f1fa\" name=\"Changes\" comment=\"SonarLint issues fixed in view package\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/ArabicLocalizationTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/ArabicLocalizationTest.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/ChineseLocalizationTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/ChineseLocalizationTest.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/EnglishLocalizationTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/EnglishLocalizationTest.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/FrenchLocalizationTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/FrenchLocalizationTest.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ComposerSettings\">\r\n    <execution />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"CSS File\" />\r\n        <option value=\"Interface\" />\r\n        <option value=\"Dockerfile\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"main\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;aliisaro&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/aliisaro/QuadLingo-Group-project&quot;,\r\n    &quot;accountId&quot;: &quot;8f5e8fcd-3279-4d3f-a7b4-f0c0f2ce3e5e&quot;\r\n  }\r\n}</component>\r\n  <component name=\"HighlightingSettingsPerFile\">\r\n    <setting file=\"file://$PROJECT_DIR$/src/test/java/ArabicLocalizationTest.java\" root0=\"SKIP_HIGHLIGHTING\" />\r\n  </component>\r\n  <component name=\"KubernetesApiPersistence\">{}</component>\r\n  <component name=\"KubernetesApiProvider\">{\r\n  &quot;isMigrated&quot;: true\r\n}</component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 2\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2ldrDNfiM8m3jlfvzodxyvc4LUp\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"ASKED_ADD_EXTERNAL_FILES\": \"true\",\r\n    \"Application.Main.executor\": \"Run\",\r\n    \"Application.Profile.executor\": \"Run\",\r\n    \"Application.QuadLingoQui.executor\": \"Run\",\r\n    \"Docker.Dockerfile.executor\": \"Run\",\r\n    \"JUnit.ArabicLocalizationTest.executor\": \"Run\",\r\n    \"JUnit.ChineseLocalizationTest.executor\": \"Run\",\r\n    \"JUnit.EnglishLocalizationTest.executor\": \"Run\",\r\n    \"JUnit.FlashcardIntegrationTests.executor\": \"Run\",\r\n    \"JUnit.FlashcardUnitTests.executor\": \"Run\",\r\n    \"JUnit.FrenchLocalizationTest.executor\": \"Run\",\r\n    \"JUnit.IndexPageLocalizationTest.executor\": \"Run\",\r\n    \"JUnit.LoginPageLocalizationTest.executor\": \"Run\",\r\n    \"JUnit.MariaDbConnectionTest.executor\": \"Run\",\r\n    \"JUnit.ProgressIntegrationTest.executor\": \"Run\",\r\n    \"JUnit.ProgressUnitTests.executor\": \"Run\",\r\n    \"JUnit.QuizIntegrationTests.executor\": \"Run\",\r\n    \"JUnit.QuizTests.executor\": \"Run\",\r\n    \"JUnit.QuizUnitTests.executor\": \"Run\",\r\n    \"JUnit.UserDaoImplTest.executor\": \"Run\",\r\n    \"JUnit.UserDaoImplUnitTest.executor\": \"Run\",\r\n    \"JUnit.UserIntegrationTests.executor\": \"Run\",\r\n    \"JUnit.UserTests.executor\": \"Run\",\r\n    \"JUnit.UserTests.testUpdateUser.executor\": \"Run\",\r\n    \"JUnit.UserUnitTests.executor\": \"Run\",\r\n    \"JUnit.java in QuadLingo.executor\": \"Run\",\r\n    \"Maven.QuadLingo [clean,install].executor\": \"Run\",\r\n    \"Maven.QuadLingo [clean,package,-DskipTests].executor\": \"Run\",\r\n    \"Maven.QuadLingo [clean,package,-U].executor\": \"Run\",\r\n    \"Maven.QuadLingo [clean,package].executor\": \"Run\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"SONARLINT_PRECOMMIT_ANALYSIS\": \"true\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"last_opened_file_path\": \"C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo\",\r\n    \"list.type.of.created.stylesheet\": \"CSS\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"project.structure.last.edited\": \"Global Libraries\",\r\n    \"project.structure.proportion\": \"0.0\",\r\n    \"project.structure.side.proportion\": \"0.2\",\r\n    \"settings.editor.selected.configurable\": \"preferences.pluginManager\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  },\r\n  \"keyToStringList\": {\r\n    \"DatabaseDriversLRU\": [\r\n      \"mariadb\"\r\n    ]\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\aliis\\IdeaProjects\\QuadLingo-Group-project\\src\\main\\java\\Config\" />\r\n      <recent name=\"C:\\Users\\aliis\\IdeaProjects\\QuadLingo-Group-project\\src\\main\\java\" />\r\n      <recent name=\"C:\\Users\\aliis\\IdeaProjects\\QuadLingo-Group-project\\docs\\images\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunAnythingCache\">\r\n    <option name=\"myCommands\">\r\n      <command value=\"mvn clean package -DskipTests\" />\r\n      <command value=\"mvn clean package -U \" />\r\n      <command value=\"mvn clean install\" />\r\n      <command value=\"mvn clean package -DskipTests \" />\r\n      <command value=\"mvn clean package \" />\r\n      <command value=\"mvn clean package\" />\r\n    </option>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"JUnit.FrenchLocalizationTest\">\r\n    <configuration name=\"ArabicLocalizationTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"QuadLingo\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"ArabicLocalizationTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"ChineseLocalizationTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"QuadLingo\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"ChineseLocalizationTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"EnglishLocalizationTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"QuadLingo\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"EnglishLocalizationTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"FrenchLocalizationTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"QuadLingo\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"FrenchLocalizationTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"UserIntegrationTests\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"QuadLingo\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"UserIntegrationTests\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"JUnit.FrenchLocalizationTest\" />\r\n        <item itemvalue=\"JUnit.ChineseLocalizationTest\" />\r\n        <item itemvalue=\"JUnit.EnglishLocalizationTest\" />\r\n        <item itemvalue=\"JUnit.ArabicLocalizationTest\" />\r\n        <item itemvalue=\"JUnit.UserIntegrationTests\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11\" />\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"6436838c-4e0c-4eac-a79b-699bd6f9f1fa\" name=\"Changes\" comment=\"\" />\r\n      <created>1725520675708</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1725520675708</updated>\r\n      <workItem from=\"1725520677142\" duration=\"3665000\" />\r\n      <workItem from=\"1725607627641\" duration=\"85000\" />\r\n      <workItem from=\"1725967212843\" duration=\"7070000\" />\r\n      <workItem from=\"1726035785371\" duration=\"3040000\" />\r\n      <workItem from=\"1726051174980\" duration=\"1433000\" />\r\n      <workItem from=\"1726122772219\" duration=\"15000\" />\r\n      <workItem from=\"1726210037939\" duration=\"833000\" />\r\n      <workItem from=\"1726215998453\" duration=\"25846000\" />\r\n      <workItem from=\"1726642703812\" duration=\"4690000\" />\r\n      <workItem from=\"1726688017923\" duration=\"84000\" />\r\n      <workItem from=\"1726688117305\" duration=\"1634000\" />\r\n      <workItem from=\"1726726620255\" duration=\"22000\" />\r\n      <workItem from=\"1726750020136\" duration=\"375000\" />\r\n      <workItem from=\"1727245927846\" duration=\"4750000\" />\r\n      <workItem from=\"1727600129175\" duration=\"9000\" />\r\n      <workItem from=\"1727600251351\" duration=\"623000\" />\r\n      <workItem from=\"1727678034370\" duration=\"114000\" />\r\n      <workItem from=\"1727678176958\" duration=\"2940000\" />\r\n      <workItem from=\"1727893438395\" duration=\"9521000\" />\r\n      <workItem from=\"1727938402406\" duration=\"8193000\" />\r\n      <workItem from=\"1727960986358\" duration=\"1333000\" />\r\n      <workItem from=\"1727970631091\" duration=\"998000\" />\r\n      <workItem from=\"1727978820087\" duration=\"2693000\" />\r\n      <workItem from=\"1728288590909\" duration=\"2465000\" />\r\n      <workItem from=\"1728368930535\" duration=\"5286000\" />\r\n      <workItem from=\"1728499405950\" duration=\"2502000\" />\r\n      <workItem from=\"1728569897297\" duration=\"6643000\" />\r\n      <workItem from=\"1728639315536\" duration=\"345000\" />\r\n      <workItem from=\"1730188070794\" duration=\"525000\" />\r\n      <workItem from=\"1730189294133\" duration=\"213000\" />\r\n      <workItem from=\"1730301426324\" duration=\"1982000\" />\r\n      <workItem from=\"1730536800648\" duration=\"1347000\" />\r\n      <workItem from=\"1730538413498\" duration=\"6044000\" />\r\n      <workItem from=\"1731157787637\" duration=\"10530000\" />\r\n      <workItem from=\"1731231512057\" duration=\"7405000\" />\r\n      <workItem from=\"1731321178490\" duration=\"6551000\" />\r\n      <workItem from=\"1731361425054\" duration=\"2104000\" />\r\n      <workItem from=\"1731364343864\" duration=\"1537000\" />\r\n      <workItem from=\"1731433623456\" duration=\"425000\" />\r\n      <workItem from=\"1731496480153\" duration=\"3064000\" />\r\n      <workItem from=\"1731500501483\" duration=\"3000\" />\r\n      <workItem from=\"1731525901088\" duration=\"3370000\" />\r\n      <workItem from=\"1731529492402\" duration=\"770000\" />\r\n      <workItem from=\"1731854391666\" duration=\"19000\" />\r\n      <workItem from=\"1731919533519\" duration=\"49000\" />\r\n      <workItem from=\"1732530955503\" duration=\"52000\" />\r\n      <workItem from=\"1732534013239\" duration=\"3560000\" />\r\n      <workItem from=\"1732735086290\" duration=\"220000\" />\r\n      <workItem from=\"1732808814634\" duration=\"373000\" />\r\n      <workItem from=\"1732809202639\" duration=\"2455000\" />\r\n      <workItem from=\"1732915569364\" duration=\"9850000\" />\r\n      <workItem from=\"1732925580204\" duration=\"221000\" />\r\n      <workItem from=\"1732980694409\" duration=\"1115000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"pushaan cindyn version\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726648846401</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726648846401</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Nyt pitäis toimii login kunnolla\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726689459954</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726689459954</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"login pitäsi toimia nyt\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726726796491</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726726796491</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"createOverallProgress method commented\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1727337465743</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1727337465743</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"lisäsin updateUser että profiilissa voi käyttäjä päivittää omia tietojaan, mutta sähköpostin päivittäminen ei vielä toimi. Lisäsin kans email validation Registration sivulle.\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1727345542694</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1727345542694</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"muokkasin profile ja registartion sivuja\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1727952502577</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1727952502577</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"added user test for creating a user, added jenkinsfile and updated pom.xml\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1727972091032</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1727972091032</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"Edited UI of QuizLibrary, QuizPage and profile page\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1728232609428</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1728232609428</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"updated index page\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1728381461896</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1728381461896</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"fixed UI problem\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1728457000562</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1728457000562</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"update pom, dockerfile and usertest\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1728572673579</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1728572673579</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"deleted dependency-reduced-pom.xml\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1728572710296</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1728572710296</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"small change to dockerfile\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1728574900337</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1728574900337</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"update dockerfile\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1728575322861</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1728575322861</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00015\" summary=\"update pom.xml\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1728575625925</created>\r\n      <option name=\"number\" value=\"00015\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00015\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1728575625925</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00016\" summary=\"update dockerfile\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1728581834181</created>\r\n      <option name=\"number\" value=\"00016\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00016\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1728581834181</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00017\" summary=\"lisäsin english resource bundlen ja muokkasin Index pagen toimimaan sen kanssa\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1730139286482</created>\r\n      <option name=\"number\" value=\"00017\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00017\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1730139286482</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00018\" summary=\"muutin register ---&gt; signUp\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1730377886523</created>\r\n      <option name=\"number\" value=\"00018\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00018\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1730377886523</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00019\" summary=\"update english bundle + lisäsin successAlertTitlen chinese bundleen\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1730404301528</created>\r\n      <option name=\"number\" value=\"00019\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00019\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1730404301528</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00020\" summary=\"localized quiz library and quiz page\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1730538052877</created>\r\n      <option name=\"number\" value=\"00020\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00020\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1730538052877</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00021\" summary=\"added localization tests for all bundles and added mockito depenency in pom.xml\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731163632087</created>\r\n      <option name=\"number\" value=\"00021\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00021\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731163632087</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00022\" summary=\"updated ui localization tests\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731171453543</created>\r\n      <option name=\"number\" value=\"00022\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00022\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731171453543</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00023\" summary=\"Päivitin quizien progress logiikkaa\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731359451358</created>\r\n      <option name=\"number\" value=\"00023\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00023\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731359451358</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00024\" summary=\"Small update to english bundle and test\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731360196474</created>\r\n      <option name=\"number\" value=\"00024\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00024\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731360196474</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00025\" summary=\"Small update to user unit test\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731361901215</created>\r\n      <option name=\"number\" value=\"00025\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00025\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731361901215</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00026\" summary=\"Small update to quiz unit test\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731362089612</created>\r\n      <option name=\"number\" value=\"00026\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00026\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731362089612</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00027\" summary=\"Update pom.xml and english localization test\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731399770063</created>\r\n      <option name=\"number\" value=\"00027\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00027\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731399770063</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00028\" summary=\"update quiz dao and impl, userdaoimpl + quiz tests\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731404475613</created>\r\n      <option name=\"number\" value=\"00028\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00028\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731404475613</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00029\" summary=\"update\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731405080957</created>\r\n      <option name=\"number\" value=\"00029\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00029\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731405080957</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00030\" summary=\"updated bundles and logges out page\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731409823749</created>\r\n      <option name=\"number\" value=\"00030\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00030\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731409823749</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00031\" summary=\"updated progress methods related to flashcards\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731410998033</created>\r\n      <option name=\"number\" value=\"00031\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00031\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731410998033</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00032\" summary=\"updated progress methods related to flashcards\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731412241828</created>\r\n      <option name=\"number\" value=\"00032\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00032\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731412241828</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00033\" summary=\"update user unit tests\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731413053817</created>\r\n      <option name=\"number\" value=\"00033\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00033\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731413053817</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00034\" summary=\"small update to french bundle and test\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731499417422</created>\r\n      <option name=\"number\" value=\"00034\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00034\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731499417422</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00035\" summary=\"update user model, userdaoimpl, quizdao and quizdaoimpl\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731528536532</created>\r\n      <option name=\"number\" value=\"00035\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00035\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731528536532</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00036\" summary=\"small update quiz page\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731528961586</created>\r\n      <option name=\"number\" value=\"00036\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00036\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731528961586</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00037\" summary=\"Updated user tests\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731572000471</created>\r\n      <option name=\"number\" value=\"00037\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00037\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731572000471</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00038\" summary=\"update quiz tests\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731572817132</created>\r\n      <option name=\"number\" value=\"00038\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00038\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731572817132</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00039\" summary=\"Quiz integration test done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731574484616</created>\r\n      <option name=\"number\" value=\"00039\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00039\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731574484616</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00040\" summary=\"Update english localization tests\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731574819724</created>\r\n      <option name=\"number\" value=\"00040\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00040\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731574819724</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00041\" summary=\"Update chinese localization tests\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1731574917360</created>\r\n      <option name=\"number\" value=\"00041\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00041\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1731574917360</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00042\" summary=\"user and quiz unit tests done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1732535040886</created>\r\n      <option name=\"number\" value=\"00042\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00042\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1732535040886</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00043\" summary=\"Progress unit tests done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1732535587702</created>\r\n      <option name=\"number\" value=\"00043\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00043\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1732535587702</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00044\" summary=\"Flashcard unit tests done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1732536536875</created>\r\n      <option name=\"number\" value=\"00044\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00044\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1732536536875</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00045\" summary=\"Muutin View pakkausken ---&gt; view koska se oli yksi sonarlint &quot;ongelma&quot;\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1732813719045</created>\r\n      <option name=\"number\" value=\"00045\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00045\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1732813719045</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00046\" summary=\"SonarLint issues fixed in view package\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1732925145451</created>\r\n      <option name=\"number\" value=\"00046\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00046\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1732925145451</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"47\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\r\n    <MESSAGE value=\"added localization tests for all bundles and added mockito depenency in pom.xml\" />\r\n    <MESSAGE value=\"updated ui localization tests\" />\r\n    <MESSAGE value=\"Päivitin quizien progress logiikkaa\" />\r\n    <MESSAGE value=\"Small update to english bundle and test\" />\r\n    <MESSAGE value=\"Small update to user unit test\" />\r\n    <MESSAGE value=\"Small update to quiz unit test\" />\r\n    <MESSAGE value=\"Update pom.xml and english localization test\" />\r\n    <MESSAGE value=\"update quiz dao and impl, userdaoimpl + quiz tests\" />\r\n    <MESSAGE value=\"update\" />\r\n    <MESSAGE value=\"updated bundles and logges out page\" />\r\n    <MESSAGE value=\"updated progress methods related to flashcards\" />\r\n    <MESSAGE value=\"update user unit tests\" />\r\n    <MESSAGE value=\"small update to french bundle and test\" />\r\n    <MESSAGE value=\"update user model, userdaoimpl, quizdao and quizdaoimpl\" />\r\n    <MESSAGE value=\"small update quiz page\" />\r\n    <MESSAGE value=\"Updated user tests\" />\r\n    <MESSAGE value=\"update quiz tests\" />\r\n    <MESSAGE value=\"Quiz integration test done\" />\r\n    <MESSAGE value=\"Update english localization tests\" />\r\n    <MESSAGE value=\"Update chinese localization tests\" />\r\n    <MESSAGE value=\"user and quiz unit tests done\" />\r\n    <MESSAGE value=\"Progress unit tests done\" />\r\n    <MESSAGE value=\"Flashcard unit tests done\" />\r\n    <MESSAGE value=\"Muutin View pakkausken ---&gt; view koska se oli yksi sonarlint &quot;ongelma&quot;\" />\r\n    <MESSAGE value=\"SonarLint issues fixed in view package\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"SonarLint issues fixed in view package\" />\r\n  </component>\r\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\r\n    <expand />\r\n    <select />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision d11ef74f7788de6af1b5cce4c11f0cf68b2e4da9)
++++ b/.idea/workspace.xml	(date 1733316426856)
+@@ -5,11 +5,13 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="6436838c-4e0c-4eac-a79b-699bd6f9f1fa" name="Changes" comment="SonarLint issues fixed in view package">
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/ArabicLocalizationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ArabicLocalizationTest.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/ChineseLocalizationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ChineseLocalizationTest.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/EnglishLocalizationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/EnglishLocalizationTest.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/FrenchLocalizationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/FrenchLocalizationTest.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/Dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Dao/UserDao.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/Dao/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Dao/UserDaoImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/User.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/view/ProgressPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ProgressPage.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/view/QuizPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/QuizPage.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/view/SignUpPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/SignUpPage.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -106,7 +108,7 @@
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+-    "git-widget-placeholder": "main",
++    "git-widget-placeholder": "Merging main",
+     "kotlin-language-version-configured": "true",
+     "last_opened_file_path": "C:/Users/Asus/OneDrive/Työpöytä/Metropolia/Ohjelmistoprojekti/QuadLingo",
+     "list.type.of.created.stylesheet": "CSS",
+@@ -643,6 +645,9 @@
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
++  </component>
++  <component name="UnknownFeatures">
++    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+     <option name="TAB_STATES">
+Index: src/main/java/Model/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Model;\r\n\r\npublic class User {\r\n    private Integer userId;\r\n    private String username;\r\n    private String password;\r\n    private String email;\r\n    private boolean passwordChanged;\r\n\r\n    // Constructor with ID (for existing users)\r\n    public User(int userId, String username, String password, String email) {\r\n        this.userId = userId;\r\n        this.username = username;\r\n        this.password = password;\r\n        this.email = email;\r\n    }\r\n\r\n    // Constructor without ID (for new users)\r\n    public User(String username, String password, String email) {\r\n        this.username = username;\r\n        this.password = password;\r\n        this.email = email;\r\n        this.userId = null;  // ID will be assigned by the database\r\n    }\r\n\r\n    public boolean isPasswordChanged() {\r\n        return passwordChanged;\r\n    }\r\n\r\n    // Getters\r\n    public int getUserId() {\r\n        return userId;\r\n    }\r\n\r\n    public String getUsername() {\r\n        return username;\r\n    }\r\n\r\n    public String getPassword() {\r\n        return password;\r\n    }\r\n\r\n    public String getEmail() {\r\n        return email;\r\n    }\r\n\r\n    // Setters\r\n    public void setUsername(String username) {\r\n        this.username = username;\r\n    }\r\n\r\n    public void setPassword(String password, boolean passwordChanged) {\r\n        this.password = password;\r\n        this.passwordChanged = passwordChanged;\r\n    }\r\n\r\n    public void setEmail(String email) {\r\n        this.email = email;\r\n    }\r\n\r\n    public void setUserId(int userId) {\r\n        this.userId = userId;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Model/User.java b/src/main/java/Model/User.java
+--- a/src/main/java/Model/User.java	(revision d11ef74f7788de6af1b5cce4c11f0cf68b2e4da9)
++++ b/src/main/java/Model/User.java	(date 1733316393097)
+@@ -1,64 +1,64 @@
+ package Model;
+ 
+ public class User {
+-    private Integer userId;
+-    private String username;
+-    private String password;
+-    private String email;
+-    private boolean passwordChanged;
++  private Integer userId;
++  private String username;
++  private String password;
++  private String email;
++  private boolean passwordChanged;
+ 
+-    // Constructor with ID (for existing users)
+-    public User(int userId, String username, String password, String email) {
+-        this.userId = userId;
+-        this.username = username;
+-        this.password = password;
+-        this.email = email;
+-    }
++  // Constructor with ID (for existing users)
++  public User(int userId, String username, String password, String email) {
++    this.userId = userId;
++    this.username = username;
++    this.password = password;
++    this.email = email;
++  }
+ 
+-    // Constructor without ID (for new users)
+-    public User(String username, String password, String email) {
+-        this.username = username;
+-        this.password = password;
+-        this.email = email;
+-        this.userId = null;  // ID will be assigned by the database
+-    }
++  // Constructor without ID (for new users)
++  public User(String username, String password, String email) {
++    this.username = username;
++    this.password = password;
++    this.email = email;
++    this.userId = null;  // ID will be assigned by the database
++  }
+ 
+-    public boolean isPasswordChanged() {
+-        return passwordChanged;
+-    }
++  public boolean isPasswordChanged() {
++    return passwordChanged;
++  }
+ 
+-    // Getters
+-    public int getUserId() {
+-        return userId;
+-    }
++  // Getters
++  public int getUserId() {
++    return userId;
++  }
+ 
+-    public String getUsername() {
+-        return username;
+-    }
++  public String getUsername() {
++    return username;
++  }
+ 
+-    public String getPassword() {
+-        return password;
+-    }
++  public String getPassword() {
++    return password;
++  }
+ 
+-    public String getEmail() {
+-        return email;
+-    }
++  public String getEmail() {
++    return email;
++  }
+ 
+-    // Setters
+-    public void setUsername(String username) {
+-        this.username = username;
+-    }
++  // Setters
++  public void setUsername(String username) {
++    this.username = username;
++  }
+ 
+-    public void setPassword(String password, boolean passwordChanged) {
+-        this.password = password;
+-        this.passwordChanged = passwordChanged;
+-    }
++  public void setPassword(String password, boolean passwordChanged) {
++    this.password = password;
++    this.passwordChanged = passwordChanged;
++  }
+ 
+-    public void setEmail(String email) {
+-        this.email = email;
+-    }
++  public void setEmail(String email) {
++    this.email = email;
++  }
+ 
+-    public void setUserId(int userId) {
+-        this.userId = userId;
+-    }
++  public void setUserId(int userId) {
++    this.userId = userId;
++  }
+ }
+Index: src/main/java/view/SignUpPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package view;\r\n\r\nimport Config.LanguageConfig;\r\nimport Controller.UserController;\r\nimport Dao.UserDaoImpl;\r\nimport Main.SessionManager;\r\nimport Model.User;\r\nimport javafx.geometry.Insets;\r\nimport javafx.geometry.Pos;\r\nimport javafx.scene.control.*;\r\nimport javafx.scene.layout.HBox;\r\nimport javafx.scene.layout.Priority;\r\nimport javafx.stage.Stage;\r\n\r\nimport java.util.ResourceBundle;\r\nimport java.util.logging.Level;\r\nimport java.util.logging.Logger;\r\n\r\npublic class SignUpPage extends BasePage {\r\n    private static final Logger LOGGER = Logger.getLogger(SignUpPage.class.getName());\r\n    private final UserController userController;\r\n    private final ResourceBundle bundle;\r\n\r\n    public SignUpPage(Stage stage) {\r\n        userController = new UserController(new UserDaoImpl());\r\n        this.bundle = ResourceBundle.getBundle(\"bundle\", LanguageConfig.getInstance().getCurrentLocale());\r\n        setLayout(stage);\r\n    }\r\n\r\n    private void setLayout(Stage stage) {\r\n        this.setPadding(new Insets(10));\r\n        this.setSpacing(5);\r\n        this.setAlignment(Pos.CENTER);\r\n\r\n        Label pageTitle = new Label(bundle.getString(\"signUp\"));\r\n        pageTitle.setStyle(\"-fx-font-size: 24px; -fx-font-weight: bold;\");\r\n\r\n        HBox titleContainer = new HBox(pageTitle);\r\n        titleContainer.setAlignment(Pos.CENTER);\r\n\r\n        Label usernameLabel = new Label(bundle.getString(\"usernameLabel\"));\r\n        TextField usernameField = new TextField();\r\n\r\n        Label emailLabel = new Label(bundle.getString(\"emailLabel\"));\r\n        TextField emailField = new TextField();\r\n\r\n        Label passwordLabel = new Label(bundle.getString(\"passwordLabel\"));\r\n        PasswordField passwordField = new PasswordField();\r\n\r\n        Button signUpButton = new Button(bundle.getString(\"signUp\"));\r\n        signUpButton.setStyle(\"-fx-font-size: 14px; -fx-padding: 10px;\");\r\n        signUpButton.setMaxWidth(Double.MAX_VALUE);\r\n        signUpButton.setOnAction(event -> handleRegisterAction(usernameField, emailField, passwordField, stage));\r\n\r\n        Button indexPageButton = new Button(bundle.getString(\"goBackButton\"));\r\n        indexPageButton.setStyle(\"-fx-font-size: 14px; -fx-padding: 10px;\");\r\n        indexPageButton.setMaxWidth(Double.MAX_VALUE);\r\n        indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));\r\n\r\n        Label hasAccountLabel = new Label(bundle.getString(\"hasAccountLabel\"));\r\n\r\n        Button loginButton = new Button(bundle.getString(\"login\"));\r\n        loginButton.setStyle(\"-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165\");\r\n        loginButton.setMaxWidth(Double.MAX_VALUE);\r\n        loginButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));\r\n\r\n        HBox buttonContainer = new HBox(10);\r\n        buttonContainer.setPadding(new Insets(10, 0, 0, 0));\r\n        buttonContainer.getChildren().addAll(signUpButton, indexPageButton);\r\n        HBox.setHgrow(signUpButton, Priority.ALWAYS);\r\n        HBox.setHgrow(indexPageButton, Priority.ALWAYS);\r\n\r\n        this.getChildren().addAll(\r\n                titleContainer,\r\n                usernameLabel,\r\n                usernameField,\r\n                emailLabel,\r\n                emailField,\r\n                passwordLabel,\r\n                passwordField,\r\n                buttonContainer,\r\n                hasAccountLabel,\r\n                loginButton\r\n        );\r\n    }\r\n\r\n    private void handleRegisterAction(TextField usernameField, TextField emailField, PasswordField passwordField, Stage stage) {\r\n        String username = usernameField.getText();\r\n        String email = emailField.getText();\r\n        String password = passwordField.getText();\r\n\r\n        String errorMessages = validateInputs(username, email, password);\r\n\r\n        if (!errorMessages.isEmpty()) {\r\n            showErrorAlert(errorMessages);\r\n        } else {\r\n            processRegistration(username, email, password, stage);\r\n        }\r\n    }\r\n\r\n    private String validateInputs(String username, String email, String password) {\r\n        StringBuilder errorMessages = new StringBuilder();\r\n\r\n        if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {\r\n            errorMessages.append(bundle.getString(\"allFieldsRequired\")).append(\"\\n\");\r\n        } else {\r\n            if (!email.matches(\"^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$\")) {\r\n                errorMessages.append(bundle.getString(\"invalidEmail\")).append(\"\\n\");\r\n            }\r\n            if (userController.doesEmailExist(email)) {\r\n                errorMessages.append(bundle.getString(\"accountExists\")).append(\"\\n\");\r\n            }\r\n            if (!password.isEmpty()) {\r\n                validatePassword(password, errorMessages);\r\n            }\r\n        }\r\n\r\n        return errorMessages.toString();\r\n    }\r\n\r\n    private void validatePassword(String password, StringBuilder errorMessages) {\r\n        if (!password.matches(\".*[A-Z].*\")) {\r\n            errorMessages.append(bundle.getString(\"oneUppercaseLetter\")).append(\"\\n\");\r\n        }\r\n        if (!password.matches(\".*\\\\d.*\")) {\r\n            errorMessages.append(bundle.getString(\"oneNumber\")).append(\"\\n\");\r\n        }\r\n        if (password.length() < 8) {\r\n            errorMessages.append(bundle.getString(\"atLeastEight\")).append(\"\\n\");\r\n        }\r\n    }\r\n\r\n    private void processRegistration(String username, String email, String password, Stage stage) {\r\n        User user = userController.createUser(username, password, email);\r\n\r\n        if (user != null) {\r\n            SessionManager.getInstance().setCurrentUser(user);\r\n            stage.setScene(new LoginPage(stage).createScene());\r\n            LOGGER.log(Level.INFO, \"Sign up successful: {0}\", user.getUsername());\r\n        } else {\r\n            showErrorAlert(bundle.getString(\"errorContext\"));\r\n            LOGGER.log(Level.WARNING, \"Sign up failed.\");\r\n        }\r\n    }\r\n\r\n    private void showErrorAlert(String errorMessage) {\r\n        Alert alert = new Alert(Alert.AlertType.ERROR);\r\n        alert.setTitle(bundle.getString(\"signUpErrorTitle\"));\r\n        alert.setHeaderText(null);\r\n        alert.setContentText(errorMessage);\r\n        alert.showAndWait();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/view/SignUpPage.java b/src/main/java/view/SignUpPage.java
+--- a/src/main/java/view/SignUpPage.java	(revision d11ef74f7788de6af1b5cce4c11f0cf68b2e4da9)
++++ b/src/main/java/view/SignUpPage.java	(date 1733316393100)
+@@ -17,137 +17,137 @@
+ import java.util.logging.Logger;
+ 
+ public class SignUpPage extends BasePage {
+-    private static final Logger LOGGER = Logger.getLogger(SignUpPage.class.getName());
+-    private final UserController userController;
+-    private final ResourceBundle bundle;
++  private static final Logger LOGGER = Logger.getLogger(SignUpPage.class.getName());
++  private final UserController userController;
++  private final ResourceBundle bundle;
+ 
+-    public SignUpPage(Stage stage) {
+-        userController = new UserController(new UserDaoImpl());
+-        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
+-        setLayout(stage);
+-    }
++  public SignUpPage(Stage stage) {
++    userController = new UserController(new UserDaoImpl());
++    this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
++    setLayout(stage);
++  }
+ 
+-    private void setLayout(Stage stage) {
+-        this.setPadding(new Insets(10));
+-        this.setSpacing(5);
+-        this.setAlignment(Pos.CENTER);
++  private void setLayout(Stage stage) {
++    this.setPadding(new Insets(10));
++    this.setSpacing(5);
++    this.setAlignment(Pos.CENTER);
+ 
+-        Label pageTitle = new Label(bundle.getString("signUp"));
+-        pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
++    Label pageTitle = new Label(bundle.getString("signUp"));
++    pageTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+ 
+-        HBox titleContainer = new HBox(pageTitle);
+-        titleContainer.setAlignment(Pos.CENTER);
++    HBox titleContainer = new HBox(pageTitle);
++    titleContainer.setAlignment(Pos.CENTER);
+ 
+-        Label usernameLabel = new Label(bundle.getString("usernameLabel"));
+-        TextField usernameField = new TextField();
++    Label usernameLabel = new Label(bundle.getString("usernameLabel"));
++    TextField usernameField = new TextField();
+ 
+-        Label emailLabel = new Label(bundle.getString("emailLabel"));
+-        TextField emailField = new TextField();
++    Label emailLabel = new Label(bundle.getString("emailLabel"));
++    TextField emailField = new TextField();
+ 
+-        Label passwordLabel = new Label(bundle.getString("passwordLabel"));
+-        PasswordField passwordField = new PasswordField();
++    Label passwordLabel = new Label(bundle.getString("passwordLabel"));
++    PasswordField passwordField = new PasswordField();
+ 
+-        Button signUpButton = new Button(bundle.getString("signUp"));
+-        signUpButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+-        signUpButton.setMaxWidth(Double.MAX_VALUE);
+-        signUpButton.setOnAction(event -> handleRegisterAction(usernameField, emailField, passwordField, stage));
++    Button signUpButton = new Button(bundle.getString("signUp"));
++    signUpButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
++    signUpButton.setMaxWidth(Double.MAX_VALUE);
++    signUpButton.setOnAction(event -> handleRegisterAction(usernameField, emailField, passwordField, stage));
+ 
+-        Button indexPageButton = new Button(bundle.getString("goBackButton"));
+-        indexPageButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+-        indexPageButton.setMaxWidth(Double.MAX_VALUE);
+-        indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
++    Button indexPageButton = new Button(bundle.getString("goBackButton"));
++    indexPageButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
++    indexPageButton.setMaxWidth(Double.MAX_VALUE);
++    indexPageButton.setOnAction(e -> stage.setScene(new IndexPage(stage).createScene()));
+ 
+-        Label hasAccountLabel = new Label(bundle.getString("hasAccountLabel"));
++    Label hasAccountLabel = new Label(bundle.getString("hasAccountLabel"));
+ 
+-        Button loginButton = new Button(bundle.getString("login"));
+-        loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
+-        loginButton.setMaxWidth(Double.MAX_VALUE);
+-        loginButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
++    Button loginButton = new Button(bundle.getString("login"));
++    loginButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-pref-width: 165");
++    loginButton.setMaxWidth(Double.MAX_VALUE);
++    loginButton.setOnAction(e -> stage.setScene(new LoginPage(stage).createScene()));
+ 
+-        HBox buttonContainer = new HBox(10);
+-        buttonContainer.setPadding(new Insets(10, 0, 0, 0));
+-        buttonContainer.getChildren().addAll(signUpButton, indexPageButton);
+-        HBox.setHgrow(signUpButton, Priority.ALWAYS);
+-        HBox.setHgrow(indexPageButton, Priority.ALWAYS);
++    HBox buttonContainer = new HBox(10);
++    buttonContainer.setPadding(new Insets(10, 0, 0, 0));
++    buttonContainer.getChildren().addAll(signUpButton, indexPageButton);
++    HBox.setHgrow(signUpButton, Priority.ALWAYS);
++    HBox.setHgrow(indexPageButton, Priority.ALWAYS);
+ 
+-        this.getChildren().addAll(
+-                titleContainer,
+-                usernameLabel,
+-                usernameField,
+-                emailLabel,
+-                emailField,
+-                passwordLabel,
+-                passwordField,
+-                buttonContainer,
+-                hasAccountLabel,
+-                loginButton
+-        );
+-    }
++    this.getChildren().addAll(
++            titleContainer,
++            usernameLabel,
++            usernameField,
++            emailLabel,
++            emailField,
++            passwordLabel,
++            passwordField,
++            buttonContainer,
++            hasAccountLabel,
++            loginButton
++    );
++  }
+ 
+-    private void handleRegisterAction(TextField usernameField, TextField emailField, PasswordField passwordField, Stage stage) {
+-        String username = usernameField.getText();
+-        String email = emailField.getText();
+-        String password = passwordField.getText();
++  private void handleRegisterAction(TextField usernameField, TextField emailField, PasswordField passwordField, Stage stage) {
++    String username = usernameField.getText();
++    String email = emailField.getText();
++    String password = passwordField.getText();
+ 
+-        String errorMessages = validateInputs(username, email, password);
++    String errorMessages = validateInputs(username, email, password);
+ 
+-        if (!errorMessages.isEmpty()) {
+-            showErrorAlert(errorMessages);
+-        } else {
+-            processRegistration(username, email, password, stage);
+-        }
+-    }
++    if (!errorMessages.isEmpty()) {
++      showErrorAlert(errorMessages);
++    } else {
++      processRegistration(username, email, password, stage);
++    }
++  }
+ 
+-    private String validateInputs(String username, String email, String password) {
+-        StringBuilder errorMessages = new StringBuilder();
++  private String validateInputs(String username, String email, String password) {
++    StringBuilder errorMessages = new StringBuilder();
+ 
+-        if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+-            errorMessages.append(bundle.getString("allFieldsRequired")).append("\n");
+-        } else {
+-            if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+-                errorMessages.append(bundle.getString("invalidEmail")).append("\n");
+-            }
+-            if (userController.doesEmailExist(email)) {
+-                errorMessages.append(bundle.getString("accountExists")).append("\n");
+-            }
+-            if (!password.isEmpty()) {
+-                validatePassword(password, errorMessages);
+-            }
+-        }
++    if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
++      errorMessages.append(bundle.getString("allFieldsRequired")).append("\n");
++    } else {
++      if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
++        errorMessages.append(bundle.getString("invalidEmail")).append("\n");
++      }
++      if (userController.doesEmailExist(email)) {
++        errorMessages.append(bundle.getString("accountExists")).append("\n");
++      }
++      if (!password.isEmpty()) {
++        validatePassword(password, errorMessages);
++      }
++    }
+ 
+-        return errorMessages.toString();
+-    }
++    return errorMessages.toString();
++  }
+ 
+-    private void validatePassword(String password, StringBuilder errorMessages) {
+-        if (!password.matches(".*[A-Z].*")) {
+-            errorMessages.append(bundle.getString("oneUppercaseLetter")).append("\n");
+-        }
+-        if (!password.matches(".*\\d.*")) {
+-            errorMessages.append(bundle.getString("oneNumber")).append("\n");
+-        }
+-        if (password.length() < 8) {
+-            errorMessages.append(bundle.getString("atLeastEight")).append("\n");
+-        }
+-    }
++  private void validatePassword(String password, StringBuilder errorMessages) {
++    if (!password.matches(".*[A-Z].*")) {
++      errorMessages.append(bundle.getString("oneUppercaseLetter")).append("\n");
++    }
++    if (!password.matches(".*\\d.*")) {
++      errorMessages.append(bundle.getString("oneNumber")).append("\n");
++    }
++    if (password.length() < 8) {
++      errorMessages.append(bundle.getString("atLeastEight")).append("\n");
++    }
++  }
+ 
+-    private void processRegistration(String username, String email, String password, Stage stage) {
+-        User user = userController.createUser(username, password, email);
++  private void processRegistration(String username, String email, String password, Stage stage) {
++    User user = userController.createUser(username, password, email);
+ 
+-        if (user != null) {
+-            SessionManager.getInstance().setCurrentUser(user);
+-            stage.setScene(new LoginPage(stage).createScene());
+-            LOGGER.log(Level.INFO, "Sign up successful: {0}", user.getUsername());
+-        } else {
+-            showErrorAlert(bundle.getString("errorContext"));
+-            LOGGER.log(Level.WARNING, "Sign up failed.");
+-        }
+-    }
++    if (user != null) {
++      SessionManager.getInstance().setCurrentUser(user);
++      stage.setScene(new LoginPage(stage).createScene());
++      LOGGER.log(Level.INFO, "Sign up successful: {0}", user.getUsername());
++    } else {
++      showErrorAlert(bundle.getString("errorContext"));
++      LOGGER.log(Level.WARNING, "Sign up failed.");
++    }
++  }
+ 
+-    private void showErrorAlert(String errorMessage) {
+-        Alert alert = new Alert(Alert.AlertType.ERROR);
+-        alert.setTitle(bundle.getString("signUpErrorTitle"));
+-        alert.setHeaderText(null);
+-        alert.setContentText(errorMessage);
+-        alert.showAndWait();
+-    }
++  private void showErrorAlert(String errorMessage) {
++    Alert alert = new Alert(Alert.AlertType.ERROR);
++    alert.setTitle(bundle.getString("signUpErrorTitle"));
++    alert.setHeaderText(null);
++    alert.setContentText(errorMessage);
++    alert.showAndWait();
++  }
+ }
+Index: src/main/java/view/ProgressPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package view;\r\n\r\nimport Config.LanguageConfig;\r\n\r\nimport java.text.MessageFormat;\r\nimport java.util.ResourceBundle;\r\n\r\nimport Dao.ProgressDaoImpl;\r\nimport Dao.UserDaoImpl;\r\nimport javafx.geometry.Insets;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.Label;\r\nimport javafx.scene.layout.VBox;\r\nimport javafx.stage.Stage;\r\nimport javafx.scene.control.ProgressBar;\r\n\r\nimport Controller.UserController;\r\n\r\npublic class ProgressPage extends BasePage implements SetMarginButton, UpdateProgress {\r\n\r\n    private static final String PROGRESS_BAR_STYLE = \"-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;\";\r\n    private static final String PROGRESS_BAR_BOX_STYLE = \"progressBarBox\";\r\n    private static final String PROGRESS_BAR_CLASS = \"progress-bar\";\r\n\r\n    private final int maxScore;\r\n    private final int userScore;\r\n    private final int completedQuizzes;\r\n    private final int allQuizzes;\r\n    private final int masteredFlashcards;\r\n    private final int allFlashcards;\r\n\r\n    private static final ProgressBar progressBar1 = new ProgressBar();\r\n    private static final ProgressBar progressBar2 = new ProgressBar();\r\n    private static final ProgressBar progressBar3 = new ProgressBar();\r\n\r\n    private ResourceBundle bundle;\r\n    private String languageCode;\r\n\r\n    public ProgressPage(Stage stage) {\r\n        UserDaoImpl userDao = new UserDaoImpl();\r\n        UserController userController = UserController.getInstance(userDao);\r\n        ProgressDaoImpl progressDao = new ProgressDaoImpl();\r\n        int userID = userController.getCurrentUserId();\r\n        this.bundle = ResourceBundle.getBundle(\"bundle\", LanguageConfig.getInstance().getCurrentLocale());\r\n\r\n        this.languageCode = LanguageConfig.getInstance().getCurrentLocale().getLanguage();\r\n\r\n        userScore = progressDao.getUserScore(userID, languageCode);\r\n        maxScore = progressDao.getMaxScore(languageCode);\r\n        completedQuizzes = progressDao.getAllCompletedQuizzes(userID, languageCode);\r\n        allQuizzes = progressDao.getQuizAmount(languageCode);\r\n        masteredFlashcards = progressDao.getMasteredFlashcards(userID, languageCode);\r\n        allFlashcards = progressDao.getFlashcardAmount(languageCode);\r\n\r\n        Button profileButton = new Button(bundle.getString(\"profileButton\"));\r\n        setMargin(profileButton, 10, 10, 10, 5);\r\n        profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));\r\n\r\n        Button buttonHome = new Button(bundle.getString(\"homeButton\"));\r\n        setMargin(buttonHome, 10, 10, 10, 5);\r\n        buttonHome.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));\r\n\r\n        Label progressLabel1 = new Label(bundle.getString(\"progressTitle\"));\r\n        progressLabel1.setStyle(\"-fx-font-size: 24px; -fx-padding: 10px;\");\r\n        Label progressLabel2 = new Label(bundle.getString(\"userScore\"));\r\n        Label progressLabel3 = new Label(bundle.getString(\"quizProgress\"));\r\n        Label progressLabel5 = new Label(bundle.getString(\"flashcardProgress\"));\r\n        Label progressLabel4 = new Label(MessageFormat.format(bundle.getString(\"quizzesCompleted\"), completedQuizzes, allQuizzes));\r\n        Label progressLabel6 = new Label(MessageFormat.format(bundle.getString(\"flashcardsMastered\"), masteredFlashcards, allFlashcards));\r\n\r\n        // Configure progressBar1\r\n        progressBar1.setStyle(PROGRESS_BAR_STYLE);\r\n        progressBar1.setPrefWidth(200);\r\n        progressBar1.setPrefHeight(20);\r\n        progressBar1.getStyleClass().add(PROGRESS_BAR_CLASS);\r\n\r\n        VBox progressBarBox1 = new VBox();\r\n        progressBarBox1.getStyleClass().add(PROGRESS_BAR_BOX_STYLE);\r\n        setMarginVbox(progressBarBox1, 5, 10, 5, 10);\r\n\r\n        VBox innerBox1 = new VBox();\r\n        innerBox1.setPadding(new Insets(0));\r\n        innerBox1.getChildren().addAll(progressLabel2, progressBar1);\r\n\r\n        progressBarBox1.getChildren().add(innerBox1);\r\n\r\n        // Configure progressBar2\r\n        progressBar2.setStyle(PROGRESS_BAR_STYLE);\r\n        progressBar2.setPrefWidth(200);\r\n        progressBar2.setPrefHeight(20);\r\n        progressBar2.getStyleClass().add(PROGRESS_BAR_CLASS);\r\n\r\n        VBox progressBarBox2 = new VBox();\r\n        progressBarBox2.getStyleClass().add(PROGRESS_BAR_BOX_STYLE);\r\n        setMarginVbox(progressBarBox2, 5, 10, 5, 10);\r\n\r\n        VBox innerBox2 = new VBox();\r\n        innerBox2.setPadding(new Insets(0));\r\n        innerBox2.getChildren().addAll(progressLabel3, progressBar2);\r\n\r\n        progressBarBox2.getChildren().add(innerBox2);\r\n\r\n        // Configure progressBar3\r\n        progressBar3.setStyle(PROGRESS_BAR_STYLE);\r\n        progressBar3.setPrefWidth(200);\r\n        progressBar3.setPrefHeight(20);\r\n        progressBar3.getStyleClass().add(PROGRESS_BAR_CLASS);\r\n\r\n        VBox progressBarBox3 = new VBox();\r\n        progressBarBox3.getStyleClass().add(PROGRESS_BAR_BOX_STYLE);\r\n        setMarginVbox(progressBarBox3, 5, 10, 5, 10);\r\n\r\n        VBox innerBox3 = new VBox();\r\n        innerBox3.setPadding(new Insets(0));\r\n        innerBox3.getChildren().addAll(progressLabel4, progressBar3);\r\n\r\n        progressBarBox3.getChildren().add(innerBox3);\r\n\r\n        updateQuizProgress(progressBar1);\r\n        updateScoreProgress(progressBar2);\r\n        updateFlashcardProgress(progressBar3);\r\n\r\n        VBox mainBox = new VBox();\r\n        mainBox.getChildren().addAll(\r\n                progressLabel1,\r\n                profileButton,\r\n                buttonHome,\r\n                progressBarBox1,\r\n                progressLabel4,\r\n                progressBarBox2,\r\n                progressLabel5,\r\n                progressBarBox3,\r\n                progressLabel6\r\n        );\r\n\r\n        this.getChildren().add(mainBox);\r\n    }\r\n\r\n    public static ProgressBar getProgressBar1() {\r\n        return progressBar1;\r\n    }\r\n\r\n    public static ProgressBar getProgressBar2() {\r\n        return progressBar2;\r\n    }\r\n\r\n    public static ProgressBar getProgressBar3() {\r\n        return progressBar3;\r\n    }\r\n\r\n    @Override\r\n    public void setMargin(Button button, int top, int right, int bottom, int left) {\r\n        VBox.setMargin(button, new Insets(top, right, bottom, left));\r\n    }\r\n\r\n    @Override\r\n    public void updateQuizProgress(ProgressBar progressBar) {\r\n        double progressPercentage = (double) completedQuizzes / allQuizzes;\r\n        progressBar.setProgress(progressPercentage);\r\n    }\r\n\r\n    @Override\r\n    public void updateScoreProgress(ProgressBar progressBar) {\r\n        double progressPercentage = (double) userScore / maxScore;\r\n        progressBar.setProgress(progressPercentage);\r\n    }\r\n\r\n    @Override\r\n    public void updateFlashcardProgress(ProgressBar progressBar) {\r\n        double progressPercentage = (double) masteredFlashcards / allFlashcards;\r\n        progressBar.setProgress(progressPercentage);\r\n    }\r\n\r\n    public void setMarginVbox(VBox vBox, int top, int right, int bottom, int left) {\r\n        VBox.setMargin(vBox, new Insets(top, right, bottom, left));\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/view/ProgressPage.java b/src/main/java/view/ProgressPage.java
+--- a/src/main/java/view/ProgressPage.java	(revision d11ef74f7788de6af1b5cce4c11f0cf68b2e4da9)
++++ b/src/main/java/view/ProgressPage.java	(date 1733316393098)
+@@ -18,160 +18,160 @@
+ 
+ public class ProgressPage extends BasePage implements SetMarginButton, UpdateProgress {
+ 
+-    private static final String PROGRESS_BAR_STYLE = "-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;";
+-    private static final String PROGRESS_BAR_BOX_STYLE = "progressBarBox";
+-    private static final String PROGRESS_BAR_CLASS = "progress-bar";
++  private static final String PROGRESS_BAR_STYLE = "-fx-accent: #FF8E72; -fx-control-inner-background: #9b9FB5;";
++  private static final String PROGRESS_BAR_BOX_STYLE = "progressBarBox";
++  private static final String PROGRESS_BAR_CLASS = "progress-bar";
+ 
+-    private final int maxScore;
+-    private final int userScore;
+-    private final int completedQuizzes;
+-    private final int allQuizzes;
+-    private final int masteredFlashcards;
+-    private final int allFlashcards;
++  private final int maxScore;
++  private final int userScore;
++  private final int completedQuizzes;
++  private final int allQuizzes;
++  private final int masteredFlashcards;
++  private final int allFlashcards;
+ 
+-    private static final ProgressBar progressBar1 = new ProgressBar();
+-    private static final ProgressBar progressBar2 = new ProgressBar();
+-    private static final ProgressBar progressBar3 = new ProgressBar();
++  private static final ProgressBar progressBar1 = new ProgressBar();
++  private static final ProgressBar progressBar2 = new ProgressBar();
++  private static final ProgressBar progressBar3 = new ProgressBar();
+ 
+-    private ResourceBundle bundle;
+-    private String languageCode;
++  private ResourceBundle bundle;
++  private String languageCode;
+ 
+-    public ProgressPage(Stage stage) {
+-        UserDaoImpl userDao = new UserDaoImpl();
+-        UserController userController = UserController.getInstance(userDao);
+-        ProgressDaoImpl progressDao = new ProgressDaoImpl();
+-        int userID = userController.getCurrentUserId();
+-        this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
++  public ProgressPage(Stage stage) {
++    UserDaoImpl userDao = new UserDaoImpl();
++    UserController userController = UserController.getInstance(userDao);
++    ProgressDaoImpl progressDao = new ProgressDaoImpl();
++    int userID = userController.getCurrentUserId();
++    this.bundle = ResourceBundle.getBundle("bundle", LanguageConfig.getInstance().getCurrentLocale());
+ 
+-        this.languageCode = LanguageConfig.getInstance().getCurrentLocale().getLanguage();
++    this.languageCode = LanguageConfig.getInstance().getCurrentLocale().getLanguage();
+ 
+-        userScore = progressDao.getUserScore(userID, languageCode);
+-        maxScore = progressDao.getMaxScore(languageCode);
+-        completedQuizzes = progressDao.getAllCompletedQuizzes(userID, languageCode);
+-        allQuizzes = progressDao.getQuizAmount(languageCode);
+-        masteredFlashcards = progressDao.getMasteredFlashcards(userID, languageCode);
+-        allFlashcards = progressDao.getFlashcardAmount(languageCode);
++    userScore = progressDao.getUserScore(userID, languageCode);
++    maxScore = progressDao.getMaxScore(languageCode);
++    completedQuizzes = progressDao.getAllCompletedQuizzes(userID, languageCode);
++    allQuizzes = progressDao.getQuizAmount(languageCode);
++    masteredFlashcards = progressDao.getMasteredFlashcards(userID, languageCode);
++    allFlashcards = progressDao.getFlashcardAmount(languageCode);
+ 
+-        Button profileButton = new Button(bundle.getString("profileButton"));
+-        setMargin(profileButton, 10, 10, 10, 5);
+-        profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
++    Button profileButton = new Button(bundle.getString("profileButton"));
++    setMargin(profileButton, 10, 10, 10, 5);
++    profileButton.setOnAction(e -> stage.setScene(new Profile(stage).createScene()));
+ 
+-        Button buttonHome = new Button(bundle.getString("homeButton"));
+-        setMargin(buttonHome, 10, 10, 10, 5);
+-        buttonHome.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
++    Button buttonHome = new Button(bundle.getString("homeButton"));
++    setMargin(buttonHome, 10, 10, 10, 5);
++    buttonHome.setOnAction(e -> stage.setScene(new Homepage(stage).createScene()));
+ 
+-        Label progressLabel1 = new Label(bundle.getString("progressTitle"));
+-        progressLabel1.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
+-        Label progressLabel2 = new Label(bundle.getString("userScore"));
+-        Label progressLabel3 = new Label(bundle.getString("quizProgress"));
+-        Label progressLabel5 = new Label(bundle.getString("flashcardProgress"));
+-        Label progressLabel4 = new Label(MessageFormat.format(bundle.getString("quizzesCompleted"), completedQuizzes, allQuizzes));
+-        Label progressLabel6 = new Label(MessageFormat.format(bundle.getString("flashcardsMastered"), masteredFlashcards, allFlashcards));
++    Label progressLabel1 = new Label(bundle.getString("progressTitle"));
++    progressLabel1.setStyle("-fx-font-size: 24px; -fx-padding: 10px;");
++    Label progressLabel2 = new Label(bundle.getString("userScore"));
++    Label progressLabel3 = new Label(bundle.getString("quizProgress"));
++    Label progressLabel5 = new Label(bundle.getString("flashcardProgress"));
++    Label progressLabel4 = new Label(MessageFormat.format(bundle.getString("quizzesCompleted"), completedQuizzes, allQuizzes));
++    Label progressLabel6 = new Label(MessageFormat.format(bundle.getString("flashcardsMastered"), masteredFlashcards, allFlashcards));
+ 
+-        // Configure progressBar1
+-        progressBar1.setStyle(PROGRESS_BAR_STYLE);
+-        progressBar1.setPrefWidth(200);
+-        progressBar1.setPrefHeight(20);
+-        progressBar1.getStyleClass().add(PROGRESS_BAR_CLASS);
++    // Configure progressBar1
++    progressBar1.setStyle(PROGRESS_BAR_STYLE);
++    progressBar1.setPrefWidth(200);
++    progressBar1.setPrefHeight(20);
++    progressBar1.getStyleClass().add(PROGRESS_BAR_CLASS);
+ 
+-        VBox progressBarBox1 = new VBox();
+-        progressBarBox1.getStyleClass().add(PROGRESS_BAR_BOX_STYLE);
+-        setMarginVbox(progressBarBox1, 5, 10, 5, 10);
++    VBox progressBarBox1 = new VBox();
++    progressBarBox1.getStyleClass().add(PROGRESS_BAR_BOX_STYLE);
++    setMarginVbox(progressBarBox1, 5, 10, 5, 10);
+ 
+-        VBox innerBox1 = new VBox();
+-        innerBox1.setPadding(new Insets(0));
+-        innerBox1.getChildren().addAll(progressLabel2, progressBar1);
++    VBox innerBox1 = new VBox();
++    innerBox1.setPadding(new Insets(0));
++    innerBox1.getChildren().addAll(progressLabel2, progressBar1);
+ 
+-        progressBarBox1.getChildren().add(innerBox1);
++    progressBarBox1.getChildren().add(innerBox1);
+ 
+-        // Configure progressBar2
+-        progressBar2.setStyle(PROGRESS_BAR_STYLE);
+-        progressBar2.setPrefWidth(200);
+-        progressBar2.setPrefHeight(20);
+-        progressBar2.getStyleClass().add(PROGRESS_BAR_CLASS);
++    // Configure progressBar2
++    progressBar2.setStyle(PROGRESS_BAR_STYLE);
++    progressBar2.setPrefWidth(200);
++    progressBar2.setPrefHeight(20);
++    progressBar2.getStyleClass().add(PROGRESS_BAR_CLASS);
+ 
+-        VBox progressBarBox2 = new VBox();
+-        progressBarBox2.getStyleClass().add(PROGRESS_BAR_BOX_STYLE);
+-        setMarginVbox(progressBarBox2, 5, 10, 5, 10);
++    VBox progressBarBox2 = new VBox();
++    progressBarBox2.getStyleClass().add(PROGRESS_BAR_BOX_STYLE);
++    setMarginVbox(progressBarBox2, 5, 10, 5, 10);
+ 
+-        VBox innerBox2 = new VBox();
+-        innerBox2.setPadding(new Insets(0));
+-        innerBox2.getChildren().addAll(progressLabel3, progressBar2);
++    VBox innerBox2 = new VBox();
++    innerBox2.setPadding(new Insets(0));
++    innerBox2.getChildren().addAll(progressLabel3, progressBar2);
+ 
+-        progressBarBox2.getChildren().add(innerBox2);
++    progressBarBox2.getChildren().add(innerBox2);
+ 
+-        // Configure progressBar3
+-        progressBar3.setStyle(PROGRESS_BAR_STYLE);
+-        progressBar3.setPrefWidth(200);
+-        progressBar3.setPrefHeight(20);
+-        progressBar3.getStyleClass().add(PROGRESS_BAR_CLASS);
++    // Configure progressBar3
++    progressBar3.setStyle(PROGRESS_BAR_STYLE);
++    progressBar3.setPrefWidth(200);
++    progressBar3.setPrefHeight(20);
++    progressBar3.getStyleClass().add(PROGRESS_BAR_CLASS);
+ 
+-        VBox progressBarBox3 = new VBox();
+-        progressBarBox3.getStyleClass().add(PROGRESS_BAR_BOX_STYLE);
+-        setMarginVbox(progressBarBox3, 5, 10, 5, 10);
++    VBox progressBarBox3 = new VBox();
++    progressBarBox3.getStyleClass().add(PROGRESS_BAR_BOX_STYLE);
++    setMarginVbox(progressBarBox3, 5, 10, 5, 10);
+ 
+-        VBox innerBox3 = new VBox();
+-        innerBox3.setPadding(new Insets(0));
+-        innerBox3.getChildren().addAll(progressLabel4, progressBar3);
++    VBox innerBox3 = new VBox();
++    innerBox3.setPadding(new Insets(0));
++    innerBox3.getChildren().addAll(progressLabel4, progressBar3);
+ 
+-        progressBarBox3.getChildren().add(innerBox3);
++    progressBarBox3.getChildren().add(innerBox3);
+ 
+-        updateQuizProgress(progressBar1);
+-        updateScoreProgress(progressBar2);
+-        updateFlashcardProgress(progressBar3);
++    updateQuizProgress(progressBar1);
++    updateScoreProgress(progressBar2);
++    updateFlashcardProgress(progressBar3);
+ 
+-        VBox mainBox = new VBox();
+-        mainBox.getChildren().addAll(
+-                progressLabel1,
+-                profileButton,
+-                buttonHome,
+-                progressBarBox1,
+-                progressLabel4,
+-                progressBarBox2,
+-                progressLabel5,
+-                progressBarBox3,
+-                progressLabel6
+-        );
++    VBox mainBox = new VBox();
++    mainBox.getChildren().addAll(
++            progressLabel1,
++            profileButton,
++            buttonHome,
++            progressBarBox1,
++            progressLabel4,
++            progressBarBox2,
++            progressLabel5,
++            progressBarBox3,
++            progressLabel6
++    );
+ 
+-        this.getChildren().add(mainBox);
+-    }
++    this.getChildren().add(mainBox);
++  }
+ 
+-    public static ProgressBar getProgressBar1() {
+-        return progressBar1;
+-    }
++  public static ProgressBar getProgressBar1() {
++    return progressBar1;
++  }
+ 
+-    public static ProgressBar getProgressBar2() {
+-        return progressBar2;
+-    }
++  public static ProgressBar getProgressBar2() {
++    return progressBar2;
++  }
+ 
+-    public static ProgressBar getProgressBar3() {
+-        return progressBar3;
+-    }
++  public static ProgressBar getProgressBar3() {
++    return progressBar3;
++  }
+ 
+-    @Override
+-    public void setMargin(Button button, int top, int right, int bottom, int left) {
+-        VBox.setMargin(button, new Insets(top, right, bottom, left));
+-    }
++  @Override
++  public void setMargin(Button button, int top, int right, int bottom, int left) {
++    VBox.setMargin(button, new Insets(top, right, bottom, left));
++  }
+ 
+-    @Override
+-    public void updateQuizProgress(ProgressBar progressBar) {
+-        double progressPercentage = (double) completedQuizzes / allQuizzes;
+-        progressBar.setProgress(progressPercentage);
+-    }
++  @Override
++  public void updateQuizProgress(ProgressBar progressBar) {
++    double progressPercentage = (double) completedQuizzes / allQuizzes;
++    progressBar.setProgress(progressPercentage);
++  }
+ 
+-    @Override
+-    public void updateScoreProgress(ProgressBar progressBar) {
+-        double progressPercentage = (double) userScore / maxScore;
+-        progressBar.setProgress(progressPercentage);
+-    }
++  @Override
++  public void updateScoreProgress(ProgressBar progressBar) {
++    double progressPercentage = (double) userScore / maxScore;
++    progressBar.setProgress(progressPercentage);
++  }
+ 
+-    @Override
+-    public void updateFlashcardProgress(ProgressBar progressBar) {
+-        double progressPercentage = (double) masteredFlashcards / allFlashcards;
+-        progressBar.setProgress(progressPercentage);
+-    }
++  @Override
++  public void updateFlashcardProgress(ProgressBar progressBar) {
++    double progressPercentage = (double) masteredFlashcards / allFlashcards;
++    progressBar.setProgress(progressPercentage);
++  }
+ 
+-    public void setMarginVbox(VBox vBox, int top, int right, int bottom, int left) {
+-        VBox.setMargin(vBox, new Insets(top, right, bottom, left));
+-    }
++  public void setMarginVbox(VBox vBox, int top, int right, int bottom, int left) {
++    VBox.setMargin(vBox, new Insets(top, right, bottom, left));
++  }
+ }
+Index: .idea/dataSources.local.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"dataSourceStorageLocal\" created-in=\"IU-242.23339.11\">\r\n    <data-source name=\"QuadLingo@10.120.32.98\" uuid=\"954e1759-575f-4b21-8ae5-e1b515dbbc9b\">\r\n      <database-info product=\"MariaDB\" version=\"10.5.22-MariaDB\" jdbc-version=\"4.2\" driver-name=\"MariaDB Connector/J\" driver-version=\"3.3.3\" dbms=\"MARIADB\" exact-version=\"10.5.22\" exact-driver-version=\"3.3\">\r\n        <extra-name-characters>#@</extra-name-characters>\r\n        <identifier-quote-string>`</identifier-quote-string>\r\n      </database-info>\r\n      <case-sensitivity plain-identifiers=\"exact\" quoted-identifiers=\"exact\" />\r\n      <secret-storage>master_key</secret-storage>\r\n      <user-name>lingo</user-name>\r\n      <schema-mapping>\r\n        <introspection-scope>\r\n          <node kind=\"schema\" qname=\"QuadLingo\" />\r\n        </introspection-scope>\r\n      </schema-mapping>\r\n    </data-source>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.local.xml b/.idea/dataSources.local.xml
+--- a/.idea/dataSources.local.xml	(revision d11ef74f7788de6af1b5cce4c11f0cf68b2e4da9)
++++ b/.idea/dataSources.local.xml	(date 1733316426893)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="dataSourceStorageLocal" created-in="IU-242.23339.11">
++  <component name="dataSourceStorageLocal" created-in="IU-233.14808.21">
+     <data-source name="QuadLingo@10.120.32.98" uuid="954e1759-575f-4b21-8ae5-e1b515dbbc9b">
+       <database-info product="MariaDB" version="10.5.22-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.3.3" dbms="MARIADB" exact-version="10.5.22" exact-driver-version="3.3">
+         <extra-name-characters>#@</extra-name-characters>
+Index: src/main/java/Dao/UserDaoImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Dao;\r\n\r\nimport Database.MariaDbConnection;\r\nimport Model.User;\r\nimport java.sql.*;\r\nimport org.mindrot.jbcrypt.BCrypt;\r\nimport java.util.logging.Level;\r\nimport java.util.logging.Logger;\r\n\r\n// Responsible for direct interactions with the database, executes SQL queries and handles results\r\npublic class UserDaoImpl implements UserDao {\r\n\r\n    private static UserDaoImpl instance;\r\n    private static int currentUserId;\r\n    private String email;\r\n    private static final Logger logger = Logger.getLogger(UserDaoImpl.class.getName());\r\n\r\n    public static UserDaoImpl getInstance() {\r\n        if (instance == null) {\r\n            instance = new UserDaoImpl();\r\n        }\r\n        return instance;\r\n    }\r\n\r\n    // Retrieves a database connection\r\n    private Connection getConnection() {\r\n        return MariaDbConnection.getConnection(); // Make sure your MariaDbConnection class is correct\r\n    }\r\n\r\n    // Inserts a new user into the LINGOUSER table\r\n    @Override\r\n    public int createUser(User user) {\r\n        // Validate the email format first\r\n        if (user.getEmail() == null || !user.getEmail().matches(\"^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$\")) {\r\n            return -1; // Return -1 to indicate invalid email format\r\n        }\r\n\r\n        // Password validation\r\n        if (user.getPassword() == null) {\r\n            return -1; // Invalid password\r\n        }\r\n        if (!user.getPassword().matches(\".*[A-Z].*\")) {\r\n            return -1; // Password must include at least 1 uppercase letter\r\n        }\r\n        if (!user.getPassword().matches(\".*\\\\d.*\")) {\r\n            return -1; // Password must include at least 1 number\r\n        }\r\n        if (user.getPassword().length() < 8) {\r\n            return -1; // Password must be at least 8 characters\r\n        }\r\n\r\n        String query = \"INSERT INTO LINGOUSER (Username, UserPassword, Email) VALUES (?, ?, ?)\";\r\n        try (Connection connection = getConnection();\r\n             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {\r\n\r\n            statement.setString(1, user.getUsername());\r\n\r\n            // Hash the password before storing\r\n            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());\r\n            statement.setString(2, hashedPassword);\r\n            statement.setString(3, user.getEmail());\r\n\r\n            int rowsAffected = statement.executeUpdate();\r\n\r\n            // Get the generated user ID\r\n            if (rowsAffected > 0) {\r\n                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {\r\n                    if (generatedKeys.next()) {\r\n                        return generatedKeys.getInt(1);\r\n                    } else {\r\n                        throw new SQLException(\"Creating user failed, no ID obtained.\");\r\n                    }\r\n                }\r\n            }\r\n\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return -1; // Indicate failure\r\n    }\r\n\r\n    // Logs in a user by their username and password\r\n    @Override\r\n    public User loginUser(String email, String password) {\r\n        User user = null;\r\n        String query = \"SELECT * \" + \"FROM LINGOUSER WHERE Email = ?\";\r\n\r\n        try (Connection connection = getConnection();\r\n             PreparedStatement statement = connection.prepareStatement(query)) {\r\n\r\n            statement.setString(1, email);\r\n            try (ResultSet resultSet = statement.executeQuery()) {\r\n                if (resultSet.next()) {\r\n                    String dbPassword = resultSet.getString(\"UserPassword\");\r\n\r\n                    // Check if the password matches the hashed password in the database\r\n                    if (BCrypt.checkpw(password, dbPassword)) {\r\n                        int userId = resultSet.getInt(\"UserID\");\r\n                        currentUserId = userId;\r\n                        String username = resultSet.getString(\"Username\");\r\n\r\n                        user = new User(userId, username, dbPassword, email);\r\n                    }\r\n                }\r\n            }\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return user; // Return user or null if not found or password mismatched\r\n    }\r\n\r\n    // Fetches a user by their ID from the LINGOUSER table\r\n    @Override\r\n    public User getUserById(int id) {\r\n        User user = null;\r\n        try (Connection connection = getConnection()) {\r\n            String query = \"SELECT * \" + \"FROM LINGOUSER WHERE UserID = ?\";\r\n            PreparedStatement statement = connection.prepareStatement(query);\r\n            statement.setInt(1, id);\r\n            ResultSet resultSet = statement.executeQuery();\r\n\r\n            if (resultSet.next()) {\r\n                String dbUsername = resultSet.getString(\"Username\");\r\n                String dbPassword = resultSet.getString(\"UserPassword\");\r\n                String dbEmail = resultSet.getString(\"Email\");\r\n                user = new User(id, dbUsername, dbPassword, dbEmail);\r\n            }\r\n\r\n            resultSet.close();\r\n            statement.close();\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return user;\r\n    }\r\n\r\n    // Updates a user's info in the LINGOUSER table (if password is changed, it will be hashed)\r\n    @Override\r\n    public boolean updateUser(User user) {\r\n        StringBuilder errorMessages = new StringBuilder();\r\n\r\n        User originalUser = getUserById(user.getUserId());\r\n\r\n        validateUsername(user, originalUser, errorMessages);\r\n        validateEmail(user, originalUser, errorMessages);\r\n        validatePassword(user, errorMessages);\r\n\r\n        if (!errorMessages.isEmpty()) {\r\n            logger.log(Level.WARNING, \"Profile update errors: {0}\", errorMessages);\r\n            return false;\r\n        }\r\n\r\n        return updateUserInDatabase(user);\r\n    }\r\n\r\n    // Validates the username\r\n    private void validateUsername(User user, User originalUser, StringBuilder errorMessages) {\r\n        if (!user.getUsername().equals(originalUser.getUsername()) && doesUsernameExist(user.getUsername())) {\r\n            errorMessages.append(\"Username already exists.\\n\");\r\n        }\r\n    }\r\n\r\n    // Validates the email\r\n    private void validateEmail(User user, User originalUser, StringBuilder errorMessages) {\r\n        if (!user.getEmail().equals(originalUser.getEmail())) {\r\n            if (!user.getEmail().matches(\"^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$\")) {\r\n                errorMessages.append(\"Invalid email format.\\n\");\r\n            } else if (doesEmailExist(user.getEmail())) {\r\n                errorMessages.append(\"An account with this email already exists.\\n\");\r\n            }\r\n        }\r\n    }\r\n\r\n    // Validates the password\r\n    private void validatePassword(User user, StringBuilder errorMessages) {\r\n        if (user.isPasswordChanged()) {\r\n            String password = user.getPassword();\r\n            if (!password.matches(\".*[A-Z].*\")) {\r\n                errorMessages.append(\"Password must include at least 1 uppercase letter.\\n\");\r\n            }\r\n            if (!password.matches(\".*\\\\d.*\")) {\r\n                errorMessages.append(\"Password must include at least 1 number.\\n\");\r\n            }\r\n            if (password.length() < 8) {\r\n                errorMessages.append(\"Password must be at least 8 characters.\\n\");\r\n            }\r\n        }\r\n    }\r\n\r\n    private boolean updateUserInDatabase(User user) {\r\n        boolean isUpdated = false;\r\n        String query = \"UPDATE LINGOUSER SET Username = ?, UserPassword = COALESCE(?, UserPassword), Email = ? WHERE UserID = ?\";\r\n\r\n        try (Connection connection = getConnection();\r\n             PreparedStatement statement = connection.prepareStatement(query)) {\r\n\r\n            statement.setString(1, user.getUsername());\r\n\r\n            if (user.isPasswordChanged()) {\r\n                String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());\r\n                statement.setString(2, hashedPassword);\r\n            } else {\r\n                statement.setString(2, null);\r\n            }\r\n\r\n            statement.setString(3, user.getEmail());\r\n            statement.setInt(4, user.getUserId());\r\n\r\n            int rowsAffected = statement.executeUpdate();\r\n            isUpdated = (rowsAffected > 0);\r\n\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return isUpdated;\r\n    }\r\n\r\n    // Checks if a username exists in the LINGOUSER table\r\n    @Override\r\n    public boolean doesUsernameExist(String username) {\r\n        boolean exists = false;\r\n        try (Connection connection = getConnection()) {\r\n            String query = \"SELECT 1 FROM LINGOUSER WHERE Username = ?\";\r\n            PreparedStatement statement = connection.prepareStatement(query);\r\n            statement.setString(1, username);\r\n            ResultSet resultSet = statement.executeQuery();\r\n\r\n            if (resultSet.next()) {\r\n                exists = true; // Username exists\r\n            }\r\n\r\n            resultSet.close();\r\n            statement.close();\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return exists;\r\n    }\r\n\r\n    // Checks if an email exists in the LINGOUSER table\r\n    @Override\r\n    public boolean doesEmailExist(String email) {\r\n        boolean exists = false;\r\n        try (Connection connection = getConnection()) {\r\n            String query = \"SELECT 1 FROM LINGOUSER WHERE Email = ?\";\r\n            PreparedStatement statement = connection.prepareStatement(query);\r\n            statement.setString(1, email);\r\n            ResultSet resultSet = statement.executeQuery();\r\n\r\n            if (resultSet.next()) {\r\n                exists = true; // Email exists\r\n            }\r\n\r\n            resultSet.close();\r\n            statement.close();\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return exists;\r\n    }\r\n\r\n    // Deletes a user by their email from the LINGOUSER table\r\n    @Override\r\n    public boolean deleteUserByEmail(String email) {\r\n        String query = \"DELETE FROM LINGOUSER WHERE Email = ?\";\r\n        try (Connection connection = getConnection();\r\n             PreparedStatement statement = connection.prepareStatement(query)) {\r\n            statement.setString(1, email);\r\n            int rowsAffected = statement.executeUpdate();\r\n            return rowsAffected > 0;\r\n        } catch (SQLException e) {\r\n            // Consider using a logging framework instead of printStackTrace\r\n            e.printStackTrace();\r\n            return false;\r\n        }\r\n    }\r\n\r\n    // Gets the number of quizzes completed by a user\r\n    @Override\r\n    public int getQuizzesCompleted(int userId, String language) {\r\n        int quizzesCompleted = 0;\r\n        try (Connection connection = getConnection()) {\r\n            String query = \"SELECT COUNT(*) AS QuizzesCompleted FROM ISCOMPLETED JOIN QUIZ ON ISCOMPLETED.QuizID = QUIZ.QuizID WHERE ISCOMPLETED.UserID = ? AND QUIZ.language_code = ?\";\r\n            PreparedStatement statement = connection.prepareStatement(query);\r\n            statement.setInt(1, userId);\r\n            statement.setString(2, language);\r\n\r\n            ResultSet resultSet = statement.executeQuery();\r\n            if (resultSet.next()) {\r\n                quizzesCompleted = resultSet.getInt(\"QuizzesCompleted\");\r\n            } else {\r\n                logger.log(Level.INFO, \"No completed quizzes found for user ID: {0} and language: {1}\", new Object[]{userId, language});\r\n            }\r\n\r\n            resultSet.close();\r\n            statement.close();\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return quizzesCompleted;\r\n    }\r\n\r\n    // Gets the number of flashcards mastered by a user\r\n    @Override\r\n    public int getFlashcardsMastered(int userId, String language) {\r\n        int flashcardsMastered = 0;\r\n        try (Connection connection = getConnection()) {\r\n            String query = \"SELECT COUNT(*) FROM ISMASTERED \" +\r\n                    \"JOIN FLASHCARD ON ISMASTERED.FlashcardID = FLASHCARD.FlashcardID \" +\r\n                    \"WHERE ISMASTERED.UserID = ? AND FLASHCARD.language_code2 = ?\";\r\n            PreparedStatement statement = connection.prepareStatement(query);\r\n            statement.setInt(1, userId);\r\n            statement.setString(2, language);\r\n            ResultSet resultSet = statement.executeQuery();\r\n\r\n            if (resultSet.next()) {\r\n                flashcardsMastered = resultSet.getInt(1);\r\n            }\r\n\r\n            resultSet.close();\r\n            statement.close();\r\n        } catch (SQLException e) {\r\n            e.printStackTrace(); // Log the error\r\n        }\r\n        return flashcardsMastered;\r\n    }\r\n\r\n    // Gets user by email\r\n    @Override\r\n    public Boolean getUserByEmail(String email) {\r\n        try (Connection connection = getConnection()) {\r\n            String query = \"SELECT * \" + \" FROM LINGOUSER WHERE Email = ?\";\r\n            PreparedStatement statement = connection.prepareStatement(query);\r\n            statement.setString(1, email);\r\n            ResultSet resultSet = statement.executeQuery();\r\n\r\n            if (resultSet.next()) {\r\n                return true;\r\n            }\r\n            resultSet.close();\r\n            statement.close();\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return false;\r\n    }\r\n\r\n    // Returns the email of the current user\r\n    @Override\r\n    public String getEmail() {\r\n        try (Connection connection = getConnection()) {\r\n            String query = \"SELECT Email FROM LINGOUSER WHERE UserID = ?\";\r\n            PreparedStatement statement = connection.prepareStatement(query);\r\n            statement.setInt(1, currentUserId);\r\n            ResultSet resultSet = statement.executeQuery();\r\n\r\n            if (resultSet.next()) {\r\n                email = resultSet.getString(\"Email\");\r\n            }\r\n\r\n            resultSet.close();\r\n            statement.close();\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return email;\r\n    }\r\n\r\n    // Returns the current user ID\r\n    @Override\r\n    public int getCurrentUserId() {\r\n        return currentUserId;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Dao/UserDaoImpl.java b/src/main/java/Dao/UserDaoImpl.java
+--- a/src/main/java/Dao/UserDaoImpl.java	(revision d11ef74f7788de6af1b5cce4c11f0cf68b2e4da9)
++++ b/src/main/java/Dao/UserDaoImpl.java	(date 1733316393096)
+@@ -2,373 +2,376 @@
+ 
+ import Database.MariaDbConnection;
+ import Model.User;
++
+ import java.sql.*;
++
+ import org.mindrot.jbcrypt.BCrypt;
++
+ import java.util.logging.Level;
+ import java.util.logging.Logger;
+ 
+ // Responsible for direct interactions with the database, executes SQL queries and handles results
+ public class UserDaoImpl implements UserDao {
+ 
+-    private static UserDaoImpl instance;
+-    private static int currentUserId;
+-    private String email;
+-    private static final Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
++  private static UserDaoImpl instance;
++  private static int currentUserId;
++  private String email;
++  private static final Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
+ 
+-    public static UserDaoImpl getInstance() {
+-        if (instance == null) {
+-            instance = new UserDaoImpl();
+-        }
+-        return instance;
+-    }
++  public static UserDaoImpl getInstance() {
++    if (instance == null) {
++      instance = new UserDaoImpl();
++    }
++    return instance;
++  }
+ 
+-    // Retrieves a database connection
+-    private Connection getConnection() {
+-        return MariaDbConnection.getConnection(); // Make sure your MariaDbConnection class is correct
+-    }
++  // Retrieves a database connection
++  private Connection getConnection() {
++    return MariaDbConnection.getConnection(); // Make sure your MariaDbConnection class is correct
++  }
+ 
+-    // Inserts a new user into the LINGOUSER table
+-    @Override
+-    public int createUser(User user) {
+-        // Validate the email format first
+-        if (user.getEmail() == null || !user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+-            return -1; // Return -1 to indicate invalid email format
+-        }
++  // Inserts a new user into the LINGOUSER table
++  @Override
++  public int createUser(User user) {
++    // Validate the email format first
++    if (user.getEmail() == null || !user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
++      return -1; // Return -1 to indicate invalid email format
++    }
+ 
+-        // Password validation
+-        if (user.getPassword() == null) {
+-            return -1; // Invalid password
+-        }
+-        if (!user.getPassword().matches(".*[A-Z].*")) {
+-            return -1; // Password must include at least 1 uppercase letter
+-        }
+-        if (!user.getPassword().matches(".*\\d.*")) {
+-            return -1; // Password must include at least 1 number
+-        }
+-        if (user.getPassword().length() < 8) {
+-            return -1; // Password must be at least 8 characters
+-        }
++    // Password validation
++    if (user.getPassword() == null) {
++      return -1; // Invalid password
++    }
++    if (!user.getPassword().matches(".*[A-Z].*")) {
++      return -1; // Password must include at least 1 uppercase letter
++    }
++    if (!user.getPassword().matches(".*\\d.*")) {
++      return -1; // Password must include at least 1 number
++    }
++    if (user.getPassword().length() < 8) {
++      return -1; // Password must be at least 8 characters
++    }
+ 
+-        String query = "INSERT INTO LINGOUSER (Username, UserPassword, Email) VALUES (?, ?, ?)";
+-        try (Connection connection = getConnection();
+-             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
++    String query = "INSERT INTO LINGOUSER (Username, UserPassword, Email) VALUES (?, ?, ?)";
++    try (Connection connection = getConnection();
++         PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+ 
+-            statement.setString(1, user.getUsername());
++      statement.setString(1, user.getUsername());
+ 
+-            // Hash the password before storing
+-            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+-            statement.setString(2, hashedPassword);
+-            statement.setString(3, user.getEmail());
++      // Hash the password before storing
++      String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
++      statement.setString(2, hashedPassword);
++      statement.setString(3, user.getEmail());
+ 
+-            int rowsAffected = statement.executeUpdate();
++      int rowsAffected = statement.executeUpdate();
+ 
+-            // Get the generated user ID
+-            if (rowsAffected > 0) {
+-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+-                    if (generatedKeys.next()) {
+-                        return generatedKeys.getInt(1);
+-                    } else {
+-                        throw new SQLException("Creating user failed, no ID obtained.");
+-                    }
+-                }
+-            }
++      // Get the generated user ID
++      if (rowsAffected > 0) {
++        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
++          if (generatedKeys.next()) {
++            return generatedKeys.getInt(1);
++          } else {
++            throw new SQLException("Creating user failed, no ID obtained.");
++          }
++        }
++      }
+ 
+-        } catch (SQLException e) {
+-            e.printStackTrace();
+-        }
+-        return -1; // Indicate failure
+-    }
++    } catch (SQLException e) {
++      e.printStackTrace();
++    }
++    return -1; // Indicate failure
++  }
+ 
+-    // Logs in a user by their username and password
+-    @Override
+-    public User loginUser(String email, String password) {
+-        User user = null;
+-        String query = "SELECT * " + "FROM LINGOUSER WHERE Email = ?";
++  // Logs in a user by their username and password
++  @Override
++  public User loginUser(String email, String password) {
++    User user = null;
++    String query = "SELECT * " + "FROM LINGOUSER WHERE Email = ?";
+ 
+-        try (Connection connection = getConnection();
+-             PreparedStatement statement = connection.prepareStatement(query)) {
++    try (Connection connection = getConnection();
++         PreparedStatement statement = connection.prepareStatement(query)) {
+ 
+-            statement.setString(1, email);
+-            try (ResultSet resultSet = statement.executeQuery()) {
+-                if (resultSet.next()) {
+-                    String dbPassword = resultSet.getString("UserPassword");
++      statement.setString(1, email);
++      try (ResultSet resultSet = statement.executeQuery()) {
++        if (resultSet.next()) {
++          String dbPassword = resultSet.getString("UserPassword");
+ 
+-                    // Check if the password matches the hashed password in the database
+-                    if (BCrypt.checkpw(password, dbPassword)) {
+-                        int userId = resultSet.getInt("UserID");
+-                        currentUserId = userId;
+-                        String username = resultSet.getString("Username");
++          // Check if the password matches the hashed password in the database
++          if (BCrypt.checkpw(password, dbPassword)) {
++            int userId = resultSet.getInt("UserID");
++            currentUserId = userId;
++            String username = resultSet.getString("Username");
+ 
+-                        user = new User(userId, username, dbPassword, email);
+-                    }
+-                }
+-            }
+-        } catch (SQLException e) {
+-            e.printStackTrace();
+-        }
+-        return user; // Return user or null if not found or password mismatched
+-    }
++            user = new User(userId, username, dbPassword, email);
++          }
++        }
++      }
++    } catch (SQLException e) {
++      e.printStackTrace();
++    }
++    return user; // Return user or null if not found or password mismatched
++  }
+ 
+-    // Fetches a user by their ID from the LINGOUSER table
+-    @Override
+-    public User getUserById(int id) {
+-        User user = null;
+-        try (Connection connection = getConnection()) {
+-            String query = "SELECT * " + "FROM LINGOUSER WHERE UserID = ?";
+-            PreparedStatement statement = connection.prepareStatement(query);
+-            statement.setInt(1, id);
+-            ResultSet resultSet = statement.executeQuery();
++  // Fetches a user by their ID from the LINGOUSER table
++  @Override
++  public User getUserById(int id) {
++    User user = null;
++    try (Connection connection = getConnection()) {
++      String query = "SELECT * " + "FROM LINGOUSER WHERE UserID = ?";
++      PreparedStatement statement = connection.prepareStatement(query);
++      statement.setInt(1, id);
++      ResultSet resultSet = statement.executeQuery();
+ 
+-            if (resultSet.next()) {
+-                String dbUsername = resultSet.getString("Username");
+-                String dbPassword = resultSet.getString("UserPassword");
+-                String dbEmail = resultSet.getString("Email");
+-                user = new User(id, dbUsername, dbPassword, dbEmail);
+-            }
++      if (resultSet.next()) {
++        String dbUsername = resultSet.getString("Username");
++        String dbPassword = resultSet.getString("UserPassword");
++        String dbEmail = resultSet.getString("Email");
++        user = new User(id, dbUsername, dbPassword, dbEmail);
++      }
+ 
+-            resultSet.close();
+-            statement.close();
+-        } catch (SQLException e) {
+-            e.printStackTrace();
+-        }
+-        return user;
+-    }
++      resultSet.close();
++      statement.close();
++    } catch (SQLException e) {
++      e.printStackTrace();
++    }
++    return user;
++  }
+ 
+-    // Updates a user's info in the LINGOUSER table (if password is changed, it will be hashed)
+-    @Override
+-    public boolean updateUser(User user) {
+-        StringBuilder errorMessages = new StringBuilder();
++  // Updates a user's info in the LINGOUSER table (if password is changed, it will be hashed)
++  @Override
++  public boolean updateUser(User user) {
++    StringBuilder errorMessages = new StringBuilder();
+ 
+-        User originalUser = getUserById(user.getUserId());
++    User originalUser = getUserById(user.getUserId());
+ 
+-        validateUsername(user, originalUser, errorMessages);
+-        validateEmail(user, originalUser, errorMessages);
+-        validatePassword(user, errorMessages);
++    validateUsername(user, originalUser, errorMessages);
++    validateEmail(user, originalUser, errorMessages);
++    validatePassword(user, errorMessages);
+ 
+-        if (!errorMessages.isEmpty()) {
+-            logger.log(Level.WARNING, "Profile update errors: {0}", errorMessages);
+-            return false;
+-        }
++    if (!errorMessages.isEmpty()) {
++      logger.log(Level.WARNING, "Profile update errors: {0}", errorMessages);
++      return false;
++    }
+ 
+-        return updateUserInDatabase(user);
+-    }
++    return updateUserInDatabase(user);
++  }
+ 
+-    // Validates the username
+-    private void validateUsername(User user, User originalUser, StringBuilder errorMessages) {
+-        if (!user.getUsername().equals(originalUser.getUsername()) && doesUsernameExist(user.getUsername())) {
+-            errorMessages.append("Username already exists.\n");
+-        }
+-    }
++  // Validates the username
++  private void validateUsername(User user, User originalUser, StringBuilder errorMessages) {
++    if (!user.getUsername().equals(originalUser.getUsername()) && doesUsernameExist(user.getUsername())) {
++      errorMessages.append("Username already exists.\n");
++    }
++  }
+ 
+-    // Validates the email
+-    private void validateEmail(User user, User originalUser, StringBuilder errorMessages) {
+-        if (!user.getEmail().equals(originalUser.getEmail())) {
+-            if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+-                errorMessages.append("Invalid email format.\n");
+-            } else if (doesEmailExist(user.getEmail())) {
+-                errorMessages.append("An account with this email already exists.\n");
+-            }
+-        }
+-    }
++  // Validates the email
++  private void validateEmail(User user, User originalUser, StringBuilder errorMessages) {
++    if (!user.getEmail().equals(originalUser.getEmail())) {
++      if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
++        errorMessages.append("Invalid email format.\n");
++      } else if (doesEmailExist(user.getEmail())) {
++        errorMessages.append("An account with this email already exists.\n");
++      }
++    }
++  }
+ 
+-    // Validates the password
+-    private void validatePassword(User user, StringBuilder errorMessages) {
+-        if (user.isPasswordChanged()) {
+-            String password = user.getPassword();
+-            if (!password.matches(".*[A-Z].*")) {
+-                errorMessages.append("Password must include at least 1 uppercase letter.\n");
+-            }
+-            if (!password.matches(".*\\d.*")) {
+-                errorMessages.append("Password must include at least 1 number.\n");
+-            }
+-            if (password.length() < 8) {
+-                errorMessages.append("Password must be at least 8 characters.\n");
+-            }
+-        }
+-    }
++  // Validates the password
++  private void validatePassword(User user, StringBuilder errorMessages) {
++    if (user.isPasswordChanged()) {
++      String password = user.getPassword();
++      if (!password.matches(".*[A-Z].*")) {
++        errorMessages.append("Password must include at least 1 uppercase letter.\n");
++      }
++      if (!password.matches(".*\\d.*")) {
++        errorMessages.append("Password must include at least 1 number.\n");
++      }
++      if (password.length() < 8) {
++        errorMessages.append("Password must be at least 8 characters.\n");
++      }
++    }
++  }
+ 
+-    private boolean updateUserInDatabase(User user) {
+-        boolean isUpdated = false;
+-        String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = COALESCE(?, UserPassword), Email = ? WHERE UserID = ?";
++  private boolean updateUserInDatabase(User user) {
++    boolean isUpdated = false;
++    String query = "UPDATE LINGOUSER SET Username = ?, UserPassword = COALESCE(?, UserPassword), Email = ? WHERE UserID = ?";
+ 
+-        try (Connection connection = getConnection();
+-             PreparedStatement statement = connection.prepareStatement(query)) {
++    try (Connection connection = getConnection();
++         PreparedStatement statement = connection.prepareStatement(query)) {
+ 
+-            statement.setString(1, user.getUsername());
++      statement.setString(1, user.getUsername());
+ 
+-            if (user.isPasswordChanged()) {
+-                String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+-                statement.setString(2, hashedPassword);
+-            } else {
+-                statement.setString(2, null);
+-            }
++      if (user.isPasswordChanged()) {
++        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
++        statement.setString(2, hashedPassword);
++      } else {
++        statement.setString(2, null);
++      }
+ 
+-            statement.setString(3, user.getEmail());
+-            statement.setInt(4, user.getUserId());
++      statement.setString(3, user.getEmail());
++      statement.setInt(4, user.getUserId());
+ 
+-            int rowsAffected = statement.executeUpdate();
+-            isUpdated = (rowsAffected > 0);
++      int rowsAffected = statement.executeUpdate();
++      isUpdated = (rowsAffected > 0);
+ 
+-        } catch (SQLException e) {
+-            e.printStackTrace();
+-        }
+-        return isUpdated;
+-    }
++    } catch (SQLException e) {
++      e.printStackTrace();
++    }
++    return isUpdated;
++  }
+ 
+-    // Checks if a username exists in the LINGOUSER table
+-    @Override
+-    public boolean doesUsernameExist(String username) {
+-        boolean exists = false;
+-        try (Connection connection = getConnection()) {
+-            String query = "SELECT 1 FROM LINGOUSER WHERE Username = ?";
+-            PreparedStatement statement = connection.prepareStatement(query);
+-            statement.setString(1, username);
+-            ResultSet resultSet = statement.executeQuery();
++  // Checks if a username exists in the LINGOUSER table
++  @Override
++  public boolean doesUsernameExist(String username) {
++    boolean exists = false;
++    try (Connection connection = getConnection()) {
++      String query = "SELECT 1 FROM LINGOUSER WHERE Username = ?";
++      PreparedStatement statement = connection.prepareStatement(query);
++      statement.setString(1, username);
++      ResultSet resultSet = statement.executeQuery();
+ 
+-            if (resultSet.next()) {
+-                exists = true; // Username exists
+-            }
++      if (resultSet.next()) {
++        exists = true; // Username exists
++      }
+ 
+-            resultSet.close();
+-            statement.close();
+-        } catch (SQLException e) {
+-            e.printStackTrace();
+-        }
+-        return exists;
+-    }
++      resultSet.close();
++      statement.close();
++    } catch (SQLException e) {
++      e.printStackTrace();
++    }
++    return exists;
++  }
+ 
+-    // Checks if an email exists in the LINGOUSER table
+-    @Override
+-    public boolean doesEmailExist(String email) {
+-        boolean exists = false;
+-        try (Connection connection = getConnection()) {
+-            String query = "SELECT 1 FROM LINGOUSER WHERE Email = ?";
+-            PreparedStatement statement = connection.prepareStatement(query);
+-            statement.setString(1, email);
+-            ResultSet resultSet = statement.executeQuery();
++  // Checks if an email exists in the LINGOUSER table
++  @Override
++  public boolean doesEmailExist(String email) {
++    boolean exists = false;
++    try (Connection connection = getConnection()) {
++      String query = "SELECT 1 FROM LINGOUSER WHERE Email = ?";
++      PreparedStatement statement = connection.prepareStatement(query);
++      statement.setString(1, email);
++      ResultSet resultSet = statement.executeQuery();
+ 
+-            if (resultSet.next()) {
+-                exists = true; // Email exists
+-            }
++      if (resultSet.next()) {
++        exists = true; // Email exists
++      }
+ 
+-            resultSet.close();
+-            statement.close();
+-        } catch (SQLException e) {
+-            e.printStackTrace();
+-        }
+-        return exists;
+-    }
++      resultSet.close();
++      statement.close();
++    } catch (SQLException e) {
++      e.printStackTrace();
++    }
++    return exists;
++  }
+ 
+-    // Deletes a user by their email from the LINGOUSER table
+-    @Override
+-    public boolean deleteUserByEmail(String email) {
+-        String query = "DELETE FROM LINGOUSER WHERE Email = ?";
+-        try (Connection connection = getConnection();
+-             PreparedStatement statement = connection.prepareStatement(query)) {
+-            statement.setString(1, email);
+-            int rowsAffected = statement.executeUpdate();
+-            return rowsAffected > 0;
+-        } catch (SQLException e) {
+-            // Consider using a logging framework instead of printStackTrace
+-            e.printStackTrace();
+-            return false;
+-        }
+-    }
++  // Deletes a user by their email from the LINGOUSER table
++  @Override
++  public boolean deleteUserByEmail(String email) {
++    String query = "DELETE FROM LINGOUSER WHERE Email = ?";
++    try (Connection connection = getConnection();
++         PreparedStatement statement = connection.prepareStatement(query)) {
++      statement.setString(1, email);
++      int rowsAffected = statement.executeUpdate();
++      return rowsAffected > 0;
++    } catch (SQLException e) {
++      // Consider using a logging framework instead of printStackTrace
++      e.printStackTrace();
++      return false;
++    }
++  }
+ 
+-    // Gets the number of quizzes completed by a user
+-    @Override
+-    public int getQuizzesCompleted(int userId, String language) {
+-        int quizzesCompleted = 0;
+-        try (Connection connection = getConnection()) {
+-            String query = "SELECT COUNT(*) AS QuizzesCompleted FROM ISCOMPLETED JOIN QUIZ ON ISCOMPLETED.QuizID = QUIZ.QuizID WHERE ISCOMPLETED.UserID = ? AND QUIZ.language_code = ?";
+-            PreparedStatement statement = connection.prepareStatement(query);
+-            statement.setInt(1, userId);
+-            statement.setString(2, language);
++  // Gets the number of quizzes completed by a user
++  @Override
++  public int getQuizzesCompleted(int userId, String language) {
++    int quizzesCompleted = 0;
++    try (Connection connection = getConnection()) {
++      String query = "SELECT COUNT(*) AS QuizzesCompleted FROM ISCOMPLETED JOIN QUIZ ON ISCOMPLETED.QuizID = QUIZ.QuizID WHERE ISCOMPLETED.UserID = ? AND QUIZ.language_code = ?";
++      PreparedStatement statement = connection.prepareStatement(query);
++      statement.setInt(1, userId);
++      statement.setString(2, language);
+ 
+-            ResultSet resultSet = statement.executeQuery();
+-            if (resultSet.next()) {
+-                quizzesCompleted = resultSet.getInt("QuizzesCompleted");
+-            } else {
+-                logger.log(Level.INFO, "No completed quizzes found for user ID: {0} and language: {1}", new Object[]{userId, language});
+-            }
++      ResultSet resultSet = statement.executeQuery();
++      if (resultSet.next()) {
++        quizzesCompleted = resultSet.getInt("QuizzesCompleted");
++      } else {
++        logger.log(Level.INFO, "No completed quizzes found for user ID: {0} and language: {1}", new Object[]{userId, language});
++      }
+ 
+-            resultSet.close();
+-            statement.close();
+-        } catch (SQLException e) {
+-            e.printStackTrace();
+-        }
+-        return quizzesCompleted;
+-    }
++      resultSet.close();
++      statement.close();
++    } catch (SQLException e) {
++      e.printStackTrace();
++    }
++    return quizzesCompleted;
++  }
+ 
+-    // Gets the number of flashcards mastered by a user
+-    @Override
+-    public int getFlashcardsMastered(int userId, String language) {
+-        int flashcardsMastered = 0;
+-        try (Connection connection = getConnection()) {
+-            String query = "SELECT COUNT(*) FROM ISMASTERED " +
+-                    "JOIN FLASHCARD ON ISMASTERED.FlashcardID = FLASHCARD.FlashcardID " +
+-                    "WHERE ISMASTERED.UserID = ? AND FLASHCARD.language_code2 = ?";
+-            PreparedStatement statement = connection.prepareStatement(query);
+-            statement.setInt(1, userId);
+-            statement.setString(2, language);
+-            ResultSet resultSet = statement.executeQuery();
++  // Gets the number of flashcards mastered by a user
++  @Override
++  public int getFlashcardsMastered(int userId, String language) {
++    int flashcardsMastered = 0;
++    try (Connection connection = getConnection()) {
++      String query = "SELECT COUNT(*) FROM ISMASTERED " +
++              "JOIN FLASHCARD ON ISMASTERED.FlashcardID = FLASHCARD.FlashcardID " +
++              "WHERE ISMASTERED.UserID = ? AND FLASHCARD.language_code2 = ?";
++      PreparedStatement statement = connection.prepareStatement(query);
++      statement.setInt(1, userId);
++      statement.setString(2, language);
++      ResultSet resultSet = statement.executeQuery();
+ 
+-            if (resultSet.next()) {
+-                flashcardsMastered = resultSet.getInt(1);
+-            }
++      if (resultSet.next()) {
++        flashcardsMastered = resultSet.getInt(1);
++      }
+ 
+-            resultSet.close();
+-            statement.close();
+-        } catch (SQLException e) {
+-            e.printStackTrace(); // Log the error
+-        }
+-        return flashcardsMastered;
+-    }
++      resultSet.close();
++      statement.close();
++    } catch (SQLException e) {
++      e.printStackTrace(); // Log the error
++    }
++    return flashcardsMastered;
++  }
+ 
+-    // Gets user by email
+-    @Override
+-    public Boolean getUserByEmail(String email) {
+-        try (Connection connection = getConnection()) {
+-            String query = "SELECT * " + " FROM LINGOUSER WHERE Email = ?";
+-            PreparedStatement statement = connection.prepareStatement(query);
+-            statement.setString(1, email);
+-            ResultSet resultSet = statement.executeQuery();
++  // Gets user by email
++  @Override
++  public Boolean getUserByEmail(String email) {
++    try (Connection connection = getConnection()) {
++      String query = "SELECT * " + " FROM LINGOUSER WHERE Email = ?";
++      PreparedStatement statement = connection.prepareStatement(query);
++      statement.setString(1, email);
++      ResultSet resultSet = statement.executeQuery();
+ 
+-            if (resultSet.next()) {
+-                return true;
+-            }
+-            resultSet.close();
+-            statement.close();
+-        } catch (SQLException e) {
+-            e.printStackTrace();
+-        }
+-        return false;
+-    }
++      if (resultSet.next()) {
++        return true;
++      }
++      resultSet.close();
++      statement.close();
++    } catch (SQLException e) {
++      e.printStackTrace();
++    }
++    return false;
++  }
+ 
+-    // Returns the email of the current user
+-    @Override
+-    public String getEmail() {
+-        try (Connection connection = getConnection()) {
+-            String query = "SELECT Email FROM LINGOUSER WHERE UserID = ?";
+-            PreparedStatement statement = connection.prepareStatement(query);
+-            statement.setInt(1, currentUserId);
+-            ResultSet resultSet = statement.executeQuery();
++  // Returns the email of the current user
++  @Override
++  public String getEmail() {
++    try (Connection connection = getConnection()) {
++      String query = "SELECT Email FROM LINGOUSER WHERE UserID = ?";
++      PreparedStatement statement = connection.prepareStatement(query);
++      statement.setInt(1, currentUserId);
++      ResultSet resultSet = statement.executeQuery();
+ 
+-            if (resultSet.next()) {
+-                email = resultSet.getString("Email");
+-            }
++      if (resultSet.next()) {
++        email = resultSet.getString("Email");
++      }
+ 
+-            resultSet.close();
+-            statement.close();
+-        } catch (SQLException e) {
+-            e.printStackTrace();
+-        }
+-        return email;
+-    }
++      resultSet.close();
++      statement.close();
++    } catch (SQLException e) {
++      e.printStackTrace();
++    }
++    return email;
++  }
+ 
+-    // Returns the current user ID
+-    @Override
+-    public int getCurrentUserId() {
+-        return currentUserId;
+-    }
++  // Returns the current user ID
++  @Override
++  public int getCurrentUserId() {
++    return currentUserId;
++  }
+ }
+\ No newline at end of file
+Index: src/main/java/Controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Controller;\r\n\r\nimport Dao.UserDaoImpl;\r\nimport Model.User;\r\n\r\npublic class UserController {\r\n    private final UserDaoImpl userDao;\r\n\r\n    private static UserController instance;\r\n\r\n    public UserController(UserDaoImpl userDao) {\r\n        this.userDao = userDao;\r\n    }\r\n\r\n    public static UserController getInstance(UserDaoImpl userDao) {\r\n        if (instance == null) {\r\n            instance = new UserController(userDao);\r\n        }\r\n        return instance;\r\n    }\r\n\r\n    // Create a new user\r\n    public User createUser(String username, String password, String email) {\r\n        User newUser = new User(username, password, email);\r\n\r\n        int userId = userDao.createUser(newUser);\r\n\r\n        if (userId > 0) {\r\n            newUser.setUserId(userId);\r\n            return newUser;\r\n        }\r\n        return null;\r\n    }\r\n\r\n    // Login a user\r\n    public User loginUser(String email, String password) {\r\n        return userDao.loginUser(email, password);\r\n    }\r\n\r\n    // Get a user by their ID\r\n    public User getUserById(int userId) {\r\n        return userDao.getUserById(userId);\r\n    }\r\n\r\n    // Update a user's information\r\n    public boolean updateUser(User user) {\r\n        return userDao.updateUser(user);\r\n    }\r\n\r\n    // Check if an email exists\r\n    public boolean doesEmailExist(String email) {\r\n        return userDao.doesEmailExist(email);\r\n    }\r\n\r\n    // Delete a user by email\r\n    public boolean deleteUserByEmail(String email) {return userDao.deleteUserByEmail(email); }\r\n\r\n    public int getQuizzesCompleted(int userId, String language) {\r\n        return userDao.getQuizzesCompleted(userId, language );\r\n    }\r\n\r\n    public int getFlashcardsMastered(int userId, String language) {\r\n        return userDao.getFlashcardsMastered(userId, language);\r\n    }\r\n\r\n    public int getCurrentUserId() {\r\n        return userDao.getCurrentUserId();\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Controller/UserController.java b/src/main/java/Controller/UserController.java
+--- a/src/main/java/Controller/UserController.java	(revision d11ef74f7788de6af1b5cce4c11f0cf68b2e4da9)
++++ b/src/main/java/Controller/UserController.java	(date 1733316393094)
+@@ -4,67 +4,69 @@
+ import Model.User;
+ 
+ public class UserController {
+-    private final UserDaoImpl userDao;
++  private final UserDaoImpl userDao;
+ 
+-    private static UserController instance;
++  private static UserController instance;
+ 
+-    public UserController(UserDaoImpl userDao) {
+-        this.userDao = userDao;
+-    }
++  public UserController(UserDaoImpl userDao) {
++    this.userDao = userDao;
++  }
+ 
+-    public static UserController getInstance(UserDaoImpl userDao) {
+-        if (instance == null) {
+-            instance = new UserController(userDao);
+-        }
+-        return instance;
+-    }
++  public static UserController getInstance(UserDaoImpl userDao) {
++    if (instance == null) {
++      instance = new UserController(userDao);
++    }
++    return instance;
++  }
+ 
+-    // Create a new user
+-    public User createUser(String username, String password, String email) {
+-        User newUser = new User(username, password, email);
++  // Create a new user
++  public User createUser(String username, String password, String email) {
++    User newUser = new User(username, password, email);
+ 
+-        int userId = userDao.createUser(newUser);
++    int userId = userDao.createUser(newUser);
+ 
+-        if (userId > 0) {
+-            newUser.setUserId(userId);
+-            return newUser;
+-        }
+-        return null;
+-    }
++    if (userId > 0) {
++      newUser.setUserId(userId);
++      return newUser;
++    }
++    return null;
++  }
+ 
+-    // Login a user
+-    public User loginUser(String email, String password) {
+-        return userDao.loginUser(email, password);
+-    }
++  // Login a user
++  public User loginUser(String email, String password) {
++    return userDao.loginUser(email, password);
++  }
+ 
+-    // Get a user by their ID
+-    public User getUserById(int userId) {
+-        return userDao.getUserById(userId);
+-    }
++  // Get a user by their ID
++  public User getUserById(int userId) {
++    return userDao.getUserById(userId);
++  }
+ 
+-    // Update a user's information
+-    public boolean updateUser(User user) {
+-        return userDao.updateUser(user);
+-    }
++  // Update a user's information
++  public boolean updateUser(User user) {
++    return userDao.updateUser(user);
++  }
+ 
+-    // Check if an email exists
+-    public boolean doesEmailExist(String email) {
+-        return userDao.doesEmailExist(email);
+-    }
++  // Check if an email exists
++  public boolean doesEmailExist(String email) {
++    return userDao.doesEmailExist(email);
++  }
+ 
+-    // Delete a user by email
+-    public boolean deleteUserByEmail(String email) {return userDao.deleteUserByEmail(email); }
++  // Delete a user by email
++  public boolean deleteUserByEmail(String email) {
++    return userDao.deleteUserByEmail(email);
++  }
+ 
+-    public int getQuizzesCompleted(int userId, String language) {
+-        return userDao.getQuizzesCompleted(userId, language );
+-    }
++  public int getQuizzesCompleted(int userId, String language) {
++    return userDao.getQuizzesCompleted(userId, language);
++  }
+ 
+-    public int getFlashcardsMastered(int userId, String language) {
+-        return userDao.getFlashcardsMastered(userId, language);
+-    }
++  public int getFlashcardsMastered(int userId, String language) {
++    return userDao.getFlashcardsMastered(userId, language);
++  }
+ 
+-    public int getCurrentUserId() {
+-        return userDao.getCurrentUserId();
+-    }
++  public int getCurrentUserId() {
++    return userDao.getCurrentUserId();
++  }
+ 
+ }
+\ No newline at end of file

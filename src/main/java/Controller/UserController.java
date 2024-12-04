@@ -4,69 +4,67 @@ import Dao.UserDaoImpl;
 import Model.User;
 
 public class UserController {
-  private final UserDaoImpl userDao;
+    private final UserDaoImpl userDao;
 
-  private static UserController instance;
+    private static UserController instance;
 
-  public UserController(UserDaoImpl userDao) {
-    this.userDao = userDao;
-  }
-
-  public static UserController getInstance(UserDaoImpl userDao) {
-    if (instance == null) {
-      instance = new UserController(userDao);
+    public UserController(UserDaoImpl userDao) {
+        this.userDao = userDao;
     }
-    return instance;
-  }
 
-  // Create a new user
-  public User createUser(String username, String password, String email) {
-    User newUser = new User(username, password, email);
-
-    int userId = userDao.createUser(newUser);
-
-    if (userId > 0) {
-      newUser.setUserId(userId);
-      return newUser;
+    public static UserController getInstance(UserDaoImpl userDao) {
+        if (instance == null) {
+            instance = new UserController(userDao);
+        }
+        return instance;
     }
-    return null;
-  }
 
-  // Login a user
-  public User loginUser(String email, String password) {
-    return userDao.loginUser(email, password);
-  }
+    // Create a new user
+    public User createUser(String username, String password, String email) {
+        User newUser = new User(username, password, email);
 
-  // Get a user by their ID
-  public User getUserById(int userId) {
-    return userDao.getUserById(userId);
-  }
+        int userId = userDao.createUser(newUser);
 
-  // Update a user's information
-  public boolean updateUser(User user) {
-    return userDao.updateUser(user);
-  }
+        if (userId > 0) {
+            newUser.setUserId(userId);
+            return newUser;
+        }
+        return null;
+    }
 
-  // Check if an email exists
-  public boolean doesEmailExist(String email) {
-    return userDao.doesEmailExist(email);
-  }
+    // Login a user
+    public User loginUser(String email, String password) {
+        return userDao.loginUser(email, password);
+    }
 
-  // Delete a user by email
-  public boolean deleteUserByEmail(String email) {
-    return userDao.deleteUserByEmail(email);
-  }
+    // Get a user by their ID
+    public User getUserById(int userId) {
+        return userDao.getUserById(userId);
+    }
 
-  public int getQuizzesCompleted(int userId, String language) {
-    return userDao.getQuizzesCompleted(userId, language);
-  }
+    // Update a user's information
+    public boolean updateUser(User user) {
+        return userDao.updateUser(user);
+    }
 
-  public int getFlashcardsMastered(int userId, String language) {
-    return userDao.getFlashcardsMastered(userId, language);
-  }
+    // Check if an email exists
+    public boolean doesEmailExist(String email) {
+        return userDao.doesEmailExist(email);
+    }
 
-  public int getCurrentUserId() {
-    return userDao.getCurrentUserId();
-  }
+    // Delete a user by email
+    public boolean deleteUserByEmail(String email) {return userDao.deleteUserByEmail(email); }
+
+    public int getQuizzesCompleted(int userId, String language) {
+        return userDao.getQuizzesCompleted(userId, language );
+    }
+
+    public int getFlashcardsMastered(int userId, String language) {
+        return userDao.getFlashcardsMastered(userId, language);
+    }
+
+    public int getCurrentUserId() {
+        return userDao.getCurrentUserId();
+    }
 
 }
