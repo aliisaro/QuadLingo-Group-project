@@ -47,6 +47,6 @@
 
 ## Sprint 7
 - [x] Final report
-- [ ] Final presentation
+- [x] Final presentation
 - [x] Final documentation
-- [ ] Regression testing
+- [x] Regression testing

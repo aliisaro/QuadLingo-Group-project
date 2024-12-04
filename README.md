@@ -26,11 +26,13 @@ More information about product backlog and sprint processes can be found in the 
 
 ****
 
-<h3>User manual</h3>
+<h3>Documents</h3>
 
 ****
 
-User manual is located in the directory `docs/documentation/UserManual.md`.
+- **User manual** is located in the directory `docs/documentation/UserManual.md`
+- **Sprint documentation** is located in the directory `docs/documentation/SprintProcess.md`
+- **Product backlog** is located in the directory `docs/documentation/ProductBacklog.md`
 
 ****
 

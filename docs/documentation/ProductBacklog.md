@@ -15,8 +15,8 @@
     - [x] Quiz library and individual quizzes
     - [x] Flashcard library and individual flashcards
     - [x] User profile
+    - [x] Unit tests
+    - [x] Regression tests
 
 ## To do
 - [ ] Badges in the database
-- [ ] Unit tests
-- [ ] Regression tests
