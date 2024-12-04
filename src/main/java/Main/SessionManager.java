@@ -1,11 +1,14 @@
 package Main;
 
 import Model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // Singleton class to manage the current session (whether user is logged in or not)
 public class SessionManager {
     private static SessionManager instance; // Instance of the SessionManager
     private User currentUser; // Object to store the current user
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionManager.class);
 
     // Constructor
     private SessionManager() {}
@@ -30,7 +33,7 @@ public class SessionManager {
 
     // Clear the current session when the user logs out
     public void logout() {
-        System.out.println("User logged out: " + currentUser.getUsername() + " \n");
+        LOGGER.info("User logged out: {}", currentUser.getUsername());
         currentUser = null;
     }
 

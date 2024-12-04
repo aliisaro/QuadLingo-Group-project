@@ -3,12 +3,13 @@ package Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class MariaDbConnection {
-
+  private static final Dotenv dotenv = Dotenv.load();
   private static final String URL = "jdbc:mariadb://10.120.32.98/QuadLingo";
-  private static final String USER = "lingo";
-  private static final String PASSWORD = "5206";
+  private static final String USER = dotenv.get("DB_USER");
+  private static final String PASSWORD = dotenv.get("DB_PASSWORD");
 
   public static Connection getConnection() {
     Connection conn = null;
