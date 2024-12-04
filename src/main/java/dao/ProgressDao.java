@@ -1,4 +1,4 @@
-package Dao;
+package dao;
 
 public interface ProgressDao {
 

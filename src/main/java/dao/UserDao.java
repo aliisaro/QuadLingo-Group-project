@@ -1,6 +1,6 @@
-package Dao;
+package dao;
 
-import Model.User;
+import model.User;
 
 public interface UserDao {
     int createUser(User user);

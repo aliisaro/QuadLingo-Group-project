@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import Config.LanguageConfig;
+import config.LanguageConfig;
 
 public class IndexPage extends BasePage {
   private ResourceBundle bundle;

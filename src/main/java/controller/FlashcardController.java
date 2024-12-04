@@ -1,7 +1,7 @@
-package Controller;
+package controller;
 
-import Dao.FlashcardDao;
-import Model.Flashcard;
+import dao.FlashcardDao;
+import model.Flashcard;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@
 - [x] User stories
 - [x] Language selection
 - [x] Help button
-- [x] Database design and implementation
+- [x] database design and implementation
 - Following pages:
     - [x] Sign up, login and logout
     - [x] Start page

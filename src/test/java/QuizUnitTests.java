@@ -1,6 +1,6 @@
-import Dao.QuizDao;
-import Model.Question;
-import Model.Quiz;
+import dao.QuizDao;
+import model.Question;
+import model.Quiz;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

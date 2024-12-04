@@ -1,11 +1,11 @@
 package view;
 
-import Config.LanguageConfig;
-import Controller.UserController;
-import Dao.FlashcardDao;
-import Dao.UserDaoImpl;
-import Main.SessionManager;
-import Model.Flashcard;
+import config.LanguageConfig;
+import controller.UserController;
+import dao.FlashcardDao;
+import dao.UserDaoImpl;
+import main.SessionManager;
+import model.Flashcard;
 import javafx.animation.RotateTransition;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

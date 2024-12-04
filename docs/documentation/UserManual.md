@@ -22,7 +22,7 @@
    git clone https://github.com/aliisaro/QuadLingo-Group-project.git
    ```
 
-6. Run the class Main.java in the package `Main` to start the application.
+6. Run the class main.java in the package `main` to start the application.
 
 7. Enjoy!
 

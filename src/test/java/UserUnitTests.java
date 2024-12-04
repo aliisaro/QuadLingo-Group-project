@@ -1,5 +1,5 @@
-import Dao.UserDaoImpl;
-import Model.User;
+import dao.UserDaoImpl;
+import model.User;
 import org.junit.jupiter.api.*;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;

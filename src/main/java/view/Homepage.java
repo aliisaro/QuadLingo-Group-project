@@ -1,8 +1,8 @@
 package view;
 
-import Config.LanguageConfig;
-import Main.SessionManager;
-import Model.User;
+import config.LanguageConfig;
+import main.SessionManager;
+import model.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,7 +20,7 @@ import java.sql.Connection;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import Database.MariaDbConnection;
+import database.MariaDbConnection;
 
 public class Homepage extends BasePage {
 

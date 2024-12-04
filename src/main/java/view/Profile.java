@@ -1,10 +1,10 @@
 package view;
 
-import Config.LanguageConfig;
-import Controller.UserController;
-import Dao.UserDaoImpl;
-import Main.SessionManager;
-import Model.User;
+import config.LanguageConfig;
+import controller.UserController;
+import dao.UserDaoImpl;
+import main.SessionManager;
+import model.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;

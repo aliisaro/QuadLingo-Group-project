@@ -1,6 +1,6 @@
-package Dao;
+package dao;
 
-import Model.Flashcard;
+import model.Flashcard;
 
 import java.util.List;
 

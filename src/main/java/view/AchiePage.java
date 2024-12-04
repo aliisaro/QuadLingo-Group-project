@@ -1,8 +1,8 @@
 package view;
 
-import Config.LanguageConfig;
-import Dao.UserDaoImpl;
-import Model.Badge;
+import config.LanguageConfig;
+import dao.UserDaoImpl;
+import model.Badge;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import Controller.UserController;
+import controller.UserController;
 
 import java.util.ArrayList;
 import java.util.List;

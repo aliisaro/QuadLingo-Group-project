@@ -2,7 +2,7 @@
 ESIMERKKI MITEN LOKALISOIDA SIVU:
 
 // Importit tarvitaan
-import Config.LanguageConfig;
+import config.LanguageConfig;
 import java.util.ResourceBundle;
 
 public class ExamplePage {

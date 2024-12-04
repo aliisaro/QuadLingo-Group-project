@@ -1,7 +1,7 @@
-package Dao;
+package dao;
 
-import Database.MariaDbConnection;
-import Model.User;
+import database.MariaDbConnection;
+import model.User;
 import java.sql.*;
 import org.mindrot.jbcrypt.BCrypt;
 import java.util.logging.Level;

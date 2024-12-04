@@ -1,6 +1,6 @@
-package Dao;
+package dao;
 
-import Model.Flashcard;
+import model.Flashcard;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

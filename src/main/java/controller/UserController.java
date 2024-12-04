@@ -1,7 +1,7 @@
-package Controller;
+package controller;
 
-import Dao.UserDaoImpl;
-import Model.User;
+import dao.UserDaoImpl;
+import model.User;
 
 public class UserController {
     private final UserDaoImpl userDao;

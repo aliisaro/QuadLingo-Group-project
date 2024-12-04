@@ -1,10 +1,10 @@
 package view;
 
-import Config.LanguageConfig;
-import Dao.QuizDao;
-import Main.SessionManager;
-import Model.Question;
-import Model.User;
+import config.LanguageConfig;
+import dao.QuizDao;
+import main.SessionManager;
+import model.Question;
+import model.User;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;

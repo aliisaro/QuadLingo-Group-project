@@ -36,4 +36,4 @@ RUN wget https://download2.gluonhq.com/openjfx/${JAVAFX_VERSION}/openjfx-${JAVAF
 COPY --from=build /app/target/QuadLingo.jar ./QuadLingo.jar
 
 # Specify the command to run the JAR file with JavaFX dependencies in the classpath
-CMD ["java", "-cp", "QuadLingo.jar:/opt/javafx/lib/*", "Main.Main"]
+CMD ["java", "-cp", "QuadLingo.jar:/opt/javafx/lib/*", "main.main"]

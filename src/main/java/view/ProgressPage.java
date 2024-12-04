@@ -1,12 +1,12 @@
 package view;
 
-import Config.LanguageConfig;
+import config.LanguageConfig;
 
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-import Dao.ProgressDaoImpl;
-import Dao.UserDaoImpl;
+import dao.ProgressDaoImpl;
+import dao.UserDaoImpl;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.ProgressBar;
 
-import Controller.UserController;
+import controller.UserController;
 
 public class ProgressPage extends BasePage implements SetMarginButton, UpdateProgress {
 

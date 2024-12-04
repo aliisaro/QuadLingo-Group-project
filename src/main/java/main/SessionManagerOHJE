@@ -2,7 +2,7 @@
 Ohje miten lisätä sivulle toiminto joka tarkistaa onko käyttäjä kirjautunut sisään.
 
 // STEP 1 LISÄÄ TÄMÄ SIVUN ALKUUN (importit)
-import Main.SessionManager;
+import main.SessionManager;
 
 // STEP 2 LISÄÄ SESSION TARKISTUS (eli tarkistaa onko käyttäjä kirjautunut sisään)
 User currentUser = SessionManager.getInstance().getCurrentUser();
@@ -30,8 +30,8 @@ this.getChildren().addAll(logoutButton, <muita elementtejä>); // Lisää kaikki
 
 package view;
 
-import Main.SessionManager;
-import Model.User;
+import main.SessionManager;
+import model.User;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 

@@ -1,6 +1,6 @@
-package Dao;
+package dao;
 
-import Database.MariaDbConnection;
+import database.MariaDbConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,7 +1,7 @@
-import Dao.QuizDaoImpl;
-import Model.Question;
-import Model.Quiz;
-import Database.MariaDbConnection;
+import dao.QuizDaoImpl;
+import model.Question;
+import model.Quiz;
+import database.MariaDbConnection;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;

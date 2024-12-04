@@ -1,14 +1,14 @@
 package view;
 
-import Config.LanguageConfig;
-import Controller.FlashcardController;
-import Controller.UserController;
-import Dao.FCImplement;
-import Dao.ProgressDaoImpl;
-import Dao.UserDaoImpl;
-import Database.MariaDbConnection;
-import Main.SessionManager;
-import Model.Flashcard;
+import config.LanguageConfig;
+import controller.FlashcardController;
+import controller.UserController;
+import dao.FCImplement;
+import dao.ProgressDaoImpl;
+import dao.UserDaoImpl;
+import database.MariaDbConnection;
+import main.SessionManager;
+import model.Flashcard;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;

@@ -13,7 +13,7 @@
 - [x] User progress tracking prototype
 - [x] Achievements feature prototype
 - [x] Several pages for different functionalities
-- [x] Database design
+- [x] database design
 - [x] Proper product backlog
 
 ## Sprint 3
@@ -22,7 +22,7 @@
 - [x] Page scroll functionality
 - [x] Achievements functionality
 - [x] Quizzes feature and functionality
-- [x] Database implementation and mock data
+- [x] database implementation and mock data
 - [x] Self made badges
 
 ## Sprint 4

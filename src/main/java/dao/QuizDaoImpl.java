@@ -1,7 +1,7 @@
-package Dao;
+package dao;
 
-import Model.Quiz;
-import Model.Question;
+import model.Quiz;
+import model.Question;
 
 import java.sql.*;
 import java.util.ArrayList;

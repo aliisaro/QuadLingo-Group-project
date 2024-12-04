@@ -1,6 +1,6 @@
 package view;
 
-import Config.LanguageConfig;
+import config.LanguageConfig;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

@@ -1,8 +1,8 @@
-import Dao.FCImplement;
-import Dao.FlashcardDao;
-import Dao.UserDaoImpl;
-import Database.MariaDbConnection;
-import Model.User;
+import dao.FCImplement;
+import dao.FlashcardDao;
+import dao.UserDaoImpl;
+import database.MariaDbConnection;
+import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;

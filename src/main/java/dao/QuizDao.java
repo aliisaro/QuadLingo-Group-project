@@ -1,7 +1,7 @@
-package Dao;
+package dao;
 
-import Model.Question;
-import Model.Quiz;
+import model.Question;
+import model.Quiz;
 
 import java.util.List;
 

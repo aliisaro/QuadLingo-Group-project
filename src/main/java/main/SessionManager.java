@@ -1,6 +1,6 @@
-package Main;
+package main;
 
-import Model.User;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

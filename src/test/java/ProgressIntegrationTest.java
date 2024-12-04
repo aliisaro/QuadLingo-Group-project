@@ -1,6 +1,6 @@
-import Dao.*;
-import Database.MariaDbConnection;
-import Model.User;
+import dao.*;
+import database.MariaDbConnection;
+import model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

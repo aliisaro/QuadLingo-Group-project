@@ -1,14 +1,14 @@
 package view;
 
-import Config.LanguageConfig;
-import Controller.UserController;
-import Controller.QuizController;
-import Dao.ProgressDaoImpl;
-import Dao.UserDaoImpl;
-import Dao.QuizDaoImpl;
-import Database.MariaDbConnection;
-import Main.SessionManager;
-import Model.Quiz;
+import config.LanguageConfig;
+import controller.UserController;
+import controller.QuizController;
+import dao.ProgressDaoImpl;
+import dao.UserDaoImpl;
+import dao.QuizDaoImpl;
+import database.MariaDbConnection;
+import main.SessionManager;
+import model.Quiz;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
