@@ -8,6 +8,7 @@
 
 .root {
     -fx-background-color: D6E3F8;
+    -fx-font-family: "Times New Roman";
 }
 
 /* Styling for progress bar */
